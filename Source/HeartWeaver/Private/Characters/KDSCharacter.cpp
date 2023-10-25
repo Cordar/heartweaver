@@ -1,7 +1,7 @@
 // Copyright Kraken's Den Studios. All rights reserved.
 
 
-#include "KDSCharacter.h"
+#include "Characters/KDSCharacter.h"
 
 #include "AbilitySystem/KDSGameplayTags.h"
 #include "EnhancedInputSubsystems.h"

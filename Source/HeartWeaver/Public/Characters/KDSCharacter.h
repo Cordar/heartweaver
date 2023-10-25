@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "KDSCharacterBase.h"
 #include "InputActionValue.h"
 
 #include "KDSCharacter.generated.h"
@@ -14,22 +14,18 @@ class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
-class HEARTWEAVER_API AKDSCharacter : public ACharacter
+class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AKDSCharacter();
 
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -43,7 +39,6 @@ protected:
 	void ToggleCrouch(const FInputActionValue& Value);
 
 private:
-
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
