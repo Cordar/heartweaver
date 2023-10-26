@@ -18,7 +18,7 @@ class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 	GENERATED_BODY()
 
 public:
-	AKDSCharacter();
+	AKDSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void Tick(float DeltaTime) override;
 	void ToggleCrouch();
 

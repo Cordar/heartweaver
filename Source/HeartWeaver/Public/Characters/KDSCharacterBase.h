@@ -13,7 +13,7 @@ class HEARTWEAVER_API AKDSCharacterBase : public ACharacter
 	GENERATED_BODY()
 
 public:
-	AKDSCharacterBase();
+	AKDSCharacterBase(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void BeginPlay() override;

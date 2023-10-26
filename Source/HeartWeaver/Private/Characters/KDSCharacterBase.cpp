@@ -3,7 +3,7 @@
 
 #include "Characters/KDSCharacterBase.h"
 
-AKDSCharacterBase::AKDSCharacterBase()
+AKDSCharacterBase::AKDSCharacterBase(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
