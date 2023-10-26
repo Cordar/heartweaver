@@ -48,12 +48,22 @@ void AKDSCharacter::BeginPlay()
 
 void AKDSCharacter::ToggleCrouch()
 {
-	if (!bIsCrouched) {
-		Crouch();
-	}
-	else {
+	const UKDSCharacterMovementComponent* MoveComp = CastChecked<UKDSCharacterMovementComponent>(GetCharacterMovement());
+
+	if (bIsCrouched || MoveComp->bWantsToCrouch)
+	{
 		UnCrouch();
 	}
+	else if (MoveComp->IsMovingOnGround())
+	{
+		Crouch();
+	}
+}
+
+bool AKDSCharacter::CanJumpInternal_Implementation() const
+{
+	// same as ACharacter's implementation but without the crouch check
+	return JumpIsAllowedInternal();
 }
 
 void AKDSCharacter::Tick(float DeltaTime)

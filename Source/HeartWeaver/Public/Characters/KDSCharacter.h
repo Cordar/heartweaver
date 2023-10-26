@@ -24,6 +24,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual bool CanJumpInternal_Implementation() const;
 
 private:
 	UPROPERTY(VisibleAnywhere)

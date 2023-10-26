@@ -16,7 +16,6 @@ bool UKDSCharacterMovementComponent::CanAttemptJump() const
 
 FRotator UKDSCharacterMovementComponent::GetDeltaRotation(float DeltaTime) const
 {
-	// TODO: Implement for ability system tag movement stopped to be 0 (check Lyra Project)
 	return Super::GetDeltaRotation(DeltaTime);
 }
 
