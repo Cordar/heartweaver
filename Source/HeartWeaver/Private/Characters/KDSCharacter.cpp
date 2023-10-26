@@ -24,14 +24,20 @@ AKDSCharacter::AKDSCharacter(const FObjectInitializer& ObjectInitializer)
 	KDSMoveComp->GroundFriction = 8.0f;
 	KDSMoveComp->BrakingDecelerationWalking = 1400.0f;
 	KDSMoveComp->bUseControllerDesiredRotation = false;
-	KDSMoveComp->bOrientRotationToMovement = false;
-	KDSMoveComp->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+	KDSMoveComp->bOrientRotationToMovement = true;
+	KDSMoveComp->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
+	KDSMoveComp->bConstrainToPlane = true;
+	KDSMoveComp->bSnapToPlaneAtStart = true;
 	KDSMoveComp->bAllowPhysicsRotationDuringAnimRootMotion = false;
 	KDSMoveComp->GetNavAgentPropertiesRef().bCanCrouch = true;
 	KDSMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	KDSMoveComp->SetCrouchedHalfHeight(65.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->bInheritPitch = false;
+	CameraBoom->bInheritRoll = false;
+	CameraBoom->bInheritYaw = false;
+	CameraBoom->bEnableCameraLag = true;
 	CameraBoom->SetupAttachment(GetRootComponent());
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -39,6 +45,9 @@ AKDSCharacter::AKDSCharacter(const FObjectInitializer& ObjectInitializer)
 
 	BaseEyeHeight = 80.0f;
 	CrouchedEyeHeight = 50.0f;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 }
 
 void AKDSCharacter::BeginPlay()
