@@ -7,9 +7,9 @@ UKDSInputConfig::UKDSInputConfig()
 {
 }
 
-const UInputAction* UKDSInputConfig::FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
+const UInputAction* UKDSInputConfig::FindInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
 {
-	for (const FKDSInputAction& Action : NativeInputActions)
+	for (const FKDSInputAction& Action : InputActions)
 	{
 		if (Action.InputAction && (Action.InputTag == InputTag))
 		{

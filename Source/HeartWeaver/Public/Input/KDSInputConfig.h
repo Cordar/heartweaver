@@ -41,12 +41,12 @@ public:
 	UKDSInputConfig();
 
 	UFUNCTION(BlueprintCallable, Category = "KDS|Pawn")
-	const UInputAction* FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
+	const UInputAction* FindInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
 
 public:
 
-	// List of input actions used by the owner.  These input actions are mapped to a gameplay tag and must be manually bound.
+	// List of input actions used by the owner.  These input actions are mapped to a gameplay tag.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Meta = (TitleProperty = "InputAction"))
-	TArray<FKDSInputAction> NativeInputActions;
+	TArray<FKDSInputAction> InputActions;
 	
 };

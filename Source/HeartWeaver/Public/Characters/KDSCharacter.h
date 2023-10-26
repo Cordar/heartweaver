@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "KDSCharacterBase.h"
-#include "InputActionValue.h"
 
 #include "KDSCharacter.generated.h"
 
@@ -20,23 +19,11 @@ class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 
 public:
 	AKDSCharacter();
-
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void ToggleCrouch();
 
 protected:
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, Category = Input)
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
-
-	// Input configuration used by character to create input mappings and bind input actions.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "KDS|Input")
-	TObjectPtr<UKDSInputConfig> InputConfig;
-
-	void Move(const FInputActionValue& Value);
-	void ToggleCrouch(const FInputActionValue& Value);
 
 private:
 	UPROPERTY(VisibleAnywhere)
