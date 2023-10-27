@@ -6,12 +6,15 @@
 AKDSCharacterBase::AKDSCharacterBase(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = false;
+}
 
+UAbilitySystemComponent* AKDSCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 
 void AKDSCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 

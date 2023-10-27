@@ -13,5 +13,7 @@ UCLASS()
 class HEARTWEAVER_API AKDSEnemy : public AKDSCharacterBase
 {
 	GENERATED_BODY()
+public:
+	AKDSEnemy(const FObjectInitializer& ObjectInitializer);
 	
 };

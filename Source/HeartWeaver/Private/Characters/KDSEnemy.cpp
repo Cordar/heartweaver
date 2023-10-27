@@ -3,3 +3,16 @@
 
 #include "Characters/KDSEnemy.h"
 
+#include "AbilitySystem/KDSAbilitySystemComponent.h"
+#include "AbilitySystem/KDSAttributeSet.h"
+
+AKDSEnemy::AKDSEnemy(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+
+	AbilitySystemComponent = CreateDefaultSubobject<UKDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+
+	AttributeSet = CreateDefaultSubobject<UKDSAttributeSet>(TEXT("AttributeSet"));
+}
