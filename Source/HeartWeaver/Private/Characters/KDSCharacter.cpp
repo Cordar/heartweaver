@@ -3,9 +3,11 @@
 
 #include "Characters/KDSCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Characters/KDSCharacterMovementComponent.h"
+#include "Player/KDSPlayerState.h"
 
 AKDSCharacter::AKDSCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UKDSCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -78,5 +80,22 @@ bool AKDSCharacter::CanJumpInternal_Implementation() const
 void AKDSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AKDSCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// Init Ability Actor Info for the server
+	AKDSPlayerState* KDSPlayerState = GetPlayerState<AKDSPlayerState>();
+	check(KDSPlayerState);
+	KDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KDSPlayerState, this);
+	AbilitySystemComponent = KDSPlayerState->GetAbilitySystemComponent();
+	AttributeSet = KDSPlayerState->GetAttributeSet();
+}
+
+void AKDSCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
 }
 

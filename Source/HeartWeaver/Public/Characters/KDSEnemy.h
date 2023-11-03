@@ -15,5 +15,6 @@ class HEARTWEAVER_API AKDSEnemy : public AKDSCharacterBase
 	GENERATED_BODY()
 public:
 	AKDSEnemy(const FObjectInitializer& ObjectInitializer);
+	virtual void BeginPlay() override;
 	
 };

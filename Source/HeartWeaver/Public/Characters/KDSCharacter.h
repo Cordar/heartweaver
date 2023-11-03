@@ -20,6 +20,8 @@ class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 public:
 	AKDSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void Tick(float DeltaTime) override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 
 protected:

@@ -10,7 +10,7 @@ AKDSPlayerState::AKDSPlayerState()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UKDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode()
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UKDSAttributeSet>(TEXT("AttributeSet"));
 	
