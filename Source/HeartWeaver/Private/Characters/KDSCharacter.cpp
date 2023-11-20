@@ -31,7 +31,7 @@ AKDSCharacter::AKDSCharacter(const FObjectInitializer& ObjectInitializer)
 	KDSMoveComp->bConstrainToPlane = true;
 	KDSMoveComp->bSnapToPlaneAtStart = true;
 	KDSMoveComp->bAllowPhysicsRotationDuringAnimRootMotion = false;
-	KDSMoveComp->GetNavAgentPropertiesRef().bCanCrouch = true;
+	KDSMoveComp->GetNavAgentPropertiesRef().bCanCrouch = true; // Maybe remove it if we don't want the camera to change
 	KDSMoveComp->bCanWalkOffLedgesWhenCrouching = true;
 	KDSMoveComp->SetCrouchedHalfHeight(65.0f);
 
@@ -82,11 +82,8 @@ void AKDSCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AKDSCharacter::PossessedBy(AController* NewController)
+void AKDSCharacter::InitAbilityActorInfo()
 {
-	Super::PossessedBy(NewController);
-
-	// Init Ability Actor Info for the server
 	AKDSPlayerState* KDSPlayerState = GetPlayerState<AKDSPlayerState>();
 	check(KDSPlayerState);
 	KDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KDSPlayerState, this);
@@ -94,8 +91,19 @@ void AKDSCharacter::PossessedBy(AController* NewController)
 	AttributeSet = KDSPlayerState->GetAttributeSet();
 }
 
+void AKDSCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// Init Ability Actor Info for the server
+	InitAbilityActorInfo();
+}
+
 void AKDSCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
+
+	// Init Ability Actor Info for the client
+	InitAbilityActorInfo();
 }
 

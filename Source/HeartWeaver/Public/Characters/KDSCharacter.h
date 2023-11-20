@@ -20,6 +20,7 @@ class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 public:
 	AKDSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void Tick(float DeltaTime) override;
+	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
@@ -29,10 +30,12 @@ protected:
 	virtual bool CanJumpInternal_Implementation() const;
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	void InitAbilityActorInfo();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> FollowCamera;
 
 };
