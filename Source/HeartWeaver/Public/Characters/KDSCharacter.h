@@ -35,6 +35,12 @@ protected:
 	virtual void BeginPlay() override;
 	virtual bool CanJumpInternal_Implementation() const;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<USpringArmComponent> CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCameraComponent> FollowCamera;
+
 private:
 	void InitAbilityActorInfo();
 
