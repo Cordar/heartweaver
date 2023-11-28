@@ -25,15 +25,15 @@ public:
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 
-protected:
-	virtual void BeginPlay() override;
-	virtual bool CanJumpInternal_Implementation() const;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual bool CanJumpInternal_Implementation() const;
 
 private:
 	void InitAbilityActorInfo();
