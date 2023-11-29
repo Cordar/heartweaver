@@ -15,33 +15,27 @@ class UCameraComponent;
 UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
 class HEARTWEAVER_API AKDSCharacter : public AKDSCharacterBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	AKDSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-	virtual void Tick(float DeltaTime) override;
-	
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void OnRep_PlayerState() override;
-	void ToggleCrouch();
+    AKDSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<USpringArmComponent> CameraBoom;
+    virtual void PossessedBy(AController* NewController) override;
+    virtual void OnRep_PlayerState() override;
+    void ToggleCrouch();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UCameraComponent> FollowCamera;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    TObjectPtr<USpringArmComponent> CameraBoom;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    TObjectPtr<UCameraComponent> FollowCamera;
 
 protected:
-	virtual void BeginPlay() override;
-	virtual bool CanJumpInternal_Implementation() const;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<USpringArmComponent> CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UCameraComponent> FollowCamera;
+    virtual void BeginPlay() override;
+    virtual bool CanJumpInternal_Implementation() const;
 
 private:
-	void InitAbilityActorInfo();
-
+    void InitAbilityActorInfo();
 };
+
