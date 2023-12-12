@@ -5,6 +5,8 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "AbilitySystem/KrakenAttributeSet.h"
 #include "Components/SphereComponent.h"
 
@@ -12,37 +14,22 @@ AKrakenEffectActor::AKrakenEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(Mesh);
-
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(GetRootComponent());
-}
-
-void AKrakenEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	// TODO: Change this to apply a Gameplay Effect. For now, using const_cast as a hack!
-	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		const UKrakenAttributeSet* KrakenAttributeSet = Cast<UKrakenAttributeSet>(ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(UKrakenAttributeSet::StaticClass()));
-
-		UKrakenAttributeSet* MutableKrakenAttributeSet = const_cast<UKrakenAttributeSet*>(KrakenAttributeSet);
-		MutableKrakenAttributeSet->SetHealth(KrakenAttributeSet->GetHealth() + 1.f);
-		Destroy();
-	}
-}
-
-void AKrakenEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
 void AKrakenEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AKrakenEffectActor::OnOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &AKrakenEffectActor::OnEndOverlap);
 }
 
+void AKrakenEffectActor::ApplyEffectToTarget(AActor* Target, const TSubclassOf<UGameplayEffect> GameplayEffectClass)
+{
+	UAbilitySystemComponent* TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
+	if (TargetAbilitySystemComponent == nullptr) return;
+
+	check(GameplayEffectClass);
+	FGameplayEffectContextHandle EffectContextHandle = TargetAbilitySystemComponent->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetAbilitySystemComponent->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+	TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+}
