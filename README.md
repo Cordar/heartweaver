@@ -1,2 +1,2 @@
 # heartweaver
-Repo for heartweaver game
+Repository for Heart Weaver Game, by Kraken's Den Studios
