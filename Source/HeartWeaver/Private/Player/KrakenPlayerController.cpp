@@ -8,6 +8,7 @@
 #include "Characters/KrakenCharacter.h"
 #include "Input/KrakenInputComponent.h"
 #include "Player/KrakenLocalPlayer.h"
+#include "DebugHelper.h"
 
 AKrakenPlayerController::AKrakenPlayerController()
 {
@@ -81,6 +82,11 @@ void AKrakenPlayerController::ToggleCrouch()
 	}
 }
 
+void AKrakenPlayerController::OnClimbActionStarted(const FInputActionValue& Value)
+{
+	Debug::Print(TEXT("Climb action started."));
+}
+
 void AKrakenPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -100,9 +106,12 @@ void AKrakenPlayerController::SetupInputComponent()
 		UKrakenInputComponent* Kdsic = CastChecked<UKrakenInputComponent>(InputComponent);
 
 		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
-		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Climb, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Climb, /*bLogIfNotFound=*/ false);
+		
 		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Started, this, &AKrakenPlayerController::Jump, /*bLogIfNotFound=*/ false);
 		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Completed, this, &AKrakenPlayerController::StopJumping, /*bLogIfNotFound=*/ false);
+		
 		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch, /*bLogIfNotFound=*/ false);
+
+		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Climb, ETriggerEvent::Started, this, &AKrakenPlayerController::OnClimbActionStarted, /*bLogIfNotFound=*/ false);
 	}
 }

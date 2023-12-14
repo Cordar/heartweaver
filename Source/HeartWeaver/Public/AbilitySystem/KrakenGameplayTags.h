@@ -24,9 +24,9 @@ public:
 public:
 
 	FGameplayTag InputTag_Move;
-	FGameplayTag InputTag_Climb;
 	FGameplayTag InputTag_Jump;
 	FGameplayTag InputTag_Crouch;
+	FGameplayTag InputTag_Climb;
 
 protected:
 
