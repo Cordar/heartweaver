@@ -76,7 +76,7 @@ void AKrakenEffectActor::OnEndOverlap(AActor* TargetActor)
 		{
 			if (HandlePair.Value == TargetAbilitySystemComponent)
 			{
-				TargetAbilitySystemComponent->RemoveActiveGameplayEffect(HandlePair.Key);
+				TargetAbilitySystemComponent->RemoveActiveGameplayEffect(HandlePair.Key, 1);
 				ActiveEffectHandlesToRemove.Add(HandlePair.Key);
 			}
 		}
