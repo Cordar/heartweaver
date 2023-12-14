@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/KrakenAttributeSet.h"
 
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UKrakenAttributeSet::UKrakenAttributeSet()
@@ -26,11 +27,20 @@ void UKrakenAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp<float>(NewValue, 0.f, GetMaxHealth());
-		UE_LOG(LogTemp, Warning, TEXT("Health: %f"), NewValue)
 	}
 	else if (Attribute == GetMaxHealthAttribute())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MaxHealth: %f"), NewValue)
+		NewValue = FMath::Max<float>(NewValue, 1.f);
+	}
+}
+
+void UKrakenAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Health changed!"));
 	}
 }
 
