@@ -41,4 +41,5 @@ private:
 	void Jump();
 	void StopJumping();
 	void ToggleCrouch();
+	void Climb();
 };
