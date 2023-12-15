@@ -18,3 +18,7 @@ void AKrakenCharacterBase::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AKrakenCharacterBase::InitAbilityActorInfo()
+{
+}
+

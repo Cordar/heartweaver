@@ -4,6 +4,7 @@
 #include "Characters/KrakenCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
@@ -87,6 +88,7 @@ void AKrakenCharacter::InitAbilityActorInfo()
 	AKrakenPlayerState* KDSPlayerState = GetPlayerState<AKrakenPlayerState>();
 	check(KDSPlayerState);
 	KDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KDSPlayerState, this);
+	Cast<UKrakenAbilitySystemComponent>(KDSPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = KDSPlayerState->GetAbilitySystemComponent();
 	AttributeSet = KDSPlayerState->GetAttributeSet();
 }
