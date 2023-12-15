@@ -11,9 +11,10 @@ namespace ECustomMovementMode
 {
 	enum Type
 	{
-		MOVE_Climb UMETA(DisplayName = "Climb Mode")
+		Move_Climb UMETA(DisplayName = "Climb Mode")
 	};
 }
+
 /**
  * 
  */
@@ -45,18 +46,18 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float ClimbCapsuleTraceHalfHeight = 72.f;
-	//~End of Climb Variables
+	//~End of Climb BPVariables
 	
 private:
 	//~Climb Traces
 	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start,const FVector& End,bool bShowDebugShape = false,bool bDrawPersistentShapes = false);
-	FHitResult DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false,bool bDrawPersistentShapes = false);
+	FHitResult DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false,bool bDrawPersistentShapes = false) const;
 	//~End of ClimbTraces
 
 	//~ClimbCore
 	bool TraceClimbableSurfaces();
 
-	FHitResult TraceFromEyeHeight(float TraceDistance,float TraceStartOffset = 0.f);
+	FHitResult TraceFromEyeHeight(float TraceDistance,float TraceStartOffset = 0.f) const;
 
 	bool CanStartClimbing();
 	//~End of ClimbCore

@@ -87,14 +87,15 @@ void AKrakenPlayerController::OnClimbActionStarted(const FInputActionValue& Valu
 {
 	if(!ControlledCharacter && !ControlledCharacter->GetKrakenCharacterMovementComponent()) return;
 
-	if(!ControlledCharacter && !ControlledCharacter->GetKrakenCharacterMovementComponent()->IsClimbing())
+	UKrakenCharacterMovementComponent* KrakenCharMoveComp = ControlledCharacter->GetKrakenCharacterMovementComponent();
+
+	if(!KrakenCharMoveComp->IsClimbing())
 	{
-		ControlledCharacter->GetKrakenCharacterMovementComponent()->ToggleClimbing(true);
+		KrakenCharMoveComp->ToggleClimbing(true);
 	}
 	else
 	{
-		ControlledCharacter->GetKrakenCharacterMovementComponent()->ToggleClimbing(false);
-
+		KrakenCharMoveComp->ToggleClimbing(false);
 	}
 	
 }

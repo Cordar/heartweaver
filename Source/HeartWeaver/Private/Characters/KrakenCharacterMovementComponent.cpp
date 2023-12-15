@@ -69,7 +69,7 @@ TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObjec
 	return OutCapsuleTraceHitResults;
 }
 
-FHitResult UKrakenCharacterMovementComponent::DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes)
+FHitResult UKrakenCharacterMovementComponent::DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes) const
 {
 	//Eye Height Trace
 	FHitResult OutHit;
@@ -132,7 +132,7 @@ bool UKrakenCharacterMovementComponent::CanStartClimbing()
 
 bool UKrakenCharacterMovementComponent::IsClimbing() const
 {
-	return MovementMode == MOVE_Custom && CustomMovementMode == ECustomMovementMode::MOVE_Climb;
+	return MovementMode == MOVE_Custom && CustomMovementMode == ECustomMovementMode::Move_Climb;
 }
 
 //Trace for climbable surfaces, return true if there are indeed valid surfaces, false otherwise
@@ -146,7 +146,7 @@ bool UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
 	return !ClimbableSurfacesTraceResults.IsEmpty();
 }
 
-FHitResult UKrakenCharacterMovementComponent::TraceFromEyeHeight(float TraceDistance, float TraceStartOffset)
+FHitResult UKrakenCharacterMovementComponent::TraceFromEyeHeight(const float TraceDistance, const float TraceStartOffset) const
 {
 	const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
 	const FVector EyeHeightOffset = UpdatedComponent->GetUpVector() * (CharacterOwner->BaseEyeHeight + TraceStartOffset);
