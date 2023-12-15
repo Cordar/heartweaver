@@ -9,6 +9,7 @@
 #include "Input/KrakenInputComponent.h"
 #include "Player/KrakenLocalPlayer.h"
 #include "DebugHelper.h"
+#include "Characters/KrakenCharacterMovementComponent.h"
 
 AKrakenPlayerController::AKrakenPlayerController()
 {
@@ -84,7 +85,18 @@ void AKrakenPlayerController::ToggleCrouch()
 
 void AKrakenPlayerController::OnClimbActionStarted(const FInputActionValue& Value)
 {
-	Debug::Print(TEXT("Climb action started."));
+	if(!ControlledCharacter && !ControlledCharacter->GetKrakenCharacterMovementComponent()) return;
+
+	if(!ControlledCharacter && !ControlledCharacter->GetKrakenCharacterMovementComponent()->IsClimbing())
+	{
+		ControlledCharacter->GetKrakenCharacterMovementComponent()->ToggleClimbing(true);
+	}
+	else
+	{
+		ControlledCharacter->GetKrakenCharacterMovementComponent()->ToggleClimbing(false);
+
+	}
+	
 }
 
 void AKrakenPlayerController::SetupInputComponent()

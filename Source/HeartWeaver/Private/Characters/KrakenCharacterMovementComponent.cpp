@@ -3,7 +3,9 @@
 
 #include "Characters/KrakenCharacterMovementComponent.h"
 
+#include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "DebugHelper.h"
 
 UKrakenCharacterMovementComponent::UKrakenCharacterMovementComponent()
 {
@@ -31,13 +33,25 @@ void UKrakenCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTic
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	TraceClimbableSurfaces();
+	/*TraceClimbableSurfaces();
+	TraceFromEyeHeight(100.f);*/
 }
 
-TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape)
+TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes)
 {
 	TArray<FHitResult> OutCapsuleTraceHitResults;
-	
+
+	EDrawDebugTrace::Type DebugTraceType = EDrawDebugTrace::None;
+
+	if(bShowDebugShape)
+	{
+		DebugTraceType = EDrawDebugTrace::ForOneFrame;
+
+		if(bDrawPersistentShapes)
+		{
+			DebugTraceType = EDrawDebugTrace::Persistent;
+		}
+	}
 	UKismetSystemLibrary::CapsuleTraceMultiForObjects(
 		this,
 		Start,
@@ -47,7 +61,7 @@ TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObjec
 		ClimbableSurfaceTraceTypes,
 		false,
 		TArray<AActor*>(),
-		bShowDebugShape? EDrawDebugTrace::ForOneFrame : EDrawDebugTrace::None,
+		DebugTraceType,
 		OutCapsuleTraceHitResults,
 		false
 	);
@@ -55,11 +69,92 @@ TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObjec
 	return OutCapsuleTraceHitResults;
 }
 
-void UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
+FHitResult UKrakenCharacterMovementComponent::DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes)
+{
+	//Eye Height Trace
+	FHitResult OutHit;
+
+	EDrawDebugTrace::Type DebugTraceType = EDrawDebugTrace::None;
+
+	if(bShowDebugShape)
+	{
+		DebugTraceType = EDrawDebugTrace::ForOneFrame;
+
+		if(bDrawPersistentShapes)
+		{
+			DebugTraceType = EDrawDebugTrace::Persistent;
+		}
+	}
+	UKismetSystemLibrary::LineTraceSingleForObjects(
+	this,
+	Start,
+	End,
+	ClimbableSurfaceTraceTypes,
+	false,
+	TArray<AActor*>(),
+	DebugTraceType,
+	OutHit,
+	false
+	);
+
+	return OutHit;
+}
+
+void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
+{
+	if(bEnableClimb)
+	{
+		if(CanStartClimbing())
+		{
+			//Enter the climb state
+			Debug::Print(TEXT("CAN start Climbing."));
+		}
+		else
+		{
+			Debug::Print(TEXT("CANNOT start Climbing."));
+
+		}
+	}
+	else
+	{
+		//Stop Climbing
+	}
+}
+
+bool UKrakenCharacterMovementComponent::CanStartClimbing()
+{
+	if(IsFalling()) return false;
+	if(!TraceClimbableSurfaces()) return false;
+	if(!TraceFromEyeHeight(100.f).bBlockingHit) return false;
+
+	return true;
+}
+
+bool UKrakenCharacterMovementComponent::IsClimbing() const
+{
+	return MovementMode == MOVE_Custom && CustomMovementMode == ECustomMovementMode::MOVE_Climb;
+}
+
+//Trace for climbable surfaces, return true if there are indeed valid surfaces, false otherwise
+bool UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
 {
 	const FVector StartOffset = UpdatedComponent->GetForwardVector() * 30.f;
 	const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
 	const FVector End = Start + UpdatedComponent->GetForwardVector();
 	
-	DoCapsuleTraceMultiByObject(Start, End, true);
+	ClimbableSurfacesTraceResults = DoCapsuleTraceMultiByObject(Start, End, true, true);
+	return !ClimbableSurfacesTraceResults.IsEmpty();
 }
+
+FHitResult UKrakenCharacterMovementComponent::TraceFromEyeHeight(float TraceDistance, float TraceStartOffset)
+{
+	const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+	const FVector EyeHeightOffset = UpdatedComponent->GetUpVector() * (CharacterOwner->BaseEyeHeight + TraceStartOffset);
+
+	const FVector Start = ComponentLocation + EyeHeightOffset;
+	const FVector End = Start + UpdatedComponent->GetForwardVector() * TraceDistance;
+
+	return DoLineTraceSingleByObject(Start,End,true, true);
+}
+
+

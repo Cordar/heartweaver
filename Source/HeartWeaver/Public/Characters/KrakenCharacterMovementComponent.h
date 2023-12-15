@@ -6,6 +6,14 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "KrakenCharacterMovementComponent.generated.h"
 
+UENUM(BlueprintType)
+namespace ECustomMovementMode
+{
+	enum Type
+	{
+		MOVE_Climb UMETA(DisplayName = "Climb Mode")
+	};
+}
 /**
  * 
  */
@@ -24,8 +32,11 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//~End of UMovementComponent interface
 
+	void ToggleClimbing(bool bEnableClimb);
+	bool IsClimbing() const;
+
 protected:
-	//~Climb Variables
+	//~Climb BPVariables
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	TArray<TEnumAsByte<EObjectTypeQuery> > ClimbableSurfaceTraceTypes;
 	
@@ -38,9 +49,20 @@ protected:
 	
 private:
 	//~Climb Traces
-	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false);
+	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start,const FVector& End,bool bShowDebugShape = false,bool bDrawPersistentShapes = false);
+	FHitResult DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false,bool bDrawPersistentShapes = false);
 	//~End of ClimbTraces
 
-	//~Climb Core
-	void TraceClimbableSurfaces();
+	//~ClimbCore
+	bool TraceClimbableSurfaces();
+
+	FHitResult TraceFromEyeHeight(float TraceDistance,float TraceStartOffset = 0.f);
+
+	bool CanStartClimbing();
+	//~End of ClimbCore
+
+	//~ClimbCoreVariables
+	TArray<FHitResult> ClimbableSurfacesTraceResults;
+	//~End of ClimbCoreVariables
+
 };
