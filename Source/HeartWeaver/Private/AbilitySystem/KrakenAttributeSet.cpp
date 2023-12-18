@@ -10,8 +10,8 @@
 
 UKrakenAttributeSet::UKrakenAttributeSet()
 {
-	InitHealth(1.f);
-	InitMaxHealth(1.f);
+	InitHealth(50.f);
+	InitMaxHealth(100.f);
 }
 
 void UKrakenAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

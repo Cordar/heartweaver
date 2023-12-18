@@ -20,9 +20,11 @@ void AKrakenPlayerController::BeginPlay()
 	
 	check(HeroContext);
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-	Subsystem->AddMappingContext(HeroContext, 0);
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		Subsystem->AddMappingContext(HeroContext, 0);
+	}
+	
 
 	bShowMouseCursor = false;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -89,19 +91,19 @@ void AKrakenPlayerController::SetupInputComponent()
 	const UKrakenLocalPlayer* Lp = Cast<UKrakenLocalPlayer>(GetLocalPlayer());
 	check(Lp);
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = Lp->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
-	check(Subsystem);
-	
-	Subsystem->ClearAllMappings();
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = Lp->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+	{
+		Subsystem->ClearAllMappings();
+	}
 
 	if (InputConfig) {
 		const FKrakenGameplayTags& GameplayTags = FKrakenGameplayTags::Get();
 
-		UKrakenInputComponent* Kdsic = CastChecked<UKrakenInputComponent>(InputComponent);
+		UKrakenInputComponent* KrakenInputComponent = CastChecked<UKrakenInputComponent>(InputComponent);
 
-		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
-		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Started, this, &AKrakenPlayerController::Jump, /*bLogIfNotFound=*/ false);
-		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Completed, this, &AKrakenPlayerController::StopJumping, /*bLogIfNotFound=*/ false);
-		Kdsic->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Started, this, &AKrakenPlayerController::Jump, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Completed, this, &AKrakenPlayerController::StopJumping, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch, /*bLogIfNotFound=*/ false);
 	}
 }
