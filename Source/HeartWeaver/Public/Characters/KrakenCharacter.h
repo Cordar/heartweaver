@@ -11,6 +11,7 @@ class UInputMappingContext;
 class UKrakenInputConfig;
 class USpringArmComponent;
 class UCameraComponent;
+class UKrakenCharacterMovementComponent;
 
 UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
 class HEARTWEAVER_API AKrakenCharacter : public AKrakenCharacterBase
@@ -25,6 +26,8 @@ public:
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 
+	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
+
 protected:
 	virtual void BeginPlay() override;
 	virtual bool CanJumpInternal_Implementation() const;
@@ -34,6 +37,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
 
 private:
 	void InitAbilityActorInfo();
