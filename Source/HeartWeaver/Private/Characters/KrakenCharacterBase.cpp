@@ -2,6 +2,7 @@
 
 
 #include "Characters/KrakenCharacterBase.h"
+#include "DebugHelper.h"
 
 #include "AbilitySystemComponent.h"
 
@@ -18,6 +19,7 @@ UAbilitySystemComponent* AKrakenCharacterBase::GetAbilitySystemComponent() const
 void AKrakenCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	Debug::Print(TEXT("Debug Working")); 
 }
 
 void AKrakenCharacterBase::InitAbilityActorInfo()
@@ -33,4 +35,5 @@ void AKrakenCharacterBase::InitializePrimaryAttributes() const
 	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultPrimaryAttributes, 1, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
+
 

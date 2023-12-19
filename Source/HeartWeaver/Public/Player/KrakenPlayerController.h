@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "KrakenPlayerController.generated.h"
 
@@ -41,4 +42,5 @@ private:
 	void Jump();
 	void StopJumping();
 	void ToggleCrouch();
+	void OnClimbActionStarted(const FInputActionValue & Value);
 };

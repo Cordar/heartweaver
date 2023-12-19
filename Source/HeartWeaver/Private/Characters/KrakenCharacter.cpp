@@ -21,22 +21,22 @@ AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 	check(MeshComp);
 	MeshComp->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));  // Rotate mesh to be X forward since it is exported as Y forward.
 
-	UKrakenCharacterMovementComponent* KDSMoveComp = CastChecked<UKrakenCharacterMovementComponent>(GetCharacterMovement());
-	KDSMoveComp->GravityScale = 1.0f;
-	KDSMoveComp->MaxAcceleration = 2400.0f;
-	KDSMoveComp->BrakingFrictionFactor = 1.0f;
-	KDSMoveComp->BrakingFriction = 6.0f;
-	KDSMoveComp->GroundFriction = 8.0f;
-	KDSMoveComp->BrakingDecelerationWalking = 1400.0f;
-	KDSMoveComp->bUseControllerDesiredRotation = false;
-	KDSMoveComp->bOrientRotationToMovement = true;
-	KDSMoveComp->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
-	KDSMoveComp->bConstrainToPlane = true;
-	KDSMoveComp->bSnapToPlaneAtStart = true;
-	KDSMoveComp->bAllowPhysicsRotationDuringAnimRootMotion = false;
-	KDSMoveComp->GetNavAgentPropertiesRef().bCanCrouch = true; // Maybe remove it if we don't want the camera to change
-	KDSMoveComp->bCanWalkOffLedgesWhenCrouching = true;
-	KDSMoveComp->SetCrouchedHalfHeight(65.0f);
+	KrakenCharacterMovementComponent = CastChecked<UKrakenCharacterMovementComponent>(GetCharacterMovement());
+	KrakenCharacterMovementComponent->GravityScale = 1.0f;
+	KrakenCharacterMovementComponent->MaxAcceleration = 2400.0f;
+	KrakenCharacterMovementComponent->BrakingFrictionFactor = 1.0f;
+	KrakenCharacterMovementComponent->BrakingFriction = 6.0f;
+	KrakenCharacterMovementComponent->GroundFriction = 8.0f;
+	KrakenCharacterMovementComponent->BrakingDecelerationWalking = 1400.0f;
+	KrakenCharacterMovementComponent->bUseControllerDesiredRotation = false;
+	KrakenCharacterMovementComponent->bOrientRotationToMovement = true;
+	KrakenCharacterMovementComponent->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
+	KrakenCharacterMovementComponent->bConstrainToPlane = true;
+	KrakenCharacterMovementComponent->bSnapToPlaneAtStart = true;
+	KrakenCharacterMovementComponent->bAllowPhysicsRotationDuringAnimRootMotion = false;
+	KrakenCharacterMovementComponent->GetNavAgentPropertiesRef().bCanCrouch = true; // Maybe remove it if we don't want the camera to change
+	KrakenCharacterMovementComponent->bCanWalkOffLedgesWhenCrouching = true;
+	KrakenCharacterMovementComponent->SetCrouchedHalfHeight(65.0f);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->bInheritPitch = false;
