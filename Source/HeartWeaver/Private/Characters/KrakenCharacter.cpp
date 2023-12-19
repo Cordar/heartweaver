@@ -101,7 +101,8 @@ void AKrakenCharacter::InitAbilityActorInfo()
 			KrakenHUD->InitOverlay(KrakenPlayerController, KrakenPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	
+
+	InitializePrimaryAttributes();
 }
 
 void AKrakenCharacter::PossessedBy(AController* NewController)

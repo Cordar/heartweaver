@@ -10,8 +10,6 @@
 
 UKrakenAttributeSet::UKrakenAttributeSet()
 {
-	InitHealth(50.f);
-	InitMaxHealth(100.f);
 }
 
 void UKrakenAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -42,6 +40,11 @@ void UKrakenAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
 }
 
 void UKrakenAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
