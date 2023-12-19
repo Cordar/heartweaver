@@ -15,6 +15,8 @@ class HEARTWEAVER_API AKrakenEnemy : public AKrakenCharacterBase
 	GENERATED_BODY()
 public:
 	AKrakenEnemy(const FObjectInitializer& ObjectInitializer);
+
+protected:
 	virtual void BeginPlay() override;
-	
+	virtual void InitAbilityActorInfo() override;	
 };

@@ -2,3 +2,18 @@
 
 
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
+
+void UKrakenAbilitySystemComponent::AbilityActorInfoSet()
+{
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UKrakenAbilitySystemComponent::EffectApplied);
+}
+
+void UKrakenAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
+                                                  const FGameplayEffectSpec& EffectSpec,
+                                                  FActiveGameplayEffectHandle ActiveEffectHandle) const
+{
+	FGameplayTagContainer TagContainer;
+	EffectSpec.GetAllAssetTags(TagContainer);
+
+	EffectAssetTags.Broadcast(TagContainer);
+}

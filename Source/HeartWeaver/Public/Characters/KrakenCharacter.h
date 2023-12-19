@@ -30,7 +30,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual bool CanJumpInternal_Implementation() const;
+	virtual bool CanJumpInternal_Implementation() const override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USpringArmComponent> CameraBoom;
@@ -42,6 +42,5 @@ protected:
 	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
 
 private:
-	void InitAbilityActorInfo();
-
+	virtual void InitAbilityActorInfo() override;
 };

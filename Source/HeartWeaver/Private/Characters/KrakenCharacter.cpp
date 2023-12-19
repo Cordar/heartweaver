@@ -4,10 +4,13 @@
 #include "Characters/KrakenCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
+#include "Player/KrakenPlayerController.h"
 #include "Player/KrakenPlayerState.h"
+#include "UI/HUD/KrakenHUD.h"
 
 AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UKrakenCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -84,11 +87,22 @@ void AKrakenCharacter::Tick(float DeltaTime)
 
 void AKrakenCharacter::InitAbilityActorInfo()
 {
-	AKrakenPlayerState* KDSPlayerState = GetPlayerState<AKrakenPlayerState>();
-	check(KDSPlayerState);
-	KDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KDSPlayerState, this);
-	AbilitySystemComponent = KDSPlayerState->GetAbilitySystemComponent();
-	AttributeSet = KDSPlayerState->GetAttributeSet();
+	AKrakenPlayerState* KrakenPlayerState = GetPlayerState<AKrakenPlayerState>();
+	check(KrakenPlayerState);
+	KrakenPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(KrakenPlayerState, this);
+	Cast<UKrakenAbilitySystemComponent>(KrakenPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+	AbilitySystemComponent = KrakenPlayerState->GetAbilitySystemComponent();
+	AttributeSet = KrakenPlayerState->GetAttributeSet();
+
+	if (AKrakenPlayerController* KrakenPlayerController = Cast<AKrakenPlayerController>(GetController()))
+	{
+		if (AKrakenHUD* KrakenHUD = Cast<AKrakenHUD>(KrakenPlayerController->GetHUD()))
+		{
+			KrakenHUD->InitOverlay(KrakenPlayerController, KrakenPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+
+	InitializePrimaryAttributes();
 }
 
 void AKrakenCharacter::PossessedBy(AController* NewController)
