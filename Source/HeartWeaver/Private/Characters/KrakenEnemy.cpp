@@ -21,6 +21,11 @@ AKrakenEnemy::AKrakenEnemy(const FObjectInitializer& ObjectInitializer)
 void AKrakenEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitAbilityActorInfo();
+}
+
+void AKrakenEnemy::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UKrakenAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
