@@ -5,6 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/CapsuleComponent.h"
 #include "DebugHelper.h"
 
 UKrakenCharacterMovementComponent::UKrakenCharacterMovementComponent()
@@ -35,6 +36,26 @@ void UKrakenCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTic
 
 	/*TraceClimbableSurfaces();
 	TraceFromEyeHeight(100.f);*/
+}
+
+void UKrakenCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
+	uint8 PreviousCustomMode)
+{
+	if(IsClimbing())
+	{
+		bOrientRotationToMovement = false;
+		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(50.f);
+	}
+
+	if(PreviousMovementMode == MOVE_Custom && PreviousCustomMode == ECustomMovementMode::Move_Climb)
+	{
+		bOrientRotationToMovement = true;
+		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
+
+		StopMovementImmediately();
+	}
+	
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 }
 
 TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes)
@@ -108,6 +129,7 @@ void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
 		{
 			//Enter the climb state
 			Debug::Print(TEXT("CAN start Climbing."));
+			StartClimbing();
 		}
 		else
 		{
@@ -118,6 +140,7 @@ void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
 	else
 	{
 		//Stop Climbing
+		StopClimbing();
 	}
 }
 
@@ -128,6 +151,16 @@ bool UKrakenCharacterMovementComponent::CanStartClimbing()
 	if(!TraceFromEyeHeight(100.f).bBlockingHit) return false;
 
 	return true;
+}
+
+void UKrakenCharacterMovementComponent::StartClimbing()
+{
+	SetMovementMode(MOVE_Custom,ECustomMovementMode::Move_Climb);
+}
+
+void UKrakenCharacterMovementComponent::StopClimbing()
+{
+	SetMovementMode(MOVE_Falling);
 }
 
 bool UKrakenCharacterMovementComponent::IsClimbing() const

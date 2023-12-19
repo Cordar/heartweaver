@@ -30,7 +30,6 @@ public:
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
 	virtual float GetMaxSpeed() const override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//~End of UMovementComponent interface
 
 	void ToggleClimbing(bool bEnableClimb);
@@ -47,6 +46,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float ClimbCapsuleTraceHalfHeight = 72.f;
 	//~End of Climb BPVariables
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 	
 private:
 	//~Climb Traces
@@ -60,6 +61,10 @@ private:
 	FHitResult TraceFromEyeHeight(float TraceDistance,float TraceStartOffset = 0.f) const;
 
 	bool CanStartClimbing();
+
+	void StartClimbing();
+
+	void StopClimbing();
 	//~End of ClimbCore
 
 	//~ClimbCoreVariables
