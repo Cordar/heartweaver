@@ -8,6 +8,15 @@ void UKrakenAbilitySystemComponent::AbilityActorInfoSet()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UKrakenAbilitySystemComponent::EffectApplied);
 }
 
+void UKrakenAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities)
+{
+	for (const TSubclassOf<UGameplayAbility>& AbilityClass : Abilities)
+	{
+		const FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		GiveAbility(AbilitySpec);
+	}
+}
+
 void UKrakenAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
                                                   const FGameplayEffectSpec& EffectSpec,
                                                   FActiveGameplayEffectHandle ActiveEffectHandle) const
