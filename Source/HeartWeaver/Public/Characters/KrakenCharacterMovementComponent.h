@@ -30,6 +30,7 @@ public:
 
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
+
 	virtual float GetMaxSpeed() const override;
 	//~End of UMovementComponent interface
 
@@ -37,7 +38,7 @@ public:
 	bool IsClimbing() const;
 
 protected:
-	//~Climb BPVariables
+	//~ClimbBPVariables
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	TArray<TEnumAsByte<EObjectTypeQuery> > ClimbableSurfaceTraceTypes;
 	
@@ -46,30 +47,49 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float ClimbCapsuleTraceHalfHeight = 72.f;
-	//~End of Climb BPVariables
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	float MaxBreakClimbDeceleration = 400.f;
+	//~End of ClimbBPVariables
+
+	//~Overriden Functions
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
-	
+
+	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
+	//~End of Overriden Functions
+
 private:
 	//~Climb Traces
 	TArray<FHitResult> DoCapsuleTraceMultiByObject(const FVector& Start,const FVector& End,bool bShowDebugShape = false,bool bDrawPersistentShapes = false);
+
 	FHitResult DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape = false,bool bDrawPersistentShapes = false) const;
 	//~End of ClimbTraces
 
 	//~ClimbCore
 	bool TraceClimbableSurfaces();
-
+	
 	FHitResult TraceFromEyeHeight(float TraceDistance,float TraceStartOffset = 0.f) const;
-
+	
 	bool CanStartClimbing();
-
+	
 	void StartClimbing();
-
+	
 	void StopClimbing();
+	
+	void PhysClimb(float DeltaTime, int32 Iterations);
+
+	void ProcessClimbableSurfaceInfo();
 	//~End of ClimbCore
 
 	//~ClimbCoreVariables
 	TArray<FHitResult> ClimbableSurfacesTraceResults;
+
+	FVector CurrentClimbableSurfaceLocation;
+
+	FVector CurrentClimbableSurfaceNormal;
+	
 	//~End of ClimbCoreVariables
 
 };

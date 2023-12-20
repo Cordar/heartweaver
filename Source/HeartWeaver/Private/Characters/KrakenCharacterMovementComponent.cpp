@@ -58,6 +58,15 @@ void UKrakenCharacterMovementComponent::OnMovementModeChanged(EMovementMode Prev
 	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
 }
 
+void UKrakenCharacterMovementComponent::PhysCustom(float DeltaTime, int32 Iterations)
+{
+	if(IsClimbing())
+	{
+		PhysClimb(DeltaTime, Iterations);
+	}
+	Super::PhysCustom(DeltaTime, Iterations);
+}
+
 TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes)
 {
 	TArray<FHitResult> OutCapsuleTraceHitResults;
@@ -163,6 +172,71 @@ void UKrakenCharacterMovementComponent::StopClimbing()
 	SetMovementMode(MOVE_Falling);
 }
 
+void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterations)
+{
+	if (DeltaTime < MIN_TICK_TIME)
+	{
+		return;
+	}
+
+	// Process all the climbable surfaces information
+	TraceClimbableSurfaces();
+	ProcessClimbableSurfaceInfo();
+	
+	// Check if we should stop climbing
+	
+	RestorePreAdditiveRootMotionVelocity();
+
+	if( !HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity() )
+	{
+		// Define max speed and acceleration
+		CalcVelocity(DeltaTime, 0.f, true, MaxBreakClimbDeceleration);
+	}
+
+	ApplyRootMotionToVelocity(DeltaTime);
+
+	FVector OldLocation = UpdatedComponent->GetComponentLocation();
+	const FVector Adjusted = Velocity * DeltaTime;
+	FHitResult Hit(1.f);
+
+	// Handle climb rotation
+	SafeMoveUpdatedComponent(Adjusted, UpdatedComponent->GetComponentQuat(), true, Hit);
+
+	if (Hit.Time < 1.f)
+	{
+		//adjust and try again
+		HandleImpact(Hit, DeltaTime, Adjusted);
+		SlideAlongSurface(Adjusted, (1.f - Hit.Time), Hit.Normal, Hit, true);
+	}
+
+	if(!HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity())
+	{
+		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation) / DeltaTime;
+	}
+
+	// Snap movement to climbable surfaces
+}
+
+void UKrakenCharacterMovementComponent::ProcessClimbableSurfaceInfo()
+{
+	CurrentClimbableSurfaceLocation = FVector::ZeroVector;
+	CurrentClimbableSurfaceNormal = FVector::ZeroVector;
+
+	if(ClimbableSurfacesTraceResults.IsEmpty()) return;
+
+	for(const FHitResult& TracedHitResult:ClimbableSurfacesTraceResults)
+	{
+		CurrentClimbableSurfaceLocation += TracedHitResult.ImpactPoint;
+		CurrentClimbableSurfaceNormal += TracedHitResult.ImpactNormal;
+	}
+
+	CurrentClimbableSurfaceLocation /= ClimbableSurfacesTraceResults.Num();
+	CurrentClimbableSurfaceNormal = CurrentClimbableSurfaceNormal.GetSafeNormal();
+
+	Debug::Print(TEXT("Climbable Surface Location: ") + CurrentClimbableSurfaceLocation.ToCompactString(),FColor::Cyan,1);
+	Debug::Print(TEXT("Climbable Surface Normal: ") + CurrentClimbableSurfaceNormal.ToCompactString(),FColor::Red,2);
+}
+
 bool UKrakenCharacterMovementComponent::IsClimbing() const
 {
 	return MovementMode == MOVE_Custom && CustomMovementMode == ECustomMovementMode::Move_Climb;
@@ -175,7 +249,7 @@ bool UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
 	const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
 	const FVector End = Start + UpdatedComponent->GetForwardVector();
 	
-	ClimbableSurfacesTraceResults = DoCapsuleTraceMultiByObject(Start, End, true, true);
+	ClimbableSurfacesTraceResults = DoCapsuleTraceMultiByObject(Start, End, true);
 	return !ClimbableSurfacesTraceResults.IsEmpty();
 }
 
@@ -187,7 +261,7 @@ FHitResult UKrakenCharacterMovementComponent::TraceFromEyeHeight(const float Tra
 	const FVector Start = ComponentLocation + EyeHeightOffset;
 	const FVector End = Start + UpdatedComponent->GetForwardVector() * TraceDistance;
 
-	return DoLineTraceSingleByObject(Start,End,true, true);
+	return DoLineTraceSingleByObject(Start,End);
 }
 
 
