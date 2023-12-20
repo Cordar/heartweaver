@@ -21,6 +21,7 @@ namespace ECustomMovementMode
 UCLASS()
 class HEARTWEAVER_API UKrakenCharacterMovementComponent : public UCharacterMovementComponent
 {
+
 	GENERATED_BODY()
 public:
 	UKrakenCharacterMovementComponent();
