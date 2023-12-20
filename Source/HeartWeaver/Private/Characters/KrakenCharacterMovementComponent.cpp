@@ -26,8 +26,27 @@ FRotator UKrakenCharacterMovementComponent::GetDeltaRotation(float DeltaTime) co
 
 float UKrakenCharacterMovementComponent::GetMaxSpeed() const
 {
-	// TODO: Implement for ability system tag movement stopped to be 0 (check Lyra Project)
-	return Super::GetMaxSpeed();
+	if(IsClimbing())
+	{
+		return MaxClimbSpeed;
+	}
+	else
+	{
+		return Super::GetMaxSpeed();
+	}
+	
+}
+
+float UKrakenCharacterMovementComponent::GetMaxAcceleration() const
+{
+	if(IsClimbing())
+	{
+		return MaxClimbAcceleration;
+	}
+	else
+	{
+		return Super::GetMaxAcceleration();
+	}
 }
 
 void UKrakenCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -200,7 +219,7 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 	FHitResult Hit(1.f);
 
 	// Handle climb rotation
-	SafeMoveUpdatedComponent(Adjusted, UpdatedComponent->GetComponentQuat(), true, Hit);
+	SafeMoveUpdatedComponent(Adjusted, GetClimbRotation(DeltaTime), true, Hit);
 
 	if (Hit.Time < 1.f)
 	{
@@ -215,6 +234,7 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 	}
 
 	// Snap movement to climbable surfaces
+	SnapMovementToClimbableSurfaces(DeltaTime);
 }
 
 void UKrakenCharacterMovementComponent::ProcessClimbableSurfaceInfo()
@@ -233,8 +253,36 @@ void UKrakenCharacterMovementComponent::ProcessClimbableSurfaceInfo()
 	CurrentClimbableSurfaceLocation /= ClimbableSurfacesTraceResults.Num();
 	CurrentClimbableSurfaceNormal = CurrentClimbableSurfaceNormal.GetSafeNormal();
 
-	Debug::Print(TEXT("Climbable Surface Location: ") + CurrentClimbableSurfaceLocation.ToCompactString(),FColor::Cyan,1);
-	Debug::Print(TEXT("Climbable Surface Normal: ") + CurrentClimbableSurfaceNormal.ToCompactString(),FColor::Red,2);
+}
+
+FQuat UKrakenCharacterMovementComponent::GetClimbRotation(float DeltaTime)
+{
+	const FQuat CurrentQuat = UpdatedComponent->GetComponentQuat();
+
+	if(HasAnimRootMotion() || CurrentRootMotion.HasOverrideVelocity())
+	{
+		return CurrentQuat;
+	}
+
+	const FQuat TargetQuat = FRotationMatrix::MakeFromX(-CurrentClimbableSurfaceNormal).ToQuat();
+
+	return FMath::QInterpTo(CurrentQuat, TargetQuat, DeltaTime, 5.f);
+}
+
+void UKrakenCharacterMovementComponent::SnapMovementToClimbableSurfaces(float DeltaTime)
+{
+	const FVector ComponentForward = UpdatedComponent->GetForwardVector();
+	const FVector ComponentLocation = UpdatedComponent->GetComponentLocation();
+
+	const FVector ProjectedCharacterToSurface =
+		(CurrentClimbableSurfaceLocation - ComponentLocation).ProjectOnTo(ComponentForward);
+
+	const FVector SnapVector = -CurrentClimbableSurfaceNormal * ProjectedCharacterToSurface.Length();
+
+	UpdatedComponent->MoveComponent(
+		SnapVector*DeltaTime*MaxClimbSpeed,
+		UpdatedComponent->GetComponentQuat(),
+		true);
 }
 
 bool UKrakenCharacterMovementComponent::IsClimbing() const

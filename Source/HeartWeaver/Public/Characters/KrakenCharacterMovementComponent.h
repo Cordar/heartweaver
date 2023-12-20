@@ -30,8 +30,6 @@ public:
 
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
-
-	virtual float GetMaxSpeed() const override;
 	//~End of UMovementComponent interface
 
 	void ToggleClimbing(bool bEnableClimb);
@@ -50,6 +48,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float MaxBreakClimbDeceleration = 400.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	float MaxClimbSpeed = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	float MaxClimbAcceleration = 300.f;
 	//~End of ClimbBPVariables
 
 	//~Overriden Functions
@@ -58,6 +62,10 @@ protected:
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 
 	virtual void PhysCustom(float DeltaTime, int32 Iterations) override;
+
+	virtual float GetMaxSpeed() const override;
+
+	virtual float GetMaxAcceleration() const override;
 	//~End of Overriden Functions
 
 private:
@@ -81,6 +89,10 @@ private:
 	void PhysClimb(float DeltaTime, int32 Iterations);
 
 	void ProcessClimbableSurfaceInfo();
+
+	FQuat GetClimbRotation(float DeltaTime);
+
+	void SnapMovementToClimbableSurfaces(float DeltaTime);
 	//~End of ClimbCore
 
 	//~ClimbCoreVariables
