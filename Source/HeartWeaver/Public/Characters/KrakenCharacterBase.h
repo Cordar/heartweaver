@@ -8,6 +8,7 @@
 
 #include "KrakenCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -38,4 +39,11 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
 	void InitializePrimaryAttributes() const;
+
+	void AddCharacterAbilities();
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };

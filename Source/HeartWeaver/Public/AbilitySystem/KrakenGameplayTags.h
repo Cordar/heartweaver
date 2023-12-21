@@ -13,15 +13,11 @@ class UGameplayTagsManager;
  */
 struct FKrakenGameplayTags
 {
-public:
-
 	static const FKrakenGameplayTags& Get() { return GameplayTags; }
 
 	static void InitializeNativeTags();
 
 	static FGameplayTag FindTagByString(FString TagString, bool bMatchPartialString = false);
-
-public:
 
 	FGameplayTag InputTag_Move;
 	FGameplayTag InputTag_Jump;

@@ -5,6 +5,7 @@
 #include "DebugHelper.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/KrakenAbilitySystemComponent.h"
 
 AKrakenCharacterBase::AKrakenCharacterBase(const FObjectInitializer& ObjectInitializer)
 {
@@ -34,6 +35,14 @@ void AKrakenCharacterBase::InitializePrimaryAttributes() const
 	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultPrimaryAttributes, 1, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+void AKrakenCharacterBase::AddCharacterAbilities()
+{
+	UKrakenAbilitySystemComponent* KrakenAbilitySystemComponent = Cast<UKrakenAbilitySystemComponent>(GetAbilitySystemComponent());
+	if (!HasAuthority()) return;
+
+	KrakenAbilitySystemComponent->AddCharacterAbilities(StartupAbilities);
 }
 
 

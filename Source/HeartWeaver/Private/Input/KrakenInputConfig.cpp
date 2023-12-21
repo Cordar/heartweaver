@@ -11,7 +11,7 @@ const UInputAction* UKrakenInputConfig::FindInputActionForTag(const FGameplayTag
 {
 	for (const FKrakenInputAction& Action : InputActions)
 	{
-		if (Action.InputAction && (Action.InputTag == InputTag))
+		if (Action.InputAction && Action.InputTag == InputTag)
 		{
 			return Action.InputAction;
 		}
