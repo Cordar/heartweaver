@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "KrakenCharacterMovementComponent.generated.h"
 
 UENUM(BlueprintType)
@@ -36,10 +37,7 @@ public:
 	bool IsClimbing() const;
 
 protected:
-	//~ClimbBPVariables
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
-	TArray<TEnumAsByte<EObjectTypeQuery> > ClimbableSurfaceTraceTypes;
-	
+	//~ClimbBPVariables	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float ClimbCapsuleTraceRadius = 50.f;
 

@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "DebugHelper.h"
+#include "Engine/CollisionProfile.h"
 
 UKrakenCharacterMovementComponent::UKrakenCharacterMovementComponent()
 {
@@ -101,13 +102,13 @@ TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObjec
 			DebugTraceType = EDrawDebugTrace::Persistent;
 		}
 	}
-	UKismetSystemLibrary::CapsuleTraceMultiForObjects(
+	UKismetSystemLibrary::CapsuleTraceMulti(
 		this,
 		Start,
 		End,
 		ClimbCapsuleTraceRadius,
 		ClimbCapsuleTraceHalfHeight,
-		ClimbableSurfaceTraceTypes,
+		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel1),
 		false,
 		TArray<AActor*>(),
 		DebugTraceType,
@@ -119,7 +120,7 @@ TArray<FHitResult> UKrakenCharacterMovementComponent::DoCapsuleTraceMultiByObjec
 }
 
 FHitResult UKrakenCharacterMovementComponent::DoLineTraceSingleByObject(const FVector& Start, const FVector& End, bool bShowDebugShape,bool bDrawPersistentShapes) const
-{
+{	
 	//Eye Height Trace
 	FHitResult OutHit;
 
@@ -134,11 +135,11 @@ FHitResult UKrakenCharacterMovementComponent::DoLineTraceSingleByObject(const FV
 			DebugTraceType = EDrawDebugTrace::Persistent;
 		}
 	}
-	UKismetSystemLibrary::LineTraceSingleForObjects(
+	UKismetSystemLibrary::LineTraceSingle(
 	this,
 	Start,
 	End,
-	ClimbableSurfaceTraceTypes,
+	UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel1),
 	false,
 	TArray<AActor*>(),
 	DebugTraceType,
