@@ -8,7 +8,6 @@
 #include "Characters/KrakenCharacter.h"
 #include "Input/KrakenInputComponent.h"
 #include "Player/KrakenLocalPlayer.h"
-#include "DebugHelper.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
 
 AKrakenPlayerController::AKrakenPlayerController()
@@ -42,6 +41,21 @@ void AKrakenPlayerController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	ControlledCharacter = CastChecked<AKrakenCharacter>(GetPawn());
+}
+
+void AKrakenPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("AbilityInputTagPressed: %s"), *InputTag.ToString()));
+}
+
+void AKrakenPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Blue, FString::Printf(TEXT("AbilityInputTagReleased: %s"), *InputTag.ToString()));
+}
+
+void AKrakenPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, FString::Printf(TEXT("AbilityInputTagHeld: %s"), *InputTag.ToString()));
 }
 
 void AKrakenPlayerController::Move(const FInputActionValue& Value)
@@ -121,12 +135,11 @@ void AKrakenPlayerController::SetupInputComponent()
 		UKrakenInputComponent* KrakenInputComponent = CastChecked<UKrakenInputComponent>(InputComponent);
 
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
-		
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Started, this, &AKrakenPlayerController::Jump, /*bLogIfNotFound=*/ false);
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Completed, this, &AKrakenPlayerController::StopJumping, /*bLogIfNotFound=*/ false);
-		
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch, /*bLogIfNotFound=*/ false);
-
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Climb, ETriggerEvent::Started, this, &AKrakenPlayerController::OnClimbActionStarted, /*bLogIfNotFound=*/ false);
+
+		KrakenInputComponent->BindAbilityActions(InputConfig, this, &AKrakenPlayerController::AbilityInputTagPressed, &AKrakenPlayerController::AbilityInputTagReleased, &AKrakenPlayerController::AbilityInputTagHeld);
 	}
 }
