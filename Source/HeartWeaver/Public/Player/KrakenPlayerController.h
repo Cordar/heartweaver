@@ -8,6 +8,7 @@
 #include "KrakenPlayerController.generated.h"
 
 
+struct FGameplayTag;
 class UInputMappingContext;
 class UKrakenInputConfig;
 class AKrakenCharacter;
@@ -29,15 +30,17 @@ protected:
 private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> HeroContext;
-
-	// Input configuration used by player controller to create input mappings and bind input actions.
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UKrakenInputConfig> InputConfig;
-
-	// Character being controlled
+	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<AKrakenCharacter> ControlledCharacter;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UKrakenInputConfig> InputConfig;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
 	void Move(const FInputActionValue& Value);
 	void Jump();
 	void StopJumping();
