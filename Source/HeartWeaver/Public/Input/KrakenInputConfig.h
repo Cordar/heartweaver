@@ -39,9 +39,17 @@ public:
 	UKrakenInputConfig();
 
 	UFUNCTION(BlueprintCallable)
-	const UInputAction* FindInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
+	const UInputAction* FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
+	
+	UFUNCTION(BlueprintCallable)
+	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
+
+	const UInputAction* FindInputActionForTag(const TArray<FKrakenInputAction>& InputActions, const FGameplayTag& InputTag, bool bLogNotFound) const;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<FKrakenInputAction> InputActions;
+	TArray<FKrakenInputAction> NativeInputActions;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FKrakenInputAction> AbilityInputActions;
 	
 };

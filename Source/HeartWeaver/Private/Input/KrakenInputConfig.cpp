@@ -7,7 +7,17 @@ UKrakenInputConfig::UKrakenInputConfig()
 {
 }
 
-const UInputAction* UKrakenInputConfig::FindInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
+const UInputAction* UKrakenInputConfig::FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
+{
+	return FindInputActionForTag(NativeInputActions, InputTag, bLogNotFound);
+}
+
+const UInputAction* UKrakenInputConfig::FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
+{
+	return FindInputActionForTag(AbilityInputActions, InputTag, bLogNotFound);
+}
+
+const UInputAction* UKrakenInputConfig::FindInputActionForTag(const TArray<FKrakenInputAction>& InputActions, const FGameplayTag& InputTag, bool bLogNotFound) const
 {
 	for (const FKrakenInputAction& Action : InputActions)
 	{
@@ -19,7 +29,7 @@ const UInputAction* UKrakenInputConfig::FindInputActionForTag(const FGameplayTag
 
 	if (bLogNotFound)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't find NativeInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
+		UE_LOG(LogTemp, Error, TEXT("Can't find InputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
 	}
 
 	return nullptr;
