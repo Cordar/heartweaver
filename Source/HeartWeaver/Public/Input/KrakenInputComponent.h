@@ -35,7 +35,7 @@ void UKrakenInputComponent::BindNativeAction(const UKrakenInputConfig* InputConf
                                           Func, const bool bLogIfNotFound)
 {
 	check(InputConfig);
-	if (const UInputAction* InputAction = InputConfig->FindInputActionForTag(InputTag, bLogIfNotFound))
+	if (const UInputAction* InputAction = InputConfig->FindNativeInputActionForTag(InputTag, bLogIfNotFound))
 	{
 		BindAction(InputAction, TriggerEvent, Object, Func);
 	}
@@ -47,7 +47,7 @@ void UKrakenInputComponent::BindAbilityActions(const UKrakenInputConfig* InputCo
 {
 	check(InputConfig);
 
-	for (const FKrakenInputAction& Action : InputConfig->InputActions)
+	for (const FKrakenInputAction& Action : InputConfig->AbilityInputActions)
 	{
 		if (Action.InputAction && Action.InputTag.IsValid())
 		{

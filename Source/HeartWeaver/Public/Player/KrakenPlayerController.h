@@ -8,6 +8,7 @@
 #include "KrakenPlayerController.generated.h"
 
 
+class UKrakenAbilitySystemComponent;
 struct FGameplayTag;
 class UInputMappingContext;
 class UKrakenInputConfig;
@@ -36,6 +37,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UKrakenInputConfig> InputConfig;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UKrakenAbilitySystemComponent> KrakenAbilitySystemComponent;
+
+	UKrakenAbilitySystemComponent* GetKrakenAbilitySystemComponent();
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
