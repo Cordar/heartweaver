@@ -7,6 +7,7 @@
 
 #include "KrakenCharacter.generated.h"
 
+struct FInputActionValue;
 class UInputMappingContext;
 class UKrakenInputConfig;
 class USpringArmComponent;
@@ -25,6 +26,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
+	void Move(const FInputActionValue& Value);
 
 	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
 
@@ -43,4 +45,8 @@ protected:
 
 private:
 	virtual void InitAbilityActorInfo() override;
+
+	
+	void HandleGroundMovementInput(const FInputActionValue& Value);
+	void HandleClimbMovementInput(const FInputActionValue& Value);
 };
