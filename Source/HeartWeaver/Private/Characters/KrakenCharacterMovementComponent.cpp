@@ -6,8 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/CapsuleComponent.h"
-#include "DebugHelper.h"
 #include "Engine/CollisionProfile.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UKrakenCharacterMovementComponent::UKrakenCharacterMovementComponent()
 {
@@ -50,6 +50,30 @@ float UKrakenCharacterMovementComponent::GetMaxAcceleration() const
 	}
 }
 
+FVector UKrakenCharacterMovementComponent::ConstrainAnimRootMotionVelocity(const FVector& RootMotionVelocity, const FVector& CurrentVelocity) const
+{
+	const bool bIsPlayingRMMontage = IsFalling() && OwningCharacterAnimInstance && OwningCharacterAnimInstance->IsAnyMontagePlaying();
+	if (bIsPlayingRMMontage)
+	{
+		return RootMotionVelocity;
+	}
+	
+	return Super::ConstrainAnimRootMotionVelocity(RootMotionVelocity, CurrentVelocity);
+}
+
+void UKrakenCharacterMovementComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OwningCharacterAnimInstance = CharacterOwner->GetMesh()->GetAnimInstance();
+
+	if(OwningCharacterAnimInstance)
+	{
+		OwningCharacterAnimInstance->OnMontageEnded.AddDynamic(this, &UKrakenCharacterMovementComponent::OnClimbMontageEnded);
+		OwningCharacterAnimInstance->OnMontageBlendingOut.AddDynamic(this, &UKrakenCharacterMovementComponent::OnClimbMontageEnded);
+	}
+}
+
 void UKrakenCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -72,6 +96,10 @@ void UKrakenCharacterMovementComponent::OnMovementModeChanged(EMovementMode Prev
 		bOrientRotationToMovement = true;
 		CharacterOwner->GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
 
+		const FRotator DirtyRotation = UpdatedComponent->GetComponentRotation();
+		const FRotator CleanStandRotation = FRotator(0.f, DirtyRotation.Yaw,0.f);
+		UpdatedComponent->SetRelativeRotation(CleanStandRotation);
+		
 		StopMovementImmediately();
 	}
 	
@@ -156,14 +184,8 @@ void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
 	{
 		if(CanStartClimbing())
 		{
-			//Enter the climb state
-			Debug::Print(TEXT("CAN start Climbing."));
-			StartClimbing();
-		}
-		else
-		{
-			Debug::Print(TEXT("CANNOT start Climbing."));
-
+			check(IdleToClimbMontage);
+			PlayClimbMontage(IdleToClimbMontage);
 		}
 	}
 	else
@@ -204,6 +226,10 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 	ProcessClimbableSurfaceInfo();
 	
 	// Check if we should stop climbing
+	if (CheckShouldStopClimbing() || CheckHasReachedFloor())
+	{
+		StopClimbing();
+	}
 	
 	RestorePreAdditiveRootMotionVelocity();
 
@@ -234,8 +260,12 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation) / DeltaTime;
 	}
 
-	// Snap movement to climbable surfaces
 	SnapMovementToClimbableSurfaces(DeltaTime);
+
+	if(CheckHasReachedLedge())
+	{
+		PlayClimbMontage(ClimbToTopMontage);
+	}
 }
 
 void UKrakenCharacterMovementComponent::ProcessClimbableSurfaceInfo()
@@ -254,6 +284,47 @@ void UKrakenCharacterMovementComponent::ProcessClimbableSurfaceInfo()
 	CurrentClimbableSurfaceLocation /= ClimbableSurfacesTraceResults.Num();
 	CurrentClimbableSurfaceNormal = CurrentClimbableSurfaceNormal.GetSafeNormal();
 
+}
+
+bool UKrakenCharacterMovementComponent::CheckShouldStopClimbing()
+{
+	if (ClimbableSurfacesTraceResults.IsEmpty()) return true;
+
+	const float DotResult = FVector::DotProduct(CurrentClimbableSurfaceNormal, FVector::UpVector);
+	const float DegreeDiff = FMath::RadiansToDegrees(FMath::Acos(DotResult));
+
+	if(DegreeDiff<=60.f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool UKrakenCharacterMovementComponent::CheckHasReachedFloor()
+{
+	const FVector DownVector = UpdatedComponent->GetUpVector();
+	const FVector StartOffset = DownVector * 50.f;
+
+	const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
+	const FVector End = Start + DownVector;
+
+	TArray<FHitResult> PossibleFloorHits = DoCapsuleTraceMultiByObject(Start, End, false);
+
+	if(PossibleFloorHits.IsEmpty()) return false;
+
+	for (const FHitResult& HitResult : PossibleFloorHits)
+	{
+		const bool bFloorReached =
+		FVector::Parallel(-HitResult.ImpactNormal, FVector::UpVector) &&
+			GetUnrotatedClimbVelocity().Z < -10.f;
+
+		if (bFloorReached)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 FQuat UKrakenCharacterMovementComponent::GetClimbRotation(float DeltaTime)
@@ -286,9 +357,56 @@ void UKrakenCharacterMovementComponent::SnapMovementToClimbableSurfaces(float De
 		true);
 }
 
+bool UKrakenCharacterMovementComponent::CheckHasReachedLedge()
+{
+	FHitResult LedgeHitResult = TraceFromEyeHeight(100.f, -25.f);
+
+	if (!LedgeHitResult.bBlockingHit)
+	{
+		const FVector WalkableSurfaceTraceStart = LedgeHitResult.TraceEnd;
+		const FVector DownVector = -UpdatedComponent->GetUpVector();
+		const FVector WalkableSurfaceTraceEnd = WalkableSurfaceTraceStart + DownVector * 100.f;
+
+		FHitResult WalkableSurfaceHitResult = DoLineTraceSingleByObject(WalkableSurfaceTraceStart, WalkableSurfaceTraceEnd);
+
+		if(WalkableSurfaceHitResult.bBlockingHit && GetUnrotatedClimbVelocity().Z > 10.f)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void UKrakenCharacterMovementComponent::PlayClimbMontage(UAnimMontage* MontageToPlay)
+{
+	if(!MontageToPlay) return;
+	if(!OwningCharacterAnimInstance) return;
+	if(OwningCharacterAnimInstance->IsAnyMontagePlaying()) return;
+
+	OwningCharacterAnimInstance->Montage_Play(MontageToPlay);
+}
+
+void UKrakenCharacterMovementComponent::OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	if(Montage == IdleToClimbMontage)
+	{
+		StartClimbing();
+	}
+	else
+	{
+		SetMovementMode(MOVE_Walking);
+	}
+}
+
 bool UKrakenCharacterMovementComponent::IsClimbing() const
 {
 	return MovementMode == MOVE_Custom && CustomMovementMode == ECustomMovementMode::Move_Climb;
+}
+
+FVector UKrakenCharacterMovementComponent::GetUnrotatedClimbVelocity() const
+{
+	return UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), Velocity);
 }
 
 //Trace for climbable surfaces, return true if there are indeed valid surfaces, false otherwise
@@ -298,7 +416,7 @@ bool UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
 	const FVector Start = UpdatedComponent->GetComponentLocation() + StartOffset;
 	const FVector End = Start + UpdatedComponent->GetForwardVector();
 	
-	ClimbableSurfacesTraceResults = DoCapsuleTraceMultiByObject(Start, End, true);
+	ClimbableSurfacesTraceResults = DoCapsuleTraceMultiByObject(Start, End);
 	return !ClimbableSurfacesTraceResults.IsEmpty();
 }
 

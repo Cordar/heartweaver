@@ -75,18 +75,9 @@ void AKrakenPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 void AKrakenPlayerController::Move(const FInputActionValue& Value)
 {
-	const FVector2D MoveVector = Value.Get<FVector2D>();
-
-	const FRotator Rotation = GetControlRotation();
-	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
 	if (ControlledCharacter)
 	{
-		ControlledCharacter->AddMovementInput(ForwardDirection, MoveVector.Y);
-		ControlledCharacter->AddMovementInput(RightDirection, MoveVector.X);
+		ControlledCharacter->Move(Value);
 	}
 }
 
