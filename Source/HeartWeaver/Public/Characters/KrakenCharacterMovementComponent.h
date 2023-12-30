@@ -35,6 +35,8 @@ public:
 
 	void ToggleClimbing(bool bEnableClimb);
 	bool IsClimbing() const;
+	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimbableSurfaceNormal; }
+	FVector GetUnrotatedClimbVelocity()	const;
 
 protected:
 	//~ClimbBPVariables	
@@ -52,9 +54,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	float MaxClimbAcceleration = 300.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	TObjectPtr<UAnimMontage> IdleToClimbMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	TObjectPtr<UAnimMontage> ClimbToTopMontage;
 	//~End of ClimbBPVariables
 
-	//~Overriden Functions
+	//~UCharacterMovementComponent Interface
+	virtual void BeginPlay() override;
+	
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
@@ -64,7 +74,9 @@ protected:
 	virtual float GetMaxSpeed() const override;
 
 	virtual float GetMaxAcceleration() const override;
-	//~End of Overriden Functions
+
+	virtual FVector ConstrainAnimRootMotionVelocity(const FVector& RootMotionVelocity, const FVector& CurrentVelocity) const override;
+	//~End of UCharacterMovementComponent Interface
 
 private:
 	//~Climb Traces
@@ -88,9 +100,20 @@ private:
 
 	void ProcessClimbableSurfaceInfo();
 
+	bool CheckShouldStopClimbing();
+
+	bool CheckHasReachedFloor();
+
 	FQuat GetClimbRotation(float DeltaTime);
 
 	void SnapMovementToClimbableSurfaces(float DeltaTime);
+
+	bool CheckHasReachedLedge();
+
+	void PlayClimbMontage(UAnimMontage* MontageToPlay);
+
+	UFUNCTION()
+	void OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 	//~End of ClimbCore
 
 	//~ClimbCoreVariables
@@ -99,7 +122,9 @@ private:
 	FVector CurrentClimbableSurfaceLocation;
 
 	FVector CurrentClimbableSurfaceNormal;
-	
+
+	UPROPERTY()
+	TObjectPtr<UAnimInstance> OwningCharacterAnimInstance;
 	//~End of ClimbCoreVariables
 
 };

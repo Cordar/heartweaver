@@ -105,6 +105,52 @@ void AKrakenCharacter::InitAbilityActorInfo()
 	InitializePrimaryAttributes();
 }
 
+void AKrakenCharacter::Move(const FInputActionValue& Value)
+{
+	if (!GetKrakenCharacterMovementComponent()) return;
+
+	if (GetKrakenCharacterMovementComponent()->IsClimbing())
+	{
+		HandleClimbMovementInput(Value);
+	}
+	else
+	{
+		HandleGroundMovementInput(Value);
+	}
+}
+
+void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
+{
+	const FVector2D MoveVector = Value.Get<FVector2D>();
+
+	if (Controller == nullptr) return;
+	
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	AddMovementInput(ForwardDirection, MoveVector.Y);
+	AddMovementInput(RightDirection, MoveVector.X);
+}
+
+void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)
+{
+	const FVector2D MoveVector = Value.Get<FVector2D>();
+	const FVector ForwardDirection = FVector::CrossProduct(
+		-GetKrakenCharacterMovementComponent()->GetClimbableSurfaceNormal(),
+		GetActorRightVector()
+		);
+	const FVector RightDirection = FVector::CrossProduct(
+	-GetKrakenCharacterMovementComponent()->GetClimbableSurfaceNormal(),
+	GetActorUpVector()
+		);
+
+	AddMovementInput(ForwardDirection, MoveVector.Y);
+	AddMovementInput(RightDirection, MoveVector.X);
+}
+
 void AKrakenCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
