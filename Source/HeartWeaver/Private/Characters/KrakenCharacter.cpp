@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
+#include "Actor/KrakenGrabableActor.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
@@ -117,6 +118,24 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleGroundMovementInput(Value);
 	}
+}
+
+void AKrakenCharacter::SetGrabable(AKrakenGrabableActor* GrabableActor)
+{
+	if (KrakenGrabableActor != nullptr)
+	{
+		KrakenGrabableActor = nullptr;
+	}
+	else
+	{
+		
+		KrakenGrabableActor = GrabableActor;
+	}
+}
+
+bool AKrakenCharacter::CanGrab() const
+{
+	return KrakenGrabableActor == nullptr;
 }
 
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)

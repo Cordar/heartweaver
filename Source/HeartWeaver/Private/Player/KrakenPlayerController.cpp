@@ -56,7 +56,6 @@ UKrakenAbilitySystemComponent* AKrakenPlayerController::GetKrakenAbilitySystemCo
 
 void AKrakenPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("AbilityInputTagPressed: %s"), *InputTag.ToString()));
 }
 
 void AKrakenPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
