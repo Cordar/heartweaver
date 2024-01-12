@@ -2,7 +2,6 @@
 
 
 #include "Characters/KrakenCharacterBase.h"
-#include "DebugHelper.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
@@ -20,7 +19,6 @@ UAbilitySystemComponent* AKrakenCharacterBase::GetAbilitySystemComponent() const
 void AKrakenCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	Debug::Print(TEXT("Debug Working")); 
 }
 
 void AKrakenCharacterBase::InitAbilityActorInfo()
