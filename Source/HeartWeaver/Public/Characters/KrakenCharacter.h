@@ -13,6 +13,7 @@ class UKrakenInputConfig;
 class USpringArmComponent;
 class UCameraComponent;
 class UKrakenCharacterMovementComponent;
+class AKrakenGrabableActor;
 
 UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
 class HEARTWEAVER_API AKrakenCharacter : public AKrakenCharacterBase
@@ -27,6 +28,12 @@ public:
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 	void Move(const FInputActionValue& Value);
+
+	// Grabable
+	FORCEINLINE AKrakenGrabableActor* GetGrabableActor() const { return KrakenGrabableActor; }
+	void SetGrabable(AKrakenGrabableActor* GrabableActor);
+	UFUNCTION(BlueprintCallable, Category = "Grabable")
+	bool CanGrab() const;
 
 	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
 
@@ -43,9 +50,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
+	TObjectPtr<AKrakenGrabableActor> KrakenGrabableActor;
+
 private:
 	virtual void InitAbilityActorInfo() override;
-
 	
 	void HandleGroundMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
