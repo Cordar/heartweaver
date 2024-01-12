@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbility.h"
 #include "KrakenGameplayAbility.generated.h"
 
+class AKrakenCharacter;
 /**
  * 
  */
@@ -18,5 +19,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	FGameplayTag StartupInputTag;
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = Ability)
+	AKrakenCharacter* GetKrakenCharacterFromActorInfo() const;
 	
 };

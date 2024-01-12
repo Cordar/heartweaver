@@ -31,11 +31,7 @@ float UKrakenCharacterMovementComponent::GetMaxSpeed() const
 	{
 		return MaxClimbSpeed;
 	}
-	else
-	{
-		return Super::GetMaxSpeed();
-	}
-	
+	return Super::GetMaxSpeed();
 }
 
 float UKrakenCharacterMovementComponent::GetMaxAcceleration() const
@@ -44,10 +40,7 @@ float UKrakenCharacterMovementComponent::GetMaxAcceleration() const
 	{
 		return MaxClimbAcceleration;
 	}
-	else
-	{
-		return Super::GetMaxAcceleration();
-	}
+	return Super::GetMaxAcceleration();
 }
 
 FVector UKrakenCharacterMovementComponent::ConstrainAnimRootMotionVelocity(const FVector& RootMotionVelocity, const FVector& CurrentVelocity) const
@@ -77,9 +70,6 @@ void UKrakenCharacterMovementComponent::BeginPlay()
 void UKrakenCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	/*TraceClimbableSurfaces();
-	TraceFromEyeHeight(100.f);*/
 }
 
 void UKrakenCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode,
@@ -184,20 +174,25 @@ void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
 	{
 		if(CanStartClimbing())
 		{
-			check(IdleToClimbMontage);
-			PlayClimbMontage(IdleToClimbMontage);
+			if (IsFalling())
+			{
+				StartClimbing();
+			}
+			else
+			{
+				check(IdleToClimbMontage);
+				PlayClimbMontage(IdleToClimbMontage);
+			}
 		}
 	}
 	else
 	{
-		//Stop Climbing
 		StopClimbing();
 	}
 }
 
 bool UKrakenCharacterMovementComponent::CanStartClimbing()
 {
-	if(IsFalling()) return false;
 	if(!TraceClimbableSurfaces()) return false;
 	if(!TraceFromEyeHeight(100.f).bBlockingHit) return false;
 
@@ -221,11 +216,9 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 		return;
 	}
 
-	// Process all the climbable surfaces information
 	TraceClimbableSurfaces();
 	ProcessClimbableSurfaceInfo();
 	
-	// Check if we should stop climbing
 	if (CheckShouldStopClimbing() || CheckHasReachedFloor())
 	{
 		StopClimbing();
@@ -235,7 +228,6 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 
 	if( !HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity() )
 	{
-		// Define max speed and acceleration
 		CalcVelocity(DeltaTime, 0.f, true, MaxBreakClimbDeceleration);
 	}
 
@@ -290,10 +282,15 @@ bool UKrakenCharacterMovementComponent::CheckShouldStopClimbing()
 {
 	if (ClimbableSurfacesTraceResults.IsEmpty()) return true;
 
-	const float DotResult = FVector::DotProduct(CurrentClimbableSurfaceNormal, FVector::UpVector);
-	const float DegreeDiff = FMath::RadiansToDegrees(FMath::Acos(DotResult));
+	const float DotResultUp = FVector::DotProduct(CurrentClimbableSurfaceNormal, FVector::UpVector);
+	const float DotResultLeft = FVector::DotProduct(CurrentClimbableSurfaceNormal, FVector::LeftVector);
+	const float DotResultRight = FVector::DotProduct(CurrentClimbableSurfaceNormal, FVector::RightVector);
+	
+	const float DegreeDiffUp = FMath::RadiansToDegrees(FMath::Acos(DotResultUp));
+	const float DegreeDiffLeft = FMath::RadiansToDegrees(FMath::Acos(DotResultLeft));
+	const float DegreeDiffRight = FMath::RadiansToDegrees(FMath::Acos(DotResultRight));
 
-	if(DegreeDiff<=60.f)
+	if(DegreeDiffUp <= 30.f || DegreeDiffLeft <= 30.f || DegreeDiffRight <= 30.f)
 	{
 		return true;
 	}

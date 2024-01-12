@@ -6,8 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "Actor/KrakenGrabableActor.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
+#include "Camera/CameraActor.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
 #include "Player/KrakenPlayerController.h"
 #include "Player/KrakenPlayerState.h"
@@ -38,16 +37,6 @@ AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 	KrakenCharacterMovementComponent->GetNavAgentPropertiesRef().bCanCrouch = true; // Maybe remove it if we don't want the camera to change
 	KrakenCharacterMovementComponent->bCanWalkOffLedgesWhenCrouching = true;
 	KrakenCharacterMovementComponent->SetCrouchedHalfHeight(65.0f);
-
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->bInheritPitch = false;
-	CameraBoom->bInheritRoll = false;
-	CameraBoom->bInheritYaw = false;
-	CameraBoom->bEnableCameraLag = true;
-	CameraBoom->SetupAttachment(GetRootComponent());
-
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom);
 
 	BaseEyeHeight = 80.0f;
 	CrouchedEyeHeight = 50.0f;
@@ -120,31 +109,25 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void AKrakenCharacter::SetGrabable(AKrakenGrabableActor* GrabableActor)
+void AKrakenCharacter::SetGrabableActor(AKrakenGrabableActor* GrabableActor)
 {
-	if (KrakenGrabableActor != nullptr)
-	{
-		KrakenGrabableActor = nullptr;
-	}
-	else
-	{
-		
-		KrakenGrabableActor = GrabableActor;
-	}
+	KrakenGrabableActor = GrabableActor;
 }
 
 bool AKrakenCharacter::CanGrab() const
 {
-	return KrakenGrabableActor == nullptr;
+	if(KrakenGrabableActor == nullptr) return true;
+	return false;
 }
 
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 {
+	check(FollowCamera);
 	const FVector2D MoveVector = Value.Get<FVector2D>();
 
 	if (Controller == nullptr) return;
 	
-	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator Rotation = FollowCamera->GetActorRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -162,7 +145,7 @@ void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)
 		GetActorRightVector()
 		);
 	const FVector RightDirection = FVector::CrossProduct(
-	-GetKrakenCharacterMovementComponent()->GetClimbableSurfaceNormal(),
+	GetKrakenCharacterMovementComponent()->GetClimbableSurfaceNormal(),
 	GetActorUpVector()
 		);
 
