@@ -11,7 +11,7 @@ struct FInputActionValue;
 class UInputMappingContext;
 class UKrakenInputConfig;
 class USpringArmComponent;
-class UCameraComponent;
+class ACameraActor;
 class UKrakenCharacterMovementComponent;
 class AKrakenGrabableActor;
 
@@ -28,24 +28,22 @@ public:
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 	void Move(const FInputActionValue& Value);
-
+	
+	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
+	
 	// Grabable
 	FORCEINLINE AKrakenGrabableActor* GetGrabableActor() const { return KrakenGrabableActor; }
-	void SetGrabable(AKrakenGrabableActor* GrabableActor);
+	void SetGrabableActor(AKrakenGrabableActor* GrabableActor);
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	bool CanGrab() const;
 
-	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
 
 protected:
 	virtual void BeginPlay() override;
 	virtual bool CanJumpInternal_Implementation() const override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<USpringArmComponent> CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UCameraComponent> FollowCamera;
+	UPROPERTY(BlueprintReadWrite, Category = "Camera")
+	TObjectPtr<ACameraActor> FollowCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;

@@ -25,7 +25,7 @@ void AKrakenGrabableActor::BeginPlay()
 
 void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 {
-	if (!TargetCharacter->CanGrab())
+	if (TargetCharacter->GetGrabableActor() != nullptr)
 	{
 		return;
 	}
@@ -38,18 +38,18 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 	{
 		this->AttachToActor(TargetCharacter, FAttachmentTransformRules::KeepWorldTransform, FName("MoveSocket"));
 	}
-	TargetCharacter->SetGrabable(this);
+	TargetCharacter->SetGrabableActor(this);
 }
 
 void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)
 {
-	if (TargetCharacter->GetGrabableActor() == nullptr)
+	if (TargetCharacter->GetGrabableActor() != this)
 	{
 		return;
 	}
 	
 	this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	TargetCharacter->SetGrabable(this);
+	TargetCharacter->SetGrabableActor(nullptr);
 }
 
 
