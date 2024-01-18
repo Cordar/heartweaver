@@ -16,6 +16,9 @@ struct FUIWidgetRow : public FTableRowBase
 	FGameplayTag MessageTag = FGameplayTag();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText CharacterName = FText();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Message = FText();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
