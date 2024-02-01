@@ -11,11 +11,6 @@ AKrakenGrabableActor::AKrakenGrabableActor()
 	PrimaryActorTick.bCanEverTick = false;
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
-	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
-	Sphere->SetupAttachment(GetRootComponent());
-	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Block);
 }
 
 void AKrakenGrabableActor::BeginPlay()
@@ -36,7 +31,7 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 	}
 	else if (GrabableType == EGrabableType::Movable)
 	{
-		this->AttachToActor(TargetCharacter, FAttachmentTransformRules::KeepWorldTransform, FName("MoveSocket"));
+		this->AttachToComponent(TargetCharacter->GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
 	}
 	TargetCharacter->SetGrabableActor(this);
 }
