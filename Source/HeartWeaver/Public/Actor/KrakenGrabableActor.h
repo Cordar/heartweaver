@@ -21,7 +21,7 @@ UCLASS()
 class HEARTWEAVER_API AKrakenGrabableActor : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	AKrakenGrabableActor();
 
@@ -30,9 +30,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	void Grab(AKrakenCharacter* TargetCharacter);
-	
+
 protected:
-	virtual void BeginPlay() override;		
+	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Grabable")
 	EGrabableType GrabableType;
