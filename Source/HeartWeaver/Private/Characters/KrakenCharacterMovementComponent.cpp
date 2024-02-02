@@ -290,7 +290,7 @@ bool UKrakenCharacterMovementComponent::CheckShouldStopClimbing()
 	const float DegreeDiffLeft = FMath::RadiansToDegrees(FMath::Acos(DotResultLeft));
 	const float DegreeDiffRight = FMath::RadiansToDegrees(FMath::Acos(DotResultRight));
 
-	if(DegreeDiffUp <= 30.f)
+	if(DegreeDiffUp <= StopClimbUpAngle)
 	{
 		return true;
 	}
