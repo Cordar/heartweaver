@@ -56,6 +56,9 @@ protected:
 	float MaxClimbAcceleration = 300.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	float StopClimbUpAngle = 35.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	TObjectPtr<UAnimMontage> IdleToClimbMontage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
