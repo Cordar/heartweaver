@@ -356,7 +356,7 @@ void UKrakenCharacterMovementComponent::SnapMovementToClimbableSurfaces(float De
 
 bool UKrakenCharacterMovementComponent::CheckHasReachedLedge()
 {
-	FHitResult LedgeHitResult = TraceFromEyeHeight(100.f, -25.f);
+	FHitResult LedgeHitResult = TraceFromEyeHeight(100.f, CheckLedgeTraceOffset);
 
 	if (!LedgeHitResult.bBlockingHit)
 	{
