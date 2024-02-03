@@ -48,6 +48,13 @@ AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 void AKrakenCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetWorld()->GetTimerManager().SetTimer(
+		SaveSafeLocationTimerHandle, // handle to cancel timer at a later time
+		this, // the owning object
+		&AKrakenCharacter::SaveLastSafeLocation, // function to call on elapsed
+		0.5f, // float delay until elapsed
+		true); // looping?
 }
 
 void AKrakenCharacter::ToggleCrouch()
@@ -151,6 +158,14 @@ void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)
 
 	AddMovementInput(ForwardDirection, MoveVector.Y);
 	AddMovementInput(RightDirection, MoveVector.X);
+}
+
+void AKrakenCharacter::SaveLastSafeLocation()
+{
+	if (KrakenCharacterMovementComponent->MovementMode == MOVE_Walking)
+	{
+		LastSafeLocation = GetActorLocation();
+	}
 }
 
 void AKrakenCharacter::PossessedBy(AController* NewController)

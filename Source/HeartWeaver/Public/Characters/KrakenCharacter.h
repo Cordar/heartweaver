@@ -51,9 +51,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
 	TObjectPtr<AKrakenGrabableActor> KrakenGrabableActor;
 
+	
+	//~PlayerLocation
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	FVector LastSafeLocation;
+
+	FTimerHandle SaveSafeLocationTimerHandle;
+	//~End of PlayerLocation
+
 private:
 	virtual void InitAbilityActorInfo() override;
 	
 	void HandleGroundMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
+
+	void SaveLastSafeLocation();
 };
