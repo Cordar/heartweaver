@@ -4,7 +4,6 @@
 #include "Actor/KrakenGrabableActor.h"
 
 #include "Characters/KrakenCharacter.h"
-#include "Components/SphereComponent.h"
 
 AKrakenGrabableActor::AKrakenGrabableActor()
 {
