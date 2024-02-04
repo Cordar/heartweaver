@@ -24,4 +24,7 @@ class HEARTWEAVER_API IKrakenActivableObject
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
 	void Activate();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
+	void Deactivate();
 };
