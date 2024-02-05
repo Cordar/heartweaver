@@ -12,6 +12,10 @@ AKrakenGrabableActor::AKrakenGrabableActor()
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
+void AKrakenGrabableActor::OnRelease_Implementation()
+{
+}
+
 void AKrakenGrabableActor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -44,6 +48,10 @@ void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)
 	
 	this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	TargetCharacter->SetGrabableActor(nullptr);
+}
+
+void AKrakenGrabableActor::OnGrab_Implementation()
+{
 }
 
 
