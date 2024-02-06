@@ -129,7 +129,11 @@ bool AKrakenCharacter::CanGrab() const
 
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 {
-	check(FollowCamera);
+	if (FollowCamera == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FollowCamera is not set in KrakenCharacter. Cannot handle movement input."));
+		return;
+	}
 	const FVector2D MoveVector = Value.Get<FVector2D>();
 
 	if (Controller == nullptr) return;
