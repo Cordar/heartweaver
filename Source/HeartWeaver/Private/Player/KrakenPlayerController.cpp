@@ -56,6 +56,9 @@ UKrakenAbilitySystemComponent* AKrakenPlayerController::GetKrakenAbilitySystemCo
 
 void AKrakenPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
+	if (GetKrakenAbilitySystemComponent() == nullptr) return;
+	
+	GetKrakenAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 
 void AKrakenPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)

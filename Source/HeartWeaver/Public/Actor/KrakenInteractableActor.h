@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/KrakenActivableObject.h"
 #include "KrakenInteractableActor.generated.h"
@@ -10,7 +11,7 @@
 class USphereComponent;
 
 UCLASS()
-class HEARTWEAVER_API AKrakenInteractableActor : public AActor, public IKrakenActivableObject
+class HEARTWEAVER_API AKrakenInteractableActor : public AActor, public IKrakenActivableObject, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 	
@@ -19,8 +20,14 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override { TagContainer = GameplayTags; return; }
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags")
+	FGameplayTagContainer GameplayTags;
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;
+
+	
 };
