@@ -23,6 +23,23 @@ void UKrakenAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclass
 	}
 }
 
+void UKrakenAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (!AbilitySpec.IsActive())
+			{
+				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
+			}
+		}
+	}
+}
+
 void UKrakenAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
@@ -49,6 +66,7 @@ void UKrakenAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& 
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputReleased(AbilitySpec);
+			InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
 		}
 	}
 }
