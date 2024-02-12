@@ -406,6 +406,11 @@ FVector UKrakenCharacterMovementComponent::GetUnrotatedClimbVelocity() const
 	return UKismetMathLibrary::Quat_UnrotateVector(UpdatedComponent->GetComponentQuat(), Velocity);
 }
 
+double UKrakenCharacterMovementComponent::IsMovingBackwards() const
+{
+	return UKismetMathLibrary::Dot_VectorVector(CharacterOwner->GetActorForwardVector(), VectorNormalize(Velocity));
+}
+
 //Trace for climbable surfaces, return true if there are indeed valid surfaces, false otherwise
 bool UKrakenCharacterMovementComponent::TraceClimbableSurfaces()
 {

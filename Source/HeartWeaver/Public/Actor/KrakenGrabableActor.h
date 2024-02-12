@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	void Grab(AKrakenCharacter* TargetCharacter);
 
+	UFUNCTION()
+	EGrabableType GetGrabableType() const { return GrabableType; }
+
 protected:
 	virtual void BeginPlay() override;
 
