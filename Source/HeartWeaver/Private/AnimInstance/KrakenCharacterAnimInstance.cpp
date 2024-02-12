@@ -32,7 +32,7 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetIsClimbing();
 	GetClimbVelocity();
 	GetIsGrabbing();
-	GetGroundVelocity();
+	GetIsLayingOnFloor();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -70,7 +70,7 @@ void UKrakenCharacterAnimInstance::GetIsGrabbing()
 	bIsGrabbing = !ControlledCharacter->CanGrab();
 }
 
-void UKrakenCharacterAnimInstance::GetGroundVelocity()
+void UKrakenCharacterAnimInstance::GetIsLayingOnFloor()
 {
-	GroundVelocity = DotProduct CharacterMovementComponent->GetVelocity();
+	bIsLayingOnFloor = ControlledCharacter->IsLayingOnFloor();
 }

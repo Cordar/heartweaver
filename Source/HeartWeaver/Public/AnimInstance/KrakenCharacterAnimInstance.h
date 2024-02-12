@@ -55,4 +55,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
 	bool bIsGrabbing;
 	void GetIsGrabbing();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
+	bool bIsLayingOnFloor;
+	void GetIsLayingOnFloor();
 };
