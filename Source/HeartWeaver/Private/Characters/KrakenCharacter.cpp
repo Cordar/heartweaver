@@ -110,6 +110,10 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleClimbMovementInput(Value);
 	}
+	else if (IsGrabbingMovable())
+	{
+		HandleGrabMovableMovementInput(Value);
+	}
 	else
 	{
 		HandleGroundMovementInput(Value);
@@ -119,6 +123,13 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 void AKrakenCharacter::SetGrabableActor(AKrakenGrabableActor* GrabableActor)
 {
 	KrakenGrabableActor = GrabableActor;
+	if (GrabableActor != nullptr)
+	{
+		KrakenCharacterMovementComponent->bOrientRotationToMovement = false;
+	} else
+	{
+		KrakenCharacterMovementComponent->bOrientRotationToMovement = true;
+	}
 }
 
 bool AKrakenCharacter::CanGrab() const
@@ -127,9 +138,19 @@ bool AKrakenCharacter::CanGrab() const
 	return false;
 }
 
+bool AKrakenCharacter::IsGrabbingMovable() const
+{
+	if (KrakenGrabableActor == nullptr) return false;
+	return KrakenGrabableActor->GetGrabableType() == EGrabableType::Movable;
+}
+
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 {
-	check(FollowCamera);
+	if (FollowCamera == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FollowCamera is not set in KrakenCharacter. Cannot handle movement input."));
+		return;
+	}
 	const FVector2D MoveVector = Value.Get<FVector2D>();
 
 	if (Controller == nullptr) return;
@@ -142,6 +163,18 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 
 	AddMovementInput(ForwardDirection, MoveVector.Y);
 	AddMovementInput(RightDirection, MoveVector.X);
+}
+
+void AKrakenCharacter::HandleGrabMovableMovementInput(const FInputActionValue& Value)
+{
+	const FVector2D MoveVector = Value.Get<FVector2D>();
+	
+	const FRotator Rotation = GetActorRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+	AddMovementInput(ForwardDirection, MoveVector.Y);
 }
 
 void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)

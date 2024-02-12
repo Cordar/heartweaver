@@ -25,11 +25,20 @@ class HEARTWEAVER_API AKrakenGrabableActor : public AActor
 public:	
 	AKrakenGrabableActor();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Grabable")
+	void OnRelease();
+	
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	void Release(AKrakenCharacter* TargetCharacter);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Grabable")
+	void OnGrab();
+
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	void Grab(AKrakenCharacter* TargetCharacter);
+
+	UFUNCTION()
+	EGrabableType GetGrabableType() const { return GrabableType; }
 
 protected:
 	virtual void BeginPlay() override;

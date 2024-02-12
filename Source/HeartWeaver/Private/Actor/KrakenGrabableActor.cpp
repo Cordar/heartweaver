@@ -8,8 +8,10 @@
 AKrakenGrabableActor::AKrakenGrabableActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
+}
 
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
+void AKrakenGrabableActor::OnRelease_Implementation()
+{
 }
 
 void AKrakenGrabableActor::BeginPlay()
@@ -23,6 +25,8 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 	{
 		return;
 	}
+
+	OnGrab();
 	
 	if (GrabableType == EGrabableType::Pickup)
 	{
@@ -30,7 +34,7 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 	}
 	else if (GrabableType == EGrabableType::Movable)
 	{
-		this->AttachToComponent(TargetCharacter->GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
+		this->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	}
 	TargetCharacter->SetGrabableActor(this);
 }
@@ -44,6 +48,12 @@ void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)
 	
 	this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	TargetCharacter->SetGrabableActor(nullptr);
+
+	OnRelease();
+}
+
+void AKrakenGrabableActor::OnGrab_Implementation()
+{
 }
 
 
