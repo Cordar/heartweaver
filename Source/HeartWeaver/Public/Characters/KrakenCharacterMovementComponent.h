@@ -37,6 +37,8 @@ public:
 	bool IsClimbing() const;
 	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimbableSurfaceNormal; }
 	FVector GetUnrotatedClimbVelocity()	const;
+	
+	double IsMovingBackwards() const;
 
 protected:
 	//~ClimbBPVariables	

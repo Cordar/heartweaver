@@ -51,4 +51,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
 	FVector ClimbVelocity;
 	void GetClimbVelocity();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
+	bool bIsGrabbing;
+	void GetIsGrabbing();
 };

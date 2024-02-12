@@ -31,6 +31,8 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetIsFalling();
 	GetIsClimbing();
 	GetClimbVelocity();
+	GetIsGrabbing();
+	GetGroundVelocity();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -61,4 +63,14 @@ void UKrakenCharacterAnimInstance::GetIsClimbing()
 void UKrakenCharacterAnimInstance::GetClimbVelocity()
 {
 	ClimbVelocity = CharacterMovementComponent->GetUnrotatedClimbVelocity();
+}
+
+void UKrakenCharacterAnimInstance::GetIsGrabbing()
+{
+	bIsGrabbing = !ControlledCharacter->CanGrab();
+}
+
+void UKrakenCharacterAnimInstance::GetGroundVelocity()
+{
+	GroundVelocity = DotProduct CharacterMovementComponent->GetVelocity();
 }
