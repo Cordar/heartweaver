@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Kraken's Den Studios. All rights reserved.
 
 #pragma once
 
@@ -38,6 +38,12 @@ public:
 	bool CanGrab() const;
 	bool IsGrabbingMovable() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	bool IsLayingOnFloor() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	void SetLayingOnFloor(bool bNewIsLayingOnFloor);
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -68,4 +74,6 @@ private:
 	void HandleGrabMovableMovementInput(const FInputActionValue& Value);
 
 	void SaveLastSafeLocation();
+
+	bool bIsLayingOnFloor = true;
 };
