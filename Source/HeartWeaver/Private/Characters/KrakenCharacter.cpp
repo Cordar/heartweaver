@@ -144,6 +144,16 @@ bool AKrakenCharacter::IsGrabbingMovable() const
 	return KrakenGrabableActor->GetGrabableType() == EGrabableType::Movable;
 }
 
+bool AKrakenCharacter::IsLayingOnFloor() const
+{
+	return bIsLayingOnFloor;
+}
+
+void AKrakenCharacter::SetLayingOnFloor(bool bNewIsLayingOnFloor)
+{
+	bIsLayingOnFloor = bNewIsLayingOnFloor;
+}
+
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 {
 	if (FollowCamera == nullptr)
