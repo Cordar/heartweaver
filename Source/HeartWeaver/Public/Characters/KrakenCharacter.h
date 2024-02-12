@@ -36,6 +36,7 @@ public:
 	void SetGrabableActor(AKrakenGrabableActor* GrabableActor);
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	bool CanGrab() const;
+	bool IsGrabbingMovable() const;
 
 
 protected:
@@ -64,6 +65,7 @@ private:
 	
 	void HandleGroundMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
+	void HandleGrabMovableMovementInput(const FInputActionValue& Value);
 
 	void SaveLastSafeLocation();
 };
