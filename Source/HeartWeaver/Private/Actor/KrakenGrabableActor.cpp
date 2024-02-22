@@ -4,15 +4,13 @@
 #include "Actor/KrakenGrabableActor.h"
 
 #include "Characters/KrakenCharacter.h"
+#include "Characters/KrakenCharacterMovementComponent.h"
 
 AKrakenGrabableActor::AKrakenGrabableActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void AKrakenGrabableActor::OnRelease_Implementation()
-{
-}
 
 void AKrakenGrabableActor::BeginPlay()
 {
@@ -31,12 +29,16 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 	if (GrabableType == EGrabableType::Pickup)
 	{
 		this->AttachToActor(TargetCharacter, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PickupSocket"));
+		TargetCharacter->SetGrabableActor(this);
 	}
 	else if (GrabableType == EGrabableType::Movable)
 	{
-		this->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
+		TargetCharacter->GetKrakenCharacterMovementComponent()->PlayMontage(IdleToGrabMontage);
+		this->AttachToActor(TargetCharacter, FAttachmentTransformRules::KeepWorldTransform, FName("GrabSocket"));
+		TargetCharacter->SetGrabableActor(this);
+		TargetCharacter->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = false;
 	}
-	TargetCharacter->SetGrabableActor(this);
+	this->Execute_Activate(this);
 }
 
 void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)
@@ -45,15 +47,35 @@ void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)
 	{
 		return;
 	}
+
+	if (GrabableType == EGrabableType::Movable)
+	{
+		TargetCharacter->GetKrakenCharacterMovementComponent()->PlayMontage(GrabToIdleMontage);
+		TargetCharacter->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = true;
+		this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	}
+	else if (GrabableType == EGrabableType::Pickup)
+	{
+		this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	}
 	
-	this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	TargetCharacter->SetGrabableActor(nullptr);
+	this->Execute_Deactivate(this);
 
 	OnRelease();
 }
 
 void AKrakenGrabableActor::OnGrab_Implementation()
 {
+}
+
+void AKrakenGrabableActor::OnRelease_Implementation()
+{
+}
+
+FTransform AKrakenGrabableActor::GetTargetCharacterPosition_Implementation()
+{
+	return FTransform();
 }
 
 

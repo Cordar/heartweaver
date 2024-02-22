@@ -8,8 +8,6 @@
 #include "Interfaces/KrakenActivableObject.h"
 #include "KrakenInteractableActor.generated.h"
 
-class USphereComponent;
-
 UCLASS()
 class HEARTWEAVER_API AKrakenInteractableActor : public AActor, public IKrakenActivableObject, public IGameplayTagAssetInterface
 {
@@ -24,10 +22,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GameplayTags")
 	FGameplayTagContainer GameplayTags;
-	
-private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
-
-	
 };

@@ -33,6 +33,7 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetClimbVelocity();
 	GetIsGrabbing();
 	GetIsLayingOnFloor();
+	GetIsGoingBackwards();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -73,4 +74,10 @@ void UKrakenCharacterAnimInstance::GetIsGrabbing()
 void UKrakenCharacterAnimInstance::GetIsLayingOnFloor()
 {
 	bIsLayingOnFloor = ControlledCharacter->IsLayingOnFloor();
+}
+
+void UKrakenCharacterAnimInstance::GetIsGoingBackwards()
+{
+	const FVector Velocity = ControlledCharacter->GetVelocity().GetSafeNormal();
+	bIsGoingBackwards = FVector::DotProduct(ControlledCharacter->GetActorForwardVector(), Velocity) < 0;
 }

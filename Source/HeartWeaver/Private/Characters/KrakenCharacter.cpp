@@ -110,10 +110,6 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleClimbMovementInput(Value);
 	}
-	else if (IsGrabbingMovable())
-	{
-		HandleGrabMovableMovementInput(Value);
-	}
 	else
 	{
 		HandleGroundMovementInput(Value);
@@ -173,18 +169,6 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 
 	AddMovementInput(ForwardDirection, MoveVector.Y);
 	AddMovementInput(RightDirection, MoveVector.X);
-}
-
-void AKrakenCharacter::HandleGrabMovableMovementInput(const FInputActionValue& Value)
-{
-	const FVector2D MoveVector = Value.Get<FVector2D>();
-	
-	const FRotator Rotation = GetActorRotation();
-	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
-	AddMovementInput(ForwardDirection, MoveVector.Y);
 }
 
 void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)

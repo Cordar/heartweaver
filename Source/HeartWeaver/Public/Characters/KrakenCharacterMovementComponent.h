@@ -38,6 +38,8 @@ public:
 	FORCEINLINE FVector GetClimbableSurfaceNormal() const { return CurrentClimbableSurfaceNormal; }
 	FVector GetUnrotatedClimbVelocity()	const;
 
+	void PlayMontage(UAnimMontage* MontageToPlay);
+
 protected:
 	//~ClimbBPVariables	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
@@ -115,8 +117,6 @@ private:
 	void SnapMovementToClimbableSurfaces(float DeltaTime);
 
 	bool CheckHasReachedLedge();
-
-	void PlayClimbMontage(UAnimMontage* MontageToPlay);
 
 	UFUNCTION()
 	void OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted);
