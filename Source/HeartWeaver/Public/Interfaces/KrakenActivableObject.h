@@ -16,7 +16,7 @@ class UKrakenActivableObject : public UInterface
 /**
  * 
  */
-class HEARTWEAVER_API IKrakenActivableObject
+class HEARTWEAVER_API	IKrakenActivableObject
 {
 	GENERATED_BODY()
 

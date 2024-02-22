@@ -71,7 +71,6 @@ private:
 	
 	void HandleGroundMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
-	void HandleGrabMovableMovementInput(const FInputActionValue& Value);
 
 	void SaveLastSafeLocation();
 

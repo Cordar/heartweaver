@@ -59,4 +59,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
 	bool bIsLayingOnFloor;
 	void GetIsLayingOnFloor();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
+	bool bIsGoingBackwards;
+	void GetIsGoingBackwards();
 };
