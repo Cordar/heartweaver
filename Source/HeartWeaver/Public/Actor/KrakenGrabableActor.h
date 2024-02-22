@@ -3,22 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KrakenInteractableActor.h"
 #include "GameFramework/Actor.h"
 #include "KrakenGrabableActor.generated.h"
 
 class AKrakenCharacter;
-class USphereComponent;
 
 UENUM(BlueprintType)
-enum class EGrabableType
+enum class EGrabableType: uint8
 {
 	Pickup,
-	Movable
+	Movable,
+	Collectible,
+	Interactive,
 };
 
 
 UCLASS()
-class HEARTWEAVER_API AKrakenGrabableActor : public AActor
+class HEARTWEAVER_API AKrakenGrabableActor : public AKrakenInteractableActor
 {
 	GENERATED_BODY()
 
@@ -34,6 +36,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Grabable")
 	void OnGrab();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Grabable")
+	FTransform GetTargetCharacterPosition();
+
 	UFUNCTION(BlueprintCallable, Category = "Grabable")
 	void Grab(AKrakenCharacter* TargetCharacter);
 
@@ -45,4 +50,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Grabable")
 	EGrabableType GrabableType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	TObjectPtr<UAnimMontage> IdleToGrabMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
+	TObjectPtr<UAnimMontage> GrabToIdleMontage;
 };

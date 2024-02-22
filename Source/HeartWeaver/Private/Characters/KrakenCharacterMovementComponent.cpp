@@ -181,7 +181,7 @@ void UKrakenCharacterMovementComponent::ToggleClimbing(bool bEnableClimb)
 			else
 			{
 				check(IdleToClimbMontage);
-				PlayClimbMontage(IdleToClimbMontage);
+				PlayMontage(IdleToClimbMontage);
 			}
 		}
 	}
@@ -256,7 +256,7 @@ void UKrakenCharacterMovementComponent::PhysClimb(float DeltaTime, int32 Iterati
 
 	if(CheckHasReachedLedge())
 	{
-		PlayClimbMontage(ClimbToTopMontage);
+		PlayMontage(ClimbToTopMontage);
 	}
 }
 
@@ -375,7 +375,7 @@ bool UKrakenCharacterMovementComponent::CheckHasReachedLedge()
 	return false;
 }
 
-void UKrakenCharacterMovementComponent::PlayClimbMontage(UAnimMontage* MontageToPlay)
+void UKrakenCharacterMovementComponent::PlayMontage(UAnimMontage* MontageToPlay)
 {
 	if(!MontageToPlay) return;
 	if(!OwningCharacterAnimInstance) return;
