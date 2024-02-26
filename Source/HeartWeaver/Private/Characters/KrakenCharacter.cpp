@@ -140,6 +140,11 @@ bool AKrakenCharacter::IsGrabbingMovable() const
 	return KrakenGrabableActor->GetGrabableType() == EGrabableType::Movable;
 }
 
+void AKrakenCharacter::SetInteractableActor(AKrakenInteractableActor* InteractableActor)
+{
+	KrakenInteractableActor = InteractableActor;
+}
+
 bool AKrakenCharacter::IsLayingOnFloor() const
 {
 	return bIsLayingOnFloor;

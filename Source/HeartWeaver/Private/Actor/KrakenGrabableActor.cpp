@@ -11,7 +11,6 @@ AKrakenGrabableActor::AKrakenGrabableActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-
 void AKrakenGrabableActor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -39,6 +38,7 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 		TargetCharacter->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = false;
 	}
 	this->Execute_Activate(this);
+	this->UnsetAsTarget(TargetCharacter);
 }
 
 void AKrakenGrabableActor::Release(AKrakenCharacter* TargetCharacter)

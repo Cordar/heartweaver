@@ -7,6 +7,7 @@
 
 #include "KrakenCharacter.generated.h"
 
+class AKrakenInteractableActor;
 struct FInputActionValue;
 class UInputMappingContext;
 class UKrakenInputConfig;
@@ -38,6 +39,11 @@ public:
 	bool CanGrab() const;
 	bool IsGrabbingMovable() const;
 
+	// Interactable
+	UFUNCTION(BlueprintCallable, Category = "Interactable")
+	FORCEINLINE AKrakenInteractableActor* GetInteractableActor() const { return KrakenInteractableActor; }
+	void SetInteractableActor(AKrakenInteractableActor* InteractableActor);
+
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	bool IsLayingOnFloor() const;
 
@@ -57,7 +63,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
 	TObjectPtr<AKrakenGrabableActor> KrakenGrabableActor;
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
+	TObjectPtr<AKrakenInteractableActor> KrakenInteractableActor;
 	
 	//~PlayerLocation
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement: Climbing")
