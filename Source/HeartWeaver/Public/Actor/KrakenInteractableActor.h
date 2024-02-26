@@ -8,6 +8,8 @@
 #include "Interfaces/KrakenActivableObject.h"
 #include "KrakenInteractableActor.generated.h"
 
+class AKrakenCharacter;
+
 UCLASS()
 class HEARTWEAVER_API AKrakenInteractableActor : public AActor, public IKrakenActivableObject, public IGameplayTagAssetInterface
 {
@@ -15,6 +17,18 @@ class HEARTWEAVER_API AKrakenInteractableActor : public AActor, public IKrakenAc
 	
 public:	
 	AKrakenInteractableActor();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interactable")
+	void WasSetAsTarget();
+	
+	UFUNCTION(BlueprintCallable, Category = "Interactable")
+	void SetAsTarget(AKrakenCharacter* TargetCharacter);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interactable")
+	void WasUnsetAsTarget();
+	
+	UFUNCTION(BlueprintCallable, Category = "Interactable")
+	void UnsetAsTarget(AKrakenCharacter* TargetCharacter);
 
 protected:
 	virtual void BeginPlay() override;
