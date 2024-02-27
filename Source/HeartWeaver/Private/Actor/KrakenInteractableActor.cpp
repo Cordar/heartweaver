@@ -4,7 +4,6 @@
 #include "Actor/KrakenInteractableActor.h"
 
 #include "Characters/KrakenCharacter.h"
-#include "Components/WidgetComponent.h"
 
 AKrakenInteractableActor::AKrakenInteractableActor()
 {
