@@ -63,4 +63,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
 	bool bIsGoingBackwards;
 	void GetIsGoingBackwards();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
+    bool bIsCrouching;
+    void GetIsCrouching();
 };
