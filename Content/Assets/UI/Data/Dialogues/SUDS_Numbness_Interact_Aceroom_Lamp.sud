@@ -1,0 +1,5 @@
+[if {isFirstTime}]
+    ACE: Sin enchufe no me sirve de nada tener una lámpara.
+[else]
+    ACE: No funciona sin electricidad.
+[endif]

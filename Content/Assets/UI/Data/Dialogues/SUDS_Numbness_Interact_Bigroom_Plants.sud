@@ -1,0 +1,5 @@
+[if {isFirstTime}]
+    ???: Rebosan vida… como tú.
+[else]
+    ???: No tengo claro si tienen más vida estas plantas o tu…
+[endif]
