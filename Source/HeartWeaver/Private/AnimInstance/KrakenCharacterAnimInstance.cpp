@@ -34,6 +34,7 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetIsGrabbing();
 	GetIsLayingOnFloor();
 	GetIsGoingBackwards();
+	GetIsCrouching();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -80,4 +81,9 @@ void UKrakenCharacterAnimInstance::GetIsGoingBackwards()
 {
 	const FVector Velocity = ControlledCharacter->GetVelocity().GetSafeNormal();
 	bIsGoingBackwards = FVector::DotProduct(ControlledCharacter->GetActorForwardVector(), Velocity) < 0;
+}
+
+void UKrakenCharacterAnimInstance::GetIsCrouching()
+{
+	bIsCrouching = CharacterMovementComponent->IsCrouching();
 }
