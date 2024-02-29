@@ -3,7 +3,6 @@ Intermediate
 Saved
 Build
 
-.vs/
 .vs
 .vscode
 *.VC.db
@@ -17,3 +16,15 @@ Build
 *.pdb
 *.exe
 *.exp
+
+# Compiled source files for the engine to use
+Intermediate/*
+Plugins/*/Intermediate/*
+
+# Cache files for the editor to use
+DerivedDataCache/*
+
+# Visual Studio
+.vs/
+.vsconfig
+.vscode/

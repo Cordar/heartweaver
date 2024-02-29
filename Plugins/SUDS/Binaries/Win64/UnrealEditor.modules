@@ -1,0 +1,9 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"SUDS": "UnrealEditor-SUDS.dll",
+		"SUDSEditor": "UnrealEditor-SUDSEditor.dll",
+		"SUDSTest": "UnrealEditor-SUDSTest.dll"
+	}
+}
