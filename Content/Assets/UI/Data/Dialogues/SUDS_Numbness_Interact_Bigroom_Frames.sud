@@ -1,0 +1,7 @@
+[if {isFirstTime}]
+    ACE: Estas fotos… ¿de dónde han salido?
+    ???: Aaah… mira cómo te vas quedando sola. Que pena…
+[else]
+    ACE: Nunca había visto estas fotografías.
+    ???: Aun así, muestran tu triste vida.
+[endif]

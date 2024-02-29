@@ -1,0 +1,5 @@
+[if {isFirstTime}]
+    ACE: Ojalá todo esto fuera un sueño… [she pinches herself] ¡Au! Es demasiado real para estar soñando.
+[else]
+    ACE: Esto es real, pero no sé dónde estoy…
+[endif]

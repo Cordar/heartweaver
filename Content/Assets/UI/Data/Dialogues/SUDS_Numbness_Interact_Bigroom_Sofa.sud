@@ -1,0 +1,5 @@
+[if {isFirstTime}]
+    ???: Ni se te ocurra tumbarte a hacer el vago.
+[else]
+    ???: Debes seguir adelante, no tumbarte a hacer el vago.
+[endif]

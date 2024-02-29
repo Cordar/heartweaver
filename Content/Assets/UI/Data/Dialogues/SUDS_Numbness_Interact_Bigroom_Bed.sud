@@ -1,0 +1,6 @@
+[if {isFirstTime}]
+    ACE: ¿Qué voy a hacer ahora? Ya no me queda nadie…
+[else]
+    ???: Podrías vender la cama y…
+    ACE: Eres cruel. No voy a venderla, aunque mi padre ya no esté vivo.
+[endif]
