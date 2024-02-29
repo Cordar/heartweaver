@@ -23,7 +23,7 @@ class HEARTWEAVER_API	IKrakenActivableObject
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
-	void Activate();
+	void Activate(AActor* Instigator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
 	void Deactivate();

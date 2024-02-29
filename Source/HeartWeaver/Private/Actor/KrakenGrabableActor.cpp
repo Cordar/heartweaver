@@ -37,7 +37,7 @@ void AKrakenGrabableActor::Grab(AKrakenCharacter* TargetCharacter)
 		TargetCharacter->SetGrabableActor(this);
 		TargetCharacter->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = false;
 	}
-	this->Execute_Activate(this);
+	this->Execute_Activate(this, TargetCharacter);
 	this->UnsetAsTarget(TargetCharacter);
 }
 
