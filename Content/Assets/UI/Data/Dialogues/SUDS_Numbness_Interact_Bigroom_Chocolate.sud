@@ -1,0 +1,6 @@
+[if {isFirstTime}]
+    ACE: Me encanta el chocolate que sirven en esa librería. Es el más dulce que he probado.
+    ???: Te pega más el café. Amargo y solo.
+[else]
+    ACE: Este chocolate siempre me animaba…
+[endif]

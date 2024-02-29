@@ -1,0 +1,6 @@
+[if {isFirstTime}]
+    ACE: El sillón dónde leía mi padre cuando mi madre me enseñaba a tejer. Qué recuerdo tan bonito.
+    ???: Y triste.
+[else]
+    ACE: Aquí leía mi padre. [sad laugh] Aunque le intentamos enseñar, él nunca fue capaz de tejer nada.
+[endif]

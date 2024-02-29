@@ -1,0 +1,5 @@
+[if {isFirstTime}]
+    ACE: Nunca había leído nada que explique lo que me está pasando. ¿Habrá algún libro sobre esto?
+[else]
+    ACE: ¿Habrá algún libro que explique lo que me está pasando?
+[endif]

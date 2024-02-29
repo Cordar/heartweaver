@@ -1,0 +1,6 @@
+[if {isFirstTime}]
+    ACE: ¡Mis peluches! ¿Dónde habrán ido a parar los más viejos?
+    ???: ¿A ti te gustan…?
+[else]
+    ???: Guardar peluches en un armario es como guardar tus sentimientos, acabas olvidando que los tienes.
+[endif]
