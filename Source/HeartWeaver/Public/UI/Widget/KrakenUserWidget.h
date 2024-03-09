@@ -21,6 +21,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;
 
+	UFUNCTION(BlueprintNativeEvent)
+	void ClearTemporaryWidgets();
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();

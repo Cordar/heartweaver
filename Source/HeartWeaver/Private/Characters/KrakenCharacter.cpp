@@ -5,7 +5,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
-#include "Actor/KrakenGrabableActor.h"
 #include "Camera/CameraActor.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
 #include "Player/KrakenPlayerController.h"
@@ -114,30 +113,6 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleGroundMovementInput(Value);
 	}
-}
-
-void AKrakenCharacter::SetGrabableActor(AKrakenGrabableActor* GrabableActor)
-{
-	KrakenGrabableActor = GrabableActor;
-	if (GrabableActor != nullptr)
-	{
-		KrakenCharacterMovementComponent->bOrientRotationToMovement = false;
-	} else
-	{
-		KrakenCharacterMovementComponent->bOrientRotationToMovement = true;
-	}
-}
-
-bool AKrakenCharacter::CanGrab() const
-{
-	if(KrakenGrabableActor == nullptr) return true;
-	return false;
-}
-
-bool AKrakenCharacter::IsGrabbingMovable() const
-{
-	if (KrakenGrabableActor == nullptr) return false;
-	return KrakenGrabableActor->GetGrabableType() == EGrabableType::Movable;
 }
 
 void AKrakenCharacter::SetInteractableActor(AKrakenInteractableActor* InteractableActor)
