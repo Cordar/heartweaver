@@ -8,3 +8,7 @@ void UKrakenUserWidget::SetWidgetController(UObject* InWidgetController)
 	WidgetController = InWidgetController;
 	WidgetControllerSet();
 }
+
+void UKrakenUserWidget::ClearTemporaryWidgets_Implementation()
+{
+}

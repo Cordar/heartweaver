@@ -31,13 +31,6 @@ public:
 	void Move(const FInputActionValue& Value);
 	
 	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
-	
-	// Grabable
-	FORCEINLINE AKrakenGrabableActor* GetGrabableActor() const { return KrakenGrabableActor; }
-	void SetGrabableActor(AKrakenGrabableActor* GrabableActor);
-	UFUNCTION(BlueprintCallable, Category = "Grabable")
-	bool CanGrab() const;
-	bool IsGrabbingMovable() const;
 
 	// Interactable
 	UFUNCTION(BlueprintCallable, Category = "Interactable")
