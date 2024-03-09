@@ -21,12 +21,15 @@ class HEARTWEAVER_API AKrakenHUD : public AHUD
 	
 public:
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widgets")
 	TObjectPtr<UKrakenUserWidget> OverlayWidget;
 
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& InParams);
 
 	void InitOverlay(APlayerController* InPlayerController, APlayerState* InPlayerState, UAbilitySystemComponent* InAbilitySystemComponent, UAttributeSet* InAttributeSet);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void ClearTemporaryWidgets();
 
 private:
 

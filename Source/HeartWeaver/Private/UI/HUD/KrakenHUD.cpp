@@ -32,3 +32,11 @@ void AKrakenHUD::InitOverlay(APlayerController* InPlayerController, APlayerState
 	WidgetController->BroadcastInitialValues();
 	Widget->AddToViewport();
 }
+
+void AKrakenHUD::ClearTemporaryWidgets()
+{
+	if (OverlayWidget)
+	{
+		OverlayWidget->ClearTemporaryWidgets();
+	}
+}

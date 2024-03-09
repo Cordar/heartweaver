@@ -12,8 +12,6 @@ class AKrakenCharacter;
 UENUM(BlueprintType)
 enum class EGrabableType: uint8
 {
-	Pickup,
-	Movable,
 	Collectible,
 	Interactive,
 };

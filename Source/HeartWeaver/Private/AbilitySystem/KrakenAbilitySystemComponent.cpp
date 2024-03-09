@@ -34,6 +34,7 @@ void UKrakenAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& I
 			AbilitySpecInputPressed(AbilitySpec);
 			if (!AbilitySpec.IsActive())
 			{
+				TryActivateAbility(AbilitySpec.Handle);
 				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
 			}
 		}
@@ -43,18 +44,6 @@ void UKrakenAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& I
 void UKrakenAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
-
-	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
-	{
-		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
-		{
-			AbilitySpecInputPressed(AbilitySpec);
-			if (!AbilitySpec.IsActive())
-			{
-				TryActivateAbility(AbilitySpec.Handle);
-			}
-		}
-	}
 }
 
 void UKrakenAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
@@ -66,7 +55,11 @@ void UKrakenAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& 
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputReleased(AbilitySpec);
-			InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
+			if (AbilitySpec.IsActive())
+			{
+				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
+			}
+			
 		}
 	}
 }
