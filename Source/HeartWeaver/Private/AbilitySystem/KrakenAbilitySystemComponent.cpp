@@ -54,12 +54,8 @@ void UKrakenAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& 
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
+			InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
 			AbilitySpecInputReleased(AbilitySpec);
-			if (AbilitySpec.IsActive())
-			{
-				InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, AbilitySpec.Handle, AbilitySpec.ActivationInfo.GetActivationPredictionKey());
-			}
-			
 		}
 	}
 }
