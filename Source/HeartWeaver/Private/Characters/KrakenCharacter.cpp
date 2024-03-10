@@ -7,6 +7,7 @@
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "Camera/CameraActor.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
+#include "Characters/KrakenPushComponent.h"
 #include "Player/KrakenPlayerController.h"
 #include "Player/KrakenPlayerState.h"
 #include "UI/HUD/KrakenHUD.h"
@@ -42,6 +43,8 @@ AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+
+	KrakenPushComponent = CreateDefaultSubobject<UKrakenPushComponent>(TEXT("Push Component"));
 }
 
 void AKrakenCharacter::BeginPlay()
@@ -109,6 +112,10 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleClimbMovementInput(Value);
 	}
+	else if(KrakenPushComponent->IsHoldingObject())
+	{
+		HandlePushMovementInput(Value);
+	}
 	else
 	{
 		HandleGroundMovementInput(Value);
@@ -132,14 +139,15 @@ void AKrakenCharacter::SetLayingOnFloor(bool bNewIsLayingOnFloor)
 
 void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 {
+	if (Controller == nullptr) return;
+	
 	if (FollowCamera == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FollowCamera is not set in KrakenCharacter. Cannot handle movement input."));
 		return;
 	}
+	
 	const FVector2D MoveVector = Value.Get<FVector2D>();
-
-	if (Controller == nullptr) return;
 	
 	const FRotator Rotation = FollowCamera->GetActorRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -151,8 +159,20 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 	AddMovementInput(RightDirection, MoveVector.X);
 }
 
+void AKrakenCharacter::HandlePushMovementInput(const FInputActionValue& Value)
+{
+	if (Controller == nullptr) return;
+	
+	const FVector2D MoveVector = Value.Get<FVector2D>();
+
+	KrakenPushComponent->ForwardMove = MoveVector.Y;
+	KrakenPushComponent->RightMove = MoveVector.X;
+}
+
 void AKrakenCharacter::HandleClimbMovementInput(const FInputActionValue& Value)
 {
+	if (Controller == nullptr) return;
+	
 	const FVector2D MoveVector = Value.Get<FVector2D>();
 	const FVector ForwardDirection = FVector::CrossProduct(
 		-GetKrakenCharacterMovementComponent()->GetClimbableSurfaceNormal(),

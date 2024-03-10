@@ -7,6 +7,7 @@
 
 #include "KrakenCharacter.generated.h"
 
+class UKrakenPushComponent;
 class AKrakenInteractableActor;
 struct FInputActionValue;
 class UInputMappingContext;
@@ -37,11 +38,13 @@ public:
 	FORCEINLINE AKrakenInteractableActor* GetInteractableActor() const { return KrakenInteractableActor; }
 	void SetInteractableActor(AKrakenInteractableActor* InteractableActor);
 
+	// Laying on Floor Intro Scene
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	bool IsLayingOnFloor() const;
-
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	void SetLayingOnFloor(bool bNewIsLayingOnFloor);
+
+	FORCEINLINE UKrakenPushComponent* GetPushComponent() const { return KrakenPushComponent; }
 
 
 protected:
@@ -53,9 +56,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
-	TObjectPtr<AKrakenGrabableActor> KrakenGrabableActor;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
 	TObjectPtr<AKrakenInteractableActor> KrakenInteractableActor;
@@ -71,9 +71,13 @@ private:
 	virtual void InitAbilityActorInfo() override;
 	
 	void HandleGroundMovementInput(const FInputActionValue& Value);
+	void HandlePushMovementInput(const FInputActionValue& Value);
 	void HandleClimbMovementInput(const FInputActionValue& Value);
 
 	void SaveLastSafeLocation();
 
 	bool bIsLayingOnFloor = true;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Pushable")
+	TObjectPtr<UKrakenPushComponent> KrakenPushComponent;
 };
