@@ -3,8 +3,10 @@
 
 #include "AnimInstance/KrakenCharacterAnimInstance.h"
 
+#include "KismetAnimationLibrary.h"
 #include "Characters/KrakenCharacter.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
+#include "Characters/KrakenPushComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 void UKrakenCharacterAnimInstance::NativeInitializeAnimation()
@@ -32,8 +34,11 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetIsClimbing();
 	GetClimbVelocity();
 	GetIsLayingOnFloor();
-	GetIsGoingBackwards();
 	GetIsCrouching();
+	GetIsHoldingAnObject();
+	GetIsMovingAnObject();
+	GetPushDirection();
+	GetPushSpeed();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -71,13 +76,33 @@ void UKrakenCharacterAnimInstance::GetIsLayingOnFloor()
 	bIsLayingOnFloor = ControlledCharacter->IsLayingOnFloor();
 }
 
-void UKrakenCharacterAnimInstance::GetIsGoingBackwards()
-{
-	const FVector Velocity = ControlledCharacter->GetVelocity().GetSafeNormal();
-	bIsGoingBackwards = FVector::DotProduct(ControlledCharacter->GetActorForwardVector(), Velocity) < 0;
-}
-
 void UKrakenCharacterAnimInstance::GetIsCrouching()
 {
 	bIsCrouching = CharacterMovementComponent->IsCrouching();
+}
+
+void UKrakenCharacterAnimInstance::GetIsHoldingAnObject()
+{
+	bIsHoldingAnObject = ControlledCharacter->GetPushComponent()->IsHoldingObject();
+}
+
+void UKrakenCharacterAnimInstance::GetIsMovingAnObject()
+{
+	bIsMovingAnObject = ControlledCharacter->GetPushComponent()->IsMovingAnObject;
+}
+
+void UKrakenCharacterAnimInstance::GetPushDirection()
+{
+	if (const UKrakenPushComponent* PushComponent = ControlledCharacter->GetPushComponent())
+	{
+		PushDirection = UKismetAnimationLibrary::CalculateDirection(PushComponent->PushVelocity, PushComponent->PushRotation);
+	}
+}
+
+void UKrakenCharacterAnimInstance::GetPushSpeed()
+{
+	if (const UKrakenPushComponent* PushComponent = ControlledCharacter->GetPushComponent())
+	{
+		PushSpeed = PushComponent->PushVelocity != FVector::ZeroVector ? PushComponent->PushSpeed : 0.f;
+	}
 }
