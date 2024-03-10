@@ -130,7 +130,6 @@ void UKrakenPushComponent::StopMovement()
 {
 	ForwardMove = 0.0f;
 	RightMove = 0.0f;
-	IsMovingAnObject = false;
 }
 
 bool UKrakenPushComponent::MakeLineTraceToSide(const bool CheckRight) const
@@ -144,7 +143,7 @@ bool UKrakenPushComponent::MakeLineTraceToSide(const bool CheckRight) const
 		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility),
 		false,
 		TArray<AActor*>(),
-		EDrawDebugTrace::Persistent,
+		EDrawDebugTrace::None,
 		HitResult,
 		true
 	);
@@ -157,24 +156,56 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 	int CharacterZRotationIndex = -1;
 	if (CurrentActorZRotation >= 0.0f and CurrentActorZRotation < 80.0f)
 	{
-		DeltaLocation = GetDeltaLocation(DeltaTime, ForwardMove, RightMove);
 		CharacterZRotationIndex = 0;
 	}
 	else if (CurrentActorZRotation >= 80.0f and CurrentActorZRotation < 170.0f)
 	{
-		DeltaLocation = GetDeltaLocation(DeltaTime, RightMove, -ForwardMove);
 		CharacterZRotationIndex = 1;
 	}
 	else if (CurrentActorZRotation >= 170.0f and CurrentActorZRotation < 260.0f)
 	{
-		DeltaLocation = GetDeltaLocation(DeltaTime, -ForwardMove, -RightMove);
 		CharacterZRotationIndex = 2;
 	}
 	else if (CurrentActorZRotation >= -90.0f and CurrentActorZRotation < 0.0f)
 	{
-		DeltaLocation = GetDeltaLocation(DeltaTime, -RightMove, ForwardMove);
 		CharacterZRotationIndex = 3;
 	}
+
+
+	PushVelocity = FVector::ZeroVector;
+	switch (CharacterZRotationIndex)
+	{
+	case 0:
+		DeltaLocation = GetDeltaLocation(DeltaTime, ForwardMove, RightMove);
+		if (DeltaLocation != FVector::ZeroVector)
+		{
+			PushVelocity = FVector(PushSpeed, 0.f, 0.f);
+		}
+		break;
+	case 1:
+		DeltaLocation = GetDeltaLocation(DeltaTime, RightMove, -ForwardMove);
+		if (DeltaLocation != FVector::ZeroVector)
+		{
+			PushVelocity = FVector(0.f, PushSpeed, 0.f);
+		}
+		break;
+	case 2:
+		DeltaLocation = GetDeltaLocation(DeltaTime, -ForwardMove, -RightMove);
+		if (DeltaLocation != FVector::ZeroVector)
+		{
+			PushVelocity = FVector(-PushSpeed, 0.f, 0.f);
+		}
+		break;
+	case 3:
+		DeltaLocation = GetDeltaLocation(DeltaTime, -RightMove, ForwardMove);
+		if (DeltaLocation != FVector::ZeroVector)
+		{
+			PushVelocity = FVector(0.f, -PushSpeed, 0.f);
+		}
+		break;
+	default: break;
+	}
+
 
 	if (DeltaLocation != FVector::ZeroVector)
 	{
@@ -210,25 +241,6 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 				break;
 			default: break;
 			}
-		}
-	}
-	if (!CanMoveDown or !CanMoveLeft or !CanMoveRight or !CanMoveUp)
-	{
-		PushVelocity = FVector::ZeroVector;
-	}
-	else
-	{
-		switch (CharacterZRotationIndex)
-		{
-		case 0: PushVelocity = FVector(PushSpeed, 0.f, 0.f);
-			break;
-		case 1: PushVelocity = FVector(0.f, PushSpeed, 0.f);
-			break;
-		case 2: PushVelocity = FVector(-PushSpeed, 0.f, 0.f);
-			break;
-		case 3: PushVelocity = FVector(0.f, -PushSpeed, 0.f);
-			break;
-		default: break;
 		}
 	}
 

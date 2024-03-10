@@ -103,6 +103,6 @@ void UKrakenCharacterAnimInstance::GetPushSpeed()
 {
 	if (const UKrakenPushComponent* PushComponent = ControlledCharacter->GetPushComponent())
 	{
-		PushSpeed = UKismetMathLibrary::VSizeXY(PushComponent->PushVelocity);
+		PushSpeed = PushComponent->PushVelocity != FVector::ZeroVector ? PushComponent->PushSpeed : 0.f;
 	}
 }

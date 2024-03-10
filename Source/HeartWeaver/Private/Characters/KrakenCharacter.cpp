@@ -165,7 +165,6 @@ void AKrakenCharacter::HandlePushMovementInput(const FInputActionValue& Value)
 	
 	const FVector2D MoveVector = Value.Get<FVector2D>();
 
-	KrakenPushComponent->IsMovingAnObject = true;
 	KrakenPushComponent->ForwardMove = MoveVector.Y;
 	KrakenPushComponent->RightMove = MoveVector.X;
 }
