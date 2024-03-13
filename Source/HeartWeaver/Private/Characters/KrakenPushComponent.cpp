@@ -96,34 +96,9 @@ void UKrakenPushComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	MoveCurrentPushableObject(DeltaTime);
 }
 
-void UKrakenPushComponent::CheckBackwardsCharacterCollision(int ChosenDirection)
+bool UKrakenPushComponent::IsCharacterCollidingBackwards() const
 {
-	if (MakeCapsuleTrace(Character->GetCapsuleComponent()->GetScaledCapsuleRadius(), Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()))
-	{
-		switch (ChosenDirection)
-		{
-		case 0:
-			CanMoveUp = false;
-			break;
-		case 1:
-			CanMoveRight = false;
-			break;
-		case 2:
-			CanMoveDown = false;
-			break;
-		case 3:
-			CanMoveLeft = false;
-			break;
-		default: break;
-		}
-	}
-	else
-	{
-		CanMoveUp = true;
-		CanMoveRight = true;
-		CanMoveDown = true;
-		CanMoveLeft = true;
-	}
+	return MakeCapsuleTrace(Character->GetCapsuleComponent()->GetScaledCapsuleRadius(), Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 }
 
 void UKrakenPushComponent::StopMovement()
@@ -153,94 +128,110 @@ bool UKrakenPushComponent::MakeLineTraceToSide(const bool CheckRight) const
 void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 {
 	FVector DeltaLocation = FVector::ZeroVector;
-	int CharacterZRotationIndex = -1;
-	if (CurrentActorZRotation >= 0.0f and CurrentActorZRotation < 80.0f)
-	{
-		CharacterZRotationIndex = 0;
-	}
-	else if (CurrentActorZRotation >= 80.0f and CurrentActorZRotation < 170.0f)
-	{
-		CharacterZRotationIndex = 1;
-	}
-	else if (CurrentActorZRotation >= 170.0f and CurrentActorZRotation < 260.0f)
-	{
-		CharacterZRotationIndex = 2;
-	}
-	else if (CurrentActorZRotation >= -90.0f and CurrentActorZRotation < 0.0f)
-	{
-		CharacterZRotationIndex = 3;
-	}
-
-
+	const float FinalRotation = CurrentActorZRotation + CurrentPushableObject->ExtraRotation;
 	PushVelocity = FVector::ZeroVector;
-	switch (CharacterZRotationIndex)
+	if (FinalRotation >= 0.0f and FinalRotation < 80.0f)
 	{
-	case 0:
 		DeltaLocation = GetDeltaLocation(DeltaTime, ForwardMove, RightMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			PushVelocity = FVector(PushSpeed, 0.f, 0.f);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			if (IsCharacterCollidingBackwards())
+			{
+				CanMoveUp = false;
+			}
+			if (MakeLineTraceToSide())
+			{
+				CanMoveRight = false;
+			}
+			if (MakeLineTraceToSide(true))
+			{
+				CanMoveLeft = false;
+			}
 		}
-		break;
-	case 1:
+	}
+	else if (FinalRotation >= 80.0f and FinalRotation < 170.0f)
+	{
 		DeltaLocation = GetDeltaLocation(DeltaTime, RightMove, -ForwardMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			PushVelocity = FVector(0.f, PushSpeed, 0.f);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			if (IsCharacterCollidingBackwards())
+			{
+				CanMoveRight = false;
+			}
+			if (MakeLineTraceToSide())
+			{
+				CanMoveDown = false;
+			}
+			if (MakeLineTraceToSide(true))
+			{
+				CanMoveDown = false;
+			}
 		}
-		break;
-	case 2:
+	}
+	else if (FinalRotation >= 170.0f and FinalRotation < 260.0f)
+	{
 		DeltaLocation = GetDeltaLocation(DeltaTime, -ForwardMove, -RightMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			PushVelocity = FVector(-PushSpeed, 0.f, 0.f);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			if (IsCharacterCollidingBackwards())
+			{
+				CanMoveDown = false;
+			}
+			if (MakeLineTraceToSide())
+			{
+				CanMoveUp = false;
+			}
+			if (MakeLineTraceToSide(true))
+			{
+				CanMoveRight = false;
+			}
 		}
-		break;
-	case 3:
+	}
+	else if (FinalRotation >= -90.0f and FinalRotation < 0.0f)
+	{
 		DeltaLocation = GetDeltaLocation(DeltaTime, -RightMove, ForwardMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			PushVelocity = FVector(0.f, -PushSpeed, 0.f);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			if (IsCharacterCollidingBackwards())
+			{
+				CanMoveLeft = false;
+			}
+			if (MakeLineTraceToSide())
+			{
+				CanMoveDown = false;
+			}
+			if (MakeLineTraceToSide(true))
+			{
+				CanMoveUp = false;
+			}
 		}
-		break;
-	default: break;
 	}
-
 
 	if (DeltaLocation != FVector::ZeroVector)
 	{
-		CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
-		StopMovement();
-		CheckBackwardsCharacterCollision(CharacterZRotationIndex);
-		if (MakeLineTraceToSide())
+		if (CurrentActorZRotation >= 0.0f and CurrentActorZRotation < 80.0f)
 		{
-			switch (CharacterZRotationIndex)
-			{
-			case 0: CanMoveRight = false;
-				break;
-			case 1: CanMoveUp = false;
-				break;
-			case 2: CanMoveLeft = false;
-				break;
-			case 3: CanMoveDown = false;
-				break;
-			default: break;
-			}
+			PushVelocity = FVector(PushSpeed, 0.f, 0.f);
+			StopMovement();
 		}
-		if (MakeLineTraceToSide(true))
+		else if (CurrentActorZRotation >= 80.0f and CurrentActorZRotation < 170.0f)
 		{
-			switch (CharacterZRotationIndex)
-			{
-			case 0: CanMoveLeft = false;
-				break;
-			case 1: CanMoveDown = false;
-				break;
-			case 2: CanMoveRight = false;
-				break;
-			case 3: CanMoveUp = false;
-				break;
-			default: break;
-			}
+			PushVelocity = FVector(0.f, PushSpeed, 0.f);
+			StopMovement();
+		}
+		else if (CurrentActorZRotation >= 170.0f and CurrentActorZRotation < 260.0f)
+		{
+			PushVelocity = FVector(-PushSpeed, 0.f, 0.f);
+			StopMovement();
+		}
+		else if (CurrentActorZRotation >= -90.0f and CurrentActorZRotation < 0.0f)
+		{
+			PushVelocity = FVector(0.f, -PushSpeed, 0.f);
+			StopMovement();
 		}
 	}
 
