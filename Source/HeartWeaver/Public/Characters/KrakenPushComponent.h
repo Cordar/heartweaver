@@ -52,7 +52,7 @@ protected:
 	void MoveCurrentPushableObject(float DeltaTime);
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void CheckBackwardsCharacterCollision(int ChosenDirection);
+	bool IsCharacterCollidingBackwards() const;
 	void StopMovement();
 	bool MakeLineTraceToSide(const bool CheckRight = false) const;
 
