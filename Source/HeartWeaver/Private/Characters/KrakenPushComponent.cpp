@@ -128,7 +128,10 @@ bool UKrakenPushComponent::MakeLineTraceToSide(const bool CheckRight) const
 void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 {
 	FVector DeltaLocation = FVector::ZeroVector;
-	const float FinalRotation = CurrentActorZRotation + CurrentPushableObject->ExtraRotation;
+	float FinalRotation = CurrentActorZRotation + CurrentPushableObject->ExtraRotation;
+	UE_LOG(LogTemp, Warning, TEXT("FinalRotation: %f"), FinalRotation);
+	while (FinalRotation > 260.f) FinalRotation -= 360.f;
+	while (FinalRotation < -90) FinalRotation += 360.f;
 	PushVelocity = FVector::ZeroVector;
 	if (FinalRotation >= 0.0f and FinalRotation < 80.0f)
 	{
