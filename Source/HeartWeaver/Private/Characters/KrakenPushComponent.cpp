@@ -44,6 +44,10 @@ void UKrakenPushComponent::EndPush()
 		Character->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = true;
 		UActorComponent::SetComponentTickEnabled(false);
 		IsMovingAnObject = false;
+		CanMoveDown = true;
+		CanMoveUp = true;
+		CanMoveLeft = true;
+		CanMoveRight = true;
 	}
 }
 
@@ -133,24 +137,20 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 	while (FinalRotation > 260.f) FinalRotation -= 360.f;
 	while (FinalRotation < -90) FinalRotation += 360.f;
 	PushVelocity = FVector::ZeroVector;
+
+	bool IsCollidingBackwards = true, IsCharacterCollidingLeft = true, IsCharacterCollidingRight = true;
 	if (FinalRotation >= 0.0f and FinalRotation < 80.0f)
 	{
 		DeltaLocation = GetDeltaLocation(DeltaTime, ForwardMove, RightMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
 			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
-			if (IsCharacterCollidingBackwards())
-			{
-				CanMoveUp = false;
-			}
-			if (MakeLineTraceToSide())
-			{
-				CanMoveRight = false;
-			}
-			if (MakeLineTraceToSide(true))
-			{
-				CanMoveLeft = false;
-			}
+			IsCollidingBackwards = IsCharacterCollidingBackwards();
+			IsCharacterCollidingLeft = MakeLineTraceToSide();
+			IsCharacterCollidingRight = MakeLineTraceToSide(true);
+			CanMoveUp = !IsCollidingBackwards;
+			CanMoveRight = !IsCharacterCollidingLeft;
+			CanMoveLeft = !IsCharacterCollidingRight;
 		}
 	}
 	else if (FinalRotation >= 80.0f and FinalRotation < 170.0f)
@@ -159,18 +159,11 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		if (DeltaLocation != FVector::ZeroVector)
 		{
 			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
-			if (IsCharacterCollidingBackwards())
-			{
-				CanMoveRight = false;
-			}
-			if (MakeLineTraceToSide())
-			{
-				CanMoveDown = false;
-			}
-			if (MakeLineTraceToSide(true))
-			{
-				CanMoveDown = false;
-			}
+			IsCollidingBackwards = IsCharacterCollidingBackwards();
+			IsCharacterCollidingLeft = MakeLineTraceToSide();
+			IsCharacterCollidingRight = MakeLineTraceToSide(true);
+			CanMoveRight = !IsCollidingBackwards;
+			CanMoveDown = !IsCharacterCollidingLeft and !IsCharacterCollidingRight;
 		}
 	}
 	else if (FinalRotation >= 170.0f and FinalRotation < 260.0f)
@@ -179,18 +172,12 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		if (DeltaLocation != FVector::ZeroVector)
 		{
 			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
-			if (IsCharacterCollidingBackwards())
-			{
-				CanMoveDown = false;
-			}
-			if (MakeLineTraceToSide())
-			{
-				CanMoveUp = false;
-			}
-			if (MakeLineTraceToSide(true))
-			{
-				CanMoveRight = false;
-			}
+			IsCollidingBackwards = IsCharacterCollidingBackwards();
+			IsCharacterCollidingLeft = MakeLineTraceToSide();
+			IsCharacterCollidingRight = MakeLineTraceToSide(true);
+			CanMoveDown = !IsCollidingBackwards;
+			CanMoveUp = !IsCharacterCollidingLeft;
+			CanMoveRight = !IsCharacterCollidingRight;
 		}
 	}
 	else if (FinalRotation >= -90.0f and FinalRotation < 0.0f)
@@ -199,18 +186,12 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		if (DeltaLocation != FVector::ZeroVector)
 		{
 			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
-			if (IsCharacterCollidingBackwards())
-			{
-				CanMoveLeft = false;
-			}
-			if (MakeLineTraceToSide())
-			{
-				CanMoveDown = false;
-			}
-			if (MakeLineTraceToSide(true))
-			{
-				CanMoveUp = false;
-			}
+			IsCollidingBackwards = IsCharacterCollidingBackwards();
+			IsCharacterCollidingLeft = MakeLineTraceToSide();
+			IsCharacterCollidingRight = MakeLineTraceToSide(true);
+			CanMoveLeft = !IsCollidingBackwards;
+			CanMoveDown = !IsCharacterCollidingLeft;
+			CanMoveUp = !IsCharacterCollidingRight;
 		}
 	}
 
