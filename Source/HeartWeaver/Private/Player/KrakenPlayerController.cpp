@@ -42,7 +42,13 @@ void AKrakenPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	ControlledCharacter = CastChecked<AKrakenCharacter>(GetPawn());
+	if (AKrakenCharacter* KrakenCharacter = Cast<AKrakenCharacter>(InPawn))
+	{
+		ControlledCharacter = KrakenCharacter;
+	} else
+	{
+		ControlledCharacter = nullptr;
+	}
 }
 
 UKrakenAbilitySystemComponent* AKrakenPlayerController::GetKrakenAbilitySystemComponent()
