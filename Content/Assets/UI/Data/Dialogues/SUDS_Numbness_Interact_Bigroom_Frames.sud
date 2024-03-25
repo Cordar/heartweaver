@@ -1,7 +1,7 @@
-[if {isFirstTime}]
-    ACE: Estas fotos… ¿de dónde han salido?
-    ???: Aaah… mira cómo te vas quedando sola. Que pena…
+﻿[if {isFirstTime}]
+    ACE: Estas fotos… ¿de dónde han salido?    @0001@
+    ???: Aaah… mira cómo te vas quedando sola. Que pena…    @0002@
 [else]
-    ACE: Nunca había visto estas fotografías.
-    ???: Aun así, muestran tu triste vida.
+    ACE: Nunca había visto estas fotografías.    @0003@
+    ???: Aun así, muestran tu triste vida.    @0004@
 [endif]
