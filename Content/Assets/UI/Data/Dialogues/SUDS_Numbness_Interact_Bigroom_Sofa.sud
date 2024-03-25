@@ -1,5 +1,5 @@
-[if {isFirstTime}]
-    ???: Ni se te ocurra tumbarte a hacer el vago.
+﻿[if {isFirstTime}]
+    ???: Ni se te ocurra tumbarte a hacer el vago.    @0001@
 [else]
-    ???: Debes seguir adelante, no tumbarte a hacer el vago.
+    ???: Debes seguir adelante, no tumbarte a hacer el vago.    @0002@
 [endif]

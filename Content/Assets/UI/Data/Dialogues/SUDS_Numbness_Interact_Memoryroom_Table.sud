@@ -1,7 +1,7 @@
-[if {isFirstTime}]
-    ACE: Aquí aprendí a tejer con mi madre. Siempre me dijo que tenía un talento oculto para esto.
-    ???: Seguro que sí… Tan oculto que ni tú misma lo encuentras.
+﻿[if {isFirstTime}]
+    ACE: Aquí aprendí a tejer con mi madre. Siempre me dijo que tenía un talento oculto para esto.    @0001@
+    ???: Seguro que sí… Tan oculto que ni tú misma lo encuentras.    @0002@
 [else]
-    ACE: Mi madre me enseñó a tejer cuando enfermó. Ojalá pudiera volver a ese momento…
-    ???: Eso es imposible.
+    ACE: Mi madre me enseñó a tejer cuando enfermó. Ojalá pudiera volver a ese momento…    @0003@
+    ???: Eso es imposible.    @0004@
 [endif]
