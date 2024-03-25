@@ -1,5 +1,5 @@
-[if {isFirstTime}]
-    ACE: Ojalá todo esto fuera un sueño… ¡Au! Es demasiado real para estar soñando.
+﻿[if {isFirstTime}]
+    ACE: Ojalá todo esto fuera un sueño… ¡Au! Es demasiado real para estar soñando.    @0001@
 [else]
-    ACE: Esto es real, pero no sé dónde estoy…
+    ACE: Esto es real, pero no sé dónde estoy…    @0002@
 [endif]

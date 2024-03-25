@@ -1,5 +1,5 @@
-[if {isFirstTime}]
-    ACE: Aquí reposa toda mi familia.
+﻿[if {isFirstTime}]
+    ACE: Aquí reposa toda mi familia.    @0001@
 [else]
-    ???: Toda tu familia ha muerto. Solo faltas tú…
+    ???: Toda tu familia ha muerto. Solo faltas tú…    @0002@
 [endif]

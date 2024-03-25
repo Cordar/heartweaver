@@ -1,5 +1,5 @@
-[if {isFirstTime}]
-    ACE: Mi escritorio. Aquí estaba antes de caer. Pero falta algo…
+﻿[if {isFirstTime}]
+    ACE: Mi escritorio. Aquí estaba antes de caer. Pero falta algo…    @0001@
 [else]
-    ACE: Juraría que falta algo, pero no sabría decir qué…
+    ACE: Juraría que falta algo, pero no sabría decir qué…    @0002@
 [endif]
