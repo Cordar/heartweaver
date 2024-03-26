@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
 
+#include "AbilitySystem/KrakenGameplayTags.h"
 #include "AbilitySystem/Abilities/KrakenGameplayAbility.h"
 
 void UKrakenAbilitySystemComponent::AbilityActorInfoSet()
@@ -27,6 +28,12 @@ void UKrakenAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& I
 {
 	if (!InputTag.IsValid()) return;
 
+	const FKrakenGameplayTags& GameplayTags = FKrakenGameplayTags::Get();
+	if (HasMatchingGameplayTag(GameplayTags.Tag_Gameplay_AbilityInputBlocked))
+	{
+		return;
+	}
+
 	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
@@ -49,6 +56,12 @@ void UKrakenAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& Inpu
 void UKrakenAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
+	
+	const FKrakenGameplayTags& GameplayTags = FKrakenGameplayTags::Get();
+	if (HasMatchingGameplayTag(GameplayTags.Tag_Gameplay_AbilityInputBlocked))
+	{
+		return;
+	}
 
 	for (FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
 	{
