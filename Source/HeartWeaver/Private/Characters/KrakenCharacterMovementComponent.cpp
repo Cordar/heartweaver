@@ -3,6 +3,9 @@
 
 #include "Characters/KrakenCharacterMovementComponent.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+#include "AbilitySystem/KrakenGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/CapsuleComponent.h"
@@ -27,6 +30,7 @@ FRotator UKrakenCharacterMovementComponent::GetDeltaRotation(float DeltaTime) co
 
 float UKrakenCharacterMovementComponent::GetMaxSpeed() const
 {
+	
 	if(IsClimbing())
 	{
 		return MaxClimbSpeed;
@@ -36,6 +40,15 @@ float UKrakenCharacterMovementComponent::GetMaxSpeed() const
 
 float UKrakenCharacterMovementComponent::GetMaxAcceleration() const
 {
+	if (UAbilitySystemComponent* ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner()))
+	{
+		const FKrakenGameplayTags& GameplayTags = FKrakenGameplayTags::Get();
+		if (ASC->HasMatchingGameplayTag(GameplayTags.Tag_Gameplay_MovementStopped))
+		{
+			return 0;
+		}
+	}
+	
 	if(IsClimbing())
 	{
 		return MaxClimbAcceleration;
