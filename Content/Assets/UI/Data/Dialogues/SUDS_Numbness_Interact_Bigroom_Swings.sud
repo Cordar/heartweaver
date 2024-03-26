@@ -1,6 +1,6 @@
-[if {isFirstTime}]
-    ACE: Solía jugar aquí con mis padres.
-    ???: Ahora ya no tendría sentido volver a ir, ¿verdad?
+﻿[if {isFirstTime}]
+    ACE: Solía jugar aquí con mis padres.    @0001@
+    ???: Ahora ya no tendría sentido volver a ir, ¿verdad?    @0002@
 [else]
-    ACE: No tiene sentido que vuelva a este lugar sin ellos…
+    ACE: No tiene sentido que vuelva a este lugar sin ellos…    @0003@
 [endif]

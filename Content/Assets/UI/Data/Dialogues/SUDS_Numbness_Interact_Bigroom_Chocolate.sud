@@ -1,6 +1,6 @@
-[if {isFirstTime}]
-    ACE: Me encanta el chocolate que sirven en esa librería. Es el más dulce que he probado.
-    ???: Te pega más el café. Amargo y solo.
+﻿[if {isFirstTime}]
+    ACE: Me encanta el chocolate que sirven en esa librería. Es el más dulce que he probado.    @0001@
+    ???: Te pega más el café. Amargo y solo.    @0002@
 [else]
-    ACE: Este chocolate siempre me animaba…
+    ACE: Este chocolate siempre me animaba…    @0003@
 [endif]
