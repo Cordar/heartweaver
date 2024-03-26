@@ -149,9 +149,6 @@ void AKrakenPlayerController::SetupInputComponent()
 		UKrakenInputComponent* KrakenInputComponent = CastChecked<UKrakenInputComponent>(InputComponent);
 
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
-		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Started, this, &AKrakenPlayerController::Jump, /*bLogIfNotFound=*/ false);
-		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Completed, this, &AKrakenPlayerController::StopJumping, /*bLogIfNotFound=*/
-		                                       false);
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch,
 		                                       /*bLogIfNotFound=*/ false);
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Climb, ETriggerEvent::Started, this, &AKrakenPlayerController::OnClimbActionStarted,
