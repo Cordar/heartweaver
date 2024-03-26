@@ -46,6 +46,8 @@ void FKrakenGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	AddTag(InputTag_Jump, "InputTag.Jump", "Jump input.");
 	AddTag(InputTag_Crouch, "InputTag.Crouch", "Crouch input.");
 	AddTag(InputTag_Climb, "InputTag.Climb", "Climb input.");
+	AddTag(Tag_Gameplay_AbilityInputBlocked, "Gameplay.AbilityInputBlocked", "Ability input blocked.");
+	AddTag(Tag_Gameplay_MovementStopped, "Gameplay.MovementStopped", "Movement stopped.");
 }
 
 void FKrakenGameplayTags::AddTag(FGameplayTag& OutTag, const ANSICHAR* TagName, const ANSICHAR* TagComment)
