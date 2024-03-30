@@ -1,0 +1,1143 @@
+﻿# Game_en English translation.
+# Copyright Kraken's Den Studios. All rights reserved.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Game_en\n"
+"POT-Creation-Date: 2024-03-30 20:24\n"
+"PO-Revision-Date: 2024-03-30 20:24\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0001@"
+msgid "Eso es un cúmulo de corrupción. Es lo que te bloquea."
+msgstr "That is an accumulation of corruption. That’s what is blocking you."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0002@"
+msgid "¿Esto?"
+msgstr "This?"
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0003@"
+msgid "En teoría deberías encontrar la manera de eliminarla. Sinceramente, no sé si serás capaz…"
+msgstr "In theory you should be able to find a way to remove it. Honestly, I do not know if you will be able to..."
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0004@"
+msgid "Qué poca confianza tienes en mí…"
+msgstr "How little trust you have in me."
+
+#. Key:	@0005@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0005@"
+msgid "No confío en nadie hasta que me demuestran de lo que son capaces."
+msgstr "I do not trust anyone until they show me what they are capable of."
+
+#. Key:	@0006@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0006@"
+msgid "Eliminarla dices… ¿Cómo?"
+msgstr "Eliminate it you say... How?"
+
+#. Key:	@0007@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0007@"
+msgid "Por lo visto reacciona cuando me acerco."
+msgstr "Apparently it reacts when I approach it."
+
+#. Key:	@0008@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_01.SUDS_Numbness_Dialogue_AceMark_01Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_01Strings,@0008@"
+msgid "Bien, vas pillando el tema. Quizá eres más inteligente de lo que pareces…"
+msgstr "Well, you are getting the hang of it. Maybe you are smarter than you look..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0001@"
+msgid "¿Qué me está pasando? No puedo sentir nada…"
+msgstr "What is going on? I can't feel anything..."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0002@"
+msgid "Yo también estoy incompleto y no me quejo tanto."
+msgstr "I am incomplete too and I do not complain so much."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0003@"
+msgid "¿Incompleto? ¿Quién eres? ¿Dónde te escondes?"
+msgstr "Incomplete? Who are you? Where are you hiding?"
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0004@"
+msgid "¡Yo no me escondo! ¡Eres tú quien no me encuentra! A ver si tendré que hacerlo yo todo…"
+msgstr "I am not hiding! It is you who can not find me! You better not think I will do everything…"
+
+#. Key:	@0005@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0005@"
+msgid "Pero…"
+msgstr "But…"
+
+#. Key:	@0006@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0006@"
+msgid "Al menos vas por buen camino, que ya es algo."
+msgstr "At least you are on the right track, which is something."
+
+#. Key:	@0007@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0007@"
+msgid "¿¡Por qué me hablas así!?"
+msgstr "Why are you talking to me like that?!"
+
+#. Key:	@0008@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0008@"
+msgid "Porque estoy aquí encerrado por tu culpa."
+msgstr "Since I am locked in here because of you."
+
+#. Key:	@0009@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@0009@"
+msgid "¿¡Mi culpa!? ¡Pero si ni te conozco!"
+msgstr "My fault?! But I don't even know you!"
+
+#. Key:	@000a@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@000a@"
+msgid "¡Pues debería darte vergüenza! Pero como no sientes nada…"
+msgstr "Then you should feel ashamed! But since you do not feel anymore…"
+
+#. Key:	@000b@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@000b@"
+msgid "¿Cómo lo sabes?"
+msgstr "How do you know that?"
+
+#. Key:	@000c@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@000c@"
+msgid "Porque por eso estamos aquí. Sigue andando, encuéntrame y te lo explicaré mejor."
+msgstr "Because that is the only reason we are here. Keep walking, find me and I will explain everything."
+
+#. Key:	@000d@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_02.SUDS_Numbness_Dialogue_AceMark_02Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_02Strings,@000d@"
+msgid "Está bien… supongo que es mi única opción."
+msgstr "Okay... I guess I don’t have another choice."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "???_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0001@"
+msgid "¿Se puede saber qué puñetas haces?"
+msgstr "What the hell are you doing?"
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE_SHOCK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0002@"
+msgid "¿¡Pero qué...!? ¿¡Estás vivo!?"
+msgstr "What the...? Are you alive?!?!?"
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "???_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0003@"
+msgid "¡Pues claro! ¿Quién crees que te ha estado hablando todo este tiempo?"
+msgstr "Of course! Who do you think is been talking to you all this time?!"
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0004@"
+msgid "Eh… ¡Eras tú! Creí que era…"
+msgstr "It... It was you! I thought it was..."
+
+#. Key:	@0005@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "???_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0005@"
+msgid "Ya, ¡claro! Que una mariposa te hable es aceptable, pero un libro no, ¿eh?"
+msgstr "Yeah, sure! A butterfly talking to you is acceptable, but not a book, huh?!"
+
+#. Key:	@0006@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0006@"
+msgid "¡No! ¡No quería decir eso! No sabía que estabas vivo…"
+msgstr "No! That's not what I meant! I didn't know you were alive..."
+
+#. Key:	@0007@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK_GRANDILOCUENTE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0007@"
+msgid "Pues sí que lo estoy. Y tendrás que acostumbrarte a eso. Me llamo Mark el grandilocuente."
+msgstr "Well, I am. And you will have to get used to that. My name is Mark the grandiloquent."
+
+#. Key:	@0008@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0008@"
+msgid "Mark, entonces…"
+msgstr "Mark, then..."
+
+#. Key:	@0009@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK_GRANDILOCUENTE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0009@"
+msgid "El grandilocuente."
+msgstr "The grandiloquent."
+
+#. Key:	@000a@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@000a@"
+msgid "Claro… Yo me llamo Ace."
+msgstr "I see... I'm Ace."
+
+#. Key:	@000b@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@000b@"
+msgid "No me importa mucho tu nombre, la verdad."
+msgstr "Actually, I do not really care much for your name."
+
+#. Key:	@000c@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@000c@"
+msgid "…"
+msgstr "..."
+
+#. Key:	@000d@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@000d@"
+msgid "Solo me importa si eres capaz de salir de aquí."
+msgstr "I only care if you are able to get out of here."
+
+#. Key:	@000e@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@000e@"
+msgid "¿Dónde estamos? ¿Qué está pasando?"
+msgstr "Where are we? What's going on?"
+
+#. Key:	@0010@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0010@"
+msgid "Nada…"
+msgstr "Nothing…"
+
+#. Key:	@0011@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0011@"
+msgid "¡Pues ese es tu problema! ¡Ya puedes espabilar o no saldremos nunca de aquí!"
+msgstr "Well, that is your problem! You'd better wake up or we will never get out of here!"
+
+#. Key:	@0012@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0012@"
+msgid "¡No es tan fácil! ¡Tú no sabes nada de mí!"
+msgstr "It's not that easy! You don't know anything about me!"
+
+#. Key:	@0013@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0013@"
+msgid "Estamos en ti, Ace. Esto eres tú. Tu mente, tu vida, tus emociones."
+msgstr "We are in yourself, Ace. This is you. Your mind, your life, your emotions."
+
+#. Key:	@0014@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0014@"
+msgid "¿Quieres salir de aquí?"
+msgstr "Do you want to get out of here?"
+
+#. Key:	@0015@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0015@"
+msgid "¡Claro que sí!"
+msgstr "Of course!"
+
+#. Key:	@0016@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0016@"
+msgid "Entonces solo tienes que sentirlo. A ver… ¿Qué sientes?"
+msgstr "Then you just have to feel it. Let's see... What do you feel?"
+
+#. Key:	@0017@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK_MOCKING"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0017@"
+msgid "¡Bwahahaha! Pues ve paso a paso. ¡Nadie te ha pedido que lo hagas todo a la vez!"
+msgstr "Bwahahaha! So take it one step at a time. Nobody asked you to do it all at once!"
+
+#. Key:	@0018@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+#. InfoMetaData:	"Speaker" : "MARK_GRANDILOCUENTE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_03.SUDS_Numbness_Dialogue_AceMark_03Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_03Strings,@0018@"
+msgid "Yo te ayudaré, pero no voy a hacer nada más de lo necesario, que lo sepas."
+msgstr "I will help you, but I am not going to do anything more than necessary, just so you know."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0001@"
+msgid "Bueno, lo has hecho bien. Te felicitaría si no fuera porque esto es tu culpa…"
+msgstr "Well, you have done well. I'd congratulate you if it were not for the fact that this is your fault..."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0002@"
+msgid "Curiosa manera de animar a los demás."
+msgstr "Funny way to encourage others."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "MARK_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0003@"
+msgid "Ese no es mi trabajo."
+msgstr "That is not my job."
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0004@"
+msgid "Ni el mío aguantarte."
+msgstr "Neither is it mine to put up with you."
+
+#. Key:	@0005@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "MARK"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0005@"
+msgid "Pues te aguantas y apechugas. Venga vamos, que queda mucho camino por delante."
+msgstr "Well, you put up with it. Come on, there is a long way to go."
+
+#. Key:	@0006@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+#. InfoMetaData:	"Speaker" : "ACE_DISGUST"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Dialogue_AceMark_04.SUDS_Numbness_Dialogue_AceMark_04Strings
+msgctxt "SUDS_Numbness_Dialogue_AceMark_04Strings,@0006@"
+msgid "…"
+msgstr "..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bed.SUDS_Numbness_Interact_Aceroom_BedStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bed.SUDS_Numbness_Interact_Aceroom_BedStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_BedStrings,@0001@"
+msgid "Ojalá todo esto fuera un sueño… ¡Au! Es demasiado real para estar soñando."
+msgstr "I wish this was all a dream... Ow! It's too real to be dreaming."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bed.SUDS_Numbness_Interact_Aceroom_BedStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bed.SUDS_Numbness_Interact_Aceroom_BedStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_BedStrings,@0002@"
+msgid "Esto es real, pero no sé dónde estoy…"
+msgstr "This is real, but I don't know where I am..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bookshelf.SUDS_Numbness_Interact_Aceroom_BookshelfStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bookshelf.SUDS_Numbness_Interact_Aceroom_BookshelfStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_BookshelfStrings,@0001@"
+msgid "Nunca había leído nada que explique lo que me está pasando. ¿Habrá algún libro sobre esto?"
+msgstr "I've never read anything that explains what's happening to me - will there be any books about this?"
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bookshelf.SUDS_Numbness_Interact_Aceroom_BookshelfStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Bookshelf.SUDS_Numbness_Interact_Aceroom_BookshelfStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_BookshelfStrings,@0002@"
+msgid "¿Habrá algún libro que explique lo que me está pasando?"
+msgstr "Will there be any books that explain what is happening to me?"
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Desk.SUDS_Numbness_Interact_Aceroom_DeskStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Desk.SUDS_Numbness_Interact_Aceroom_DeskStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_DeskStrings,@0001@"
+msgid "Mi escritorio. Aquí estaba antes de caer. Pero falta algo…"
+msgstr "My desk. This is where it was before it fell. But something is missing..."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Desk.SUDS_Numbness_Interact_Aceroom_DeskStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Desk.SUDS_Numbness_Interact_Aceroom_DeskStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_DeskStrings,@0002@"
+msgid "Juraría que falta algo, pero no sabría decir qué…"
+msgstr "I could swear something is missing, but I couldn't say what..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Lamp.SUDS_Numbness_Interact_Aceroom_LampStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Lamp.SUDS_Numbness_Interact_Aceroom_LampStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_LampStrings,@0001@"
+msgid "Sin enchufe no me sirve de nada tener una lámpara."
+msgstr "Without a socket it does me no good to have a lamp."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Lamp.SUDS_Numbness_Interact_Aceroom_LampStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Lamp.SUDS_Numbness_Interact_Aceroom_LampStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_LampStrings,@0002@"
+msgid "No funciona sin electricidad."
+msgstr "It doesn't work without electricity."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Needles.SUDS_Numbness_Interact_Aceroom_NeedlesStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Aceroom_Needles.SUDS_Numbness_Interact_Aceroom_NeedlesStrings
+msgctxt "SUDS_Numbness_Interact_Aceroom_NeedlesStrings,@0001@"
+msgid "¿Qué hacen mis agujas de croché en el suelo? Juraría que las tenía bien guardadas."
+msgstr "What are my crochet needles doing on the floor? I could have sworn I had them safely tucked away."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_BedStrings,@0001@"
+msgid "¿Qué voy a hacer ahora? Ya no me queda nadie…"
+msgstr "What am I going to do now? I don't have anyone left..."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_BedStrings,@0002@"
+msgid "Podrías vender la cama y…"
+msgstr "You could sell the bed and..."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Bed.SUDS_Numbness_Interact_Bigroom_BedStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_BedStrings,@0003@"
+msgid "Eres cruel. No voy a venderla, aunque mi padre ya no esté vivo."
+msgstr "You are cruel. I'm not going to sell it, even if my father is no longer alive."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_ChocolateStrings,@0001@"
+msgid "Me encanta el chocolate que sirven en esa librería. Es el más dulce que he probado."
+msgstr "I love the chocolate they serve in that bookshop. It's the sweetest I've ever tasted."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_ChocolateStrings,@0002@"
+msgid "Te pega más el café. Amargo y solo."
+msgstr "You are more like coffee. Bitter and alone."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Chocolate.SUDS_Numbness_Interact_Bigroom_ChocolateStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_ChocolateStrings,@0003@"
+msgid "Este chocolate siempre me animaba…"
+msgstr "This chocolate always cheered me up..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_FramesStrings,@0001@"
+msgid "Estas fotos… ¿de dónde han salido?"
+msgstr "These pictures... Where did they come from?"
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_FramesStrings,@0002@"
+msgid "Aaah… mira cómo te vas quedando sola. Que pena…"
+msgstr "Aaah... look how you are getting lonely. What a pity..."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_FramesStrings,@0003@"
+msgid "Nunca había visto estas fotografías."
+msgstr "I've never seen these pictures before."
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Frames.SUDS_Numbness_Interact_Bigroom_FramesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_FramesStrings,@0004@"
+msgid "Aun así, muestran tu triste vida."
+msgstr "Still, they show your sad life."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Key.SUDS_Numbness_Interact_Bigroom_KeyStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Key.SUDS_Numbness_Interact_Bigroom_KeyStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_KeyStrings,@0001@"
+msgid "¿Una llave? ¿Qué abrirá?"
+msgstr "A key? What will it open?"
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Plants.SUDS_Numbness_Interact_Bigroom_PlantsStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Plants.SUDS_Numbness_Interact_Bigroom_PlantsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_PlantsStrings,@0001@"
+msgid "Rebosan vida… como tú."
+msgstr "They are bursting with life... just like you."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Plants.SUDS_Numbness_Interact_Bigroom_PlantsStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Plants.SUDS_Numbness_Interact_Bigroom_PlantsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_PlantsStrings,@0002@"
+msgid "No tengo claro si tienen más vida estas plantas o tu…"
+msgstr "I am not clear whether these plants have more life in them or you..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Sofa.SUDS_Numbness_Interact_Bigroom_SofaStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Sofa.SUDS_Numbness_Interact_Bigroom_SofaStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_SofaStrings,@0001@"
+msgid "Ni se te ocurra tumbarte a hacer el vago."
+msgstr "Do not even think about lying down to laze around."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Sofa.SUDS_Numbness_Interact_Bigroom_SofaStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Sofa.SUDS_Numbness_Interact_Bigroom_SofaStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_SofaStrings,@0002@"
+msgid "Debes seguir adelante, no tumbarte a hacer el vago."
+msgstr "You must move on, don't lie down to bum around."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_SwingsStrings,@0001@"
+msgid "Solía jugar aquí con mis padres."
+msgstr "I used to play here with my parents."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_SwingsStrings,@0002@"
+msgid "Ahora ya no tendría sentido volver a ir, ¿verdad?"
+msgstr "Now it would not make sense to go again, would it?"
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Swings.SUDS_Numbness_Interact_Bigroom_SwingsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_SwingsStrings,@0003@"
+msgid "No tiene sentido que vuelva a este lugar sin ellos…"
+msgstr "It doesn't make sense for me to come back to this place without them..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_TeddiesStrings,@0001@"
+msgid "¡Mis peluches! ¿Dónde habrán ido a parar los más viejos?"
+msgstr "My teddies! Where did the older ones go?"
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_TeddiesStrings,@0002@"
+msgid "¿A ti te gustan…?"
+msgstr "Do you like them...?"
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Teddies.SUDS_Numbness_Interact_Bigroom_TeddiesStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_TeddiesStrings,@0003@"
+msgid "Guardar peluches en un armario es como guardar tus sentimientos, acabas olvidando que los tienes."
+msgstr "Keeping stuffed animals in a cupboard is like keeping your feelings, you end up forgetting you have them."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_TombsStrings,@0001@"
+msgid "Aquí reposa toda mi familia."
+msgstr "Here rests all my family."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
+msgctxt "SUDS_Numbness_Interact_Bigroom_TombsStrings,@0002@"
+msgid "Toda tu familia ha muerto. Solo faltas tú…"
+msgstr "Your whole family is dead. Only you are missing..."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_ArmchairStrings,@0001@"
+msgid "El sillón dónde leía mi padre cuando mi madre me enseñaba a tejer. Qué recuerdo tan bonito."
+msgstr "The armchair where my father used to read when my mother taught me to knit. What a beautiful memory."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_ArmchairStrings,@0002@"
+msgid "Y triste."
+msgstr "And sad."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Armchair.SUDS_Numbness_Interact_Memoryroom_ArmchairStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_ArmchairStrings,@0003@"
+msgid "Aquí leía mi padre. Aunque le intentamos enseñar, él nunca fue capaz de tejer nada."
+msgstr "This is where my father used to read. Although we tried to teach him, he was never able to knit anything."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_BoxStrings,@0001@"
+msgid "La lana turquesa era mi preferida."
+msgstr "Turquoise wool was my favourite."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_BoxStrings,@0002@"
+msgid "Vaya hobby más tonto."
+msgstr "What a silly hobby."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Box.SUDS_Numbness_Interact_Memoryroom_BoxStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_BoxStrings,@0003@"
+msgid "No se hizo la miel para la boca del asno."
+msgstr "Don’t cast your pearls before swine."
+
+#. Key:	@0001@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_TableStrings,@0001@"
+msgid "Aquí aprendí a tejer con mi madre. Siempre me dijo que tenía un talento oculto para esto."
+msgstr "HHere I learnt to weave with my mother. She always told me I had a hidden talent for this."
+
+#. Key:	@0002@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_TableStrings,@0002@"
+msgid "Seguro que sí… Tan oculto que ni tú misma lo encuentras."
+msgstr "Sure... So hidden that you cannot even find it yourself."
+
+#. Key:	@0003@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+#. InfoMetaData:	"Speaker" : "ACE"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_TableStrings,@0003@"
+msgid "Mi madre me enseñó a tejer cuando enfermó. Ojalá pudiera volver a ese momento…"
+msgstr "My mother taught me to knit when she got sick. I wish I could go back to that time..."
+
+#. Key:	@0004@
+#. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+#. InfoMetaData:	"Speaker" : "???"
+#: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Memoryroom_Table.SUDS_Numbness_Interact_Memoryroom_TableStrings
+msgctxt "SUDS_Numbness_Interact_Memoryroom_TableStrings,@0004@"
+msgid "Eso es imposible."
+msgstr "That is impossible."
+
+#. Key:	exit_game
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Menu.ST_Menu
+#: /Game/Assets/UI/Data/ST_Menu.ST_Menu
+msgctxt "ST_Numbness_Comments,exit_game"
+msgid "Salir"
+msgstr "Exit"
+
+#. Key:	language
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Menu.ST_Menu
+#: /Game/Assets/UI/Data/ST_Menu.ST_Menu
+msgctxt "ST_Numbness_Comments,language"
+msgid "Idioma"
+msgstr "Language"
+
+#. Key:	new_game
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Menu.ST_Menu
+#: /Game/Assets/UI/Data/ST_Menu.ST_Menu
+msgctxt "ST_Numbness_Comments,new_game"
+msgid "Nueva Partida"
+msgstr "New game"
+
+#. Key:	resume_game
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Menu.ST_Menu
+#: /Game/Assets/UI/Data/ST_Menu.ST_Menu
+msgctxt "ST_Numbness_Comments,resume_game"
+msgid "Continuar"
+msgstr "Continue"
+
+#. Key:	Numbness_Comment_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_01"
+msgid "¿Qué es esta ropa…?"
+msgstr "What are these clothes...?"
+
+#. Key:	Numbness_Comment_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_02"
+msgid "¿Dónde estoy…?"
+msgstr "Where am I...?"
+
+#. Key:	Numbness_Comment_03_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_03_01"
+msgid "¿¡Qué hacen nuestros objetos aquí!? Esto no tiene sentido."
+msgstr "What are our objects doing here?! This doesn't make sense."
+
+#. Key:	Numbness_Comment_03_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_03_02"
+msgid "Tu vida resumida en una sala, que patético."
+msgstr "Your life summarised in one room, how pathetic."
+
+#. Key:	Numbness_Comment_03_03
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_03_03"
+msgid "¿Quién habla? ¿Dónde estás?"
+msgstr "Who is this? Where are you?"
+
+#. Key:	Numbness_Comment_04
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_04"
+msgid "¿A dónde conducirá esto?"
+msgstr "Where will this lead?"
+
+#. Key:	Numbness_Comment_05_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_05_01"
+msgid "Es como nuestro despacho… nuestro refugio."
+msgstr "It's like our office... our refuge."
+
+#. Key:	Numbness_Comment_05_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_05_02"
+msgid "La calma antes de la tragedia."
+msgstr "The calm before the tragedy."
+
+#. Key:	Numbness_Comment_07_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_07_01"
+msgid "Si sigues así, tu propia oscuridad te va a engullir."
+msgstr "If you go on like this, your own darkness will engulf you."
+
+#. Key:	Numbness_Comment_07_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_07_02"
+msgid "¡Espérame! ¿Quién me habla?"
+msgstr "Wait for me! Who is speaking to me?"
+
+#. Key:	Numbness_Comment_08
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_08"
+msgid "¡Por fin! Creí que nunca ibas a llegar. Deberías entrenar más. Tu propia oscuridad te ha estado a punto de engullir."
+msgstr "Finally! I thought you were never going to make it. You should train more. Your own darkness has been about to engulf you."
+
+#. Key:	Numbness_Comment_10
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Comment_10"
+msgid "Quizá la llave que he encontrado…"
+msgstr "Maybe the key I found..."
+
+#. Key:	Numbness_Narrator_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_01"
+msgid "Su habitación solo era una pequeña porción del mundo que parecía haber caído con ella."
+msgstr "Her room was just a small portion of the world that seemed to have fallen with her."
+
+#. Key:	Numbness_Narrator_02_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_02_01"
+msgid "Siempre había creído que las mariposas muestran la senda del destino a las personas que deciden seguir su vuelo."
+msgstr "She had always believed that butterflies show the path of destiny to people who choose to follow their flight."
+
+#. Key:	Numbness_Narrator_02_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_02_02"
+msgid "Ahora, era toda la luz que tenía en ese mundo, toda su esperanza, y decidió seguirla."
+msgstr "Now, it was all the light she had in this world, all her hope, and she decided to follow it."
+
+#. Key:	Numbness_Narrator_02_03
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_02_03"
+msgid "Todo parecía flotar en la oscuridad."
+msgstr "Everything seemed to float in the darkness."
+
+#. Key:	Numbness_Narrator_03
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_03"
+msgid "El camino era difícil. ¿Valía la pena seguir?"
+msgstr "The path was difficult. Was it worth following?"
+
+#. Key:	Numbness_Narrator_04_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_04_01"
+msgid "Pensó en quedarse quieta esperando a que alguien la rescatara. Pero la mariposa parecía tratar de mostrarle un camino."
+msgstr "She thought about standing still and waiting for someone to rescue her. But the butterfly seemed to be trying to show her a way."
+
+#. Key:	Numbness_Narrator_04_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_04_02"
+msgid "Para encontrar una salida, era mejor seguir andando que quedarse inmóvil."
+msgstr "To find a way out, it was better to keep walking than to stand still."
+
+#. Key:	Numbness_Narrator_05
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_05"
+msgid "Centenares de objetos esparcidos parecían haberse detenido en el tiempo."
+msgstr "Hundreds of scattered objects seemed to have stopped in time."
+
+#. Key:	Numbness_Narrator_06
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_06"
+msgid "Algunos objetos eran de su casa, otros formaban parte de sus recuerdos, pero otros no recordaba haberlos visto nunca, aunque parecían suyos."
+msgstr "Some objects were from her home, some were part of her memories, and some she couldn't remember ever seeing, but they looked familiar."
+
+#. Key:	Numbness_Narrator_07
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_07"
+msgid "Un atisbo de su recuerdo más preciado parecía estar expuesto en la oscuridad."
+msgstr "A glimpse of his fondest memory seemed to be exposed in the darkness."
+
+#. Key:	Numbness_Narrator_08
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_08"
+msgid "Incluso envuelta en toda esa oscuridad infinita, caminando entre objetos de su vida, seguía sin sentir ninguna emoción. Se preguntaba qué estaba mal en ella."
+msgstr "Even wrapped in all that infinite darkness, walking among the objects of her life, she still felt no emotion. She wondered what was wrong with her."
+
+#. Key:	Numbness_Narrator_09
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_09"
+msgid "Ace cada vez estaba más confundida. Necesitaba respuestas, pero allí no había nadie más que ella y la mariposa que estaba siguiendo."
+msgstr "Ace was getting more and more confused. She needed answers, but there was no one there but her and the butterfly she was following."
+
+#. Key:	Numbness_Narrator_10
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_10"
+msgid "Su única opción era correr hasta el final. ¿Llegaría?"
+msgstr "Her only option was to run to the end. Can she make it?"
+
+#. Key:	Numbness_Narrator_11_01
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_11_01"
+msgid "Cuando dejó atrás al vacío de oscuridad se dio cuenta que la mariposa revoloteaba alrededor de un árbol. Dentro, encerrado, estaba el libro que había comprado ese mismo día."
+msgstr "As she left the void of darkness behind her, she noticed the butterfly fluttering around a tree. Inside, locked, was the book she had bought earlier that day."
+
+#. Key:	Numbness_Narrator_11_02
+#. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+#: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
+msgctxt "ST_Numbness_Comments,Numbness_Narrator_11_02"
+msgid "¿Cómo podía sacarlo de allí?"
+msgstr "How could she get it out of there?"
+
+#. Key:	aim_with_mark
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,aim_with_mark"
+msgid "Apuntar con Mark"
+msgstr "Aiming with Mark"
+
+#. Key:	allies
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,allies"
+msgid "Aliados"
+msgstr "Allies"
+
+#. Key:	collection
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,collection"
+msgid "Colección"
+msgstr "Collection"
+
+#. Key:	connect
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,connect"
+msgid "Conectar"
+msgstr "Connect"
+
+#. Key:	control
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,control"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. Key:	controls
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,controls"
+msgid "CONTROLES"
+msgstr "CONTROLS"
+
+#. Key:	controls_ace
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,controls_ace"
+msgid "CONTROLES DE ACE"
+msgstr "ACE CONTROLS"
+
+#. Key:	controls_mark
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,controls_mark"
+msgid "CONTROLES DE MARK"
+msgstr "MARK CONTROLS"
+
+#. Key:	crouch
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,crouch"
+msgid "Agacharse"
+msgstr "Crouch"
+
+#. Key:	diary
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,diary"
+msgid "DIARIO"
+msgstr "DIARY"
+
+#. Key:	display_settings
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,display_settings"
+msgid "Ajustes de Pantalla"
+msgstr "Display Settings"
+
+#. Key:	enemies
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,enemies"
+msgid "Enemigos"
+msgstr "Enemies"
+
+#. Key:	game_settings
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,game_settings"
+msgid "Ajustes de Juego"
+msgstr "Game Settings"
+
+#. Key:	hold_shift_and_mouse
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,hold_shift_and_mouse"
+msgid "Mantener Shift + Ratón"
+msgstr "Hold Shift + Mouse"
+
+#. Key:	interact
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,interact"
+msgid "Interactuar"
+msgstr "Interact"
+
+#. Key:	jump
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,jump"
+msgid "Saltar"
+msgstr "Jump"
+
+#. Key:	language_settings
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,language_settings"
+msgid "Ajustes de Idioma"
+msgstr "Language Settings"
+
+#. Key:	left_click
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,left_click"
+msgid "Clic Izquierdo"
+msgstr "Left Click"
+
+#. Key:	memories
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,memories"
+msgid "Memorias"
+msgstr "Memories"
+
+#. Key:	send_mark
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,send_mark"
+msgid "Enviar a Mark"
+msgstr "Send Mark"
+
+#. Key:	settings
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,settings"
+msgid "AJUSTES"
+msgstr "SETTINGS"
+
+#. Key:	sound_settings
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,sound_settings"
+msgid "Ajustes de Sonido"
+msgstr "Sound Settings"
+
+#. Key:	space
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,space"
+msgid "Espacio"
+msgstr "Space Bar"
+
+#. Key:	status
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,status"
+msgid "ESTADO"
+msgstr "STATE"
+
+#. Key:	w_to_wake_up
+#. SourceLocation:	/Game/Assets/UI/Data/ST_UI.ST_UI
+#: /Game/Assets/UI/Data/ST_UI.ST_UI
+msgctxt "ST_UI,w_to_wake_up"
+msgid "Presiona \"W\" para despertar"
+msgstr "Press \"W\" to wake up"
+
