@@ -63,6 +63,7 @@ protected:
 	//~PlayerLocation
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character Movement: Climbing")
 	FVector LastSafeLocation;
+	FVector SafeLocation;
 
 	FTimerHandle SaveSafeLocationTimerHandle;
 	//~End of PlayerLocation

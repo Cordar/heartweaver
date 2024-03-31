@@ -191,7 +191,8 @@ void AKrakenCharacter::SaveLastSafeLocation()
 {
 	if (KrakenCharacterMovementComponent->MovementMode == MOVE_Walking)
 	{
-		LastSafeLocation = GetActorLocation();
+		LastSafeLocation = SafeLocation;
+		SafeLocation = GetActorLocation();
 	}
 }
 
