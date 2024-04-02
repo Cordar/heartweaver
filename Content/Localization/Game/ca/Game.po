@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Game_ca\n"
-"POT-Creation-Date: 2024-03-30 20:23\n"
-"PO-Revision-Date: 2024-03-30 20:23\n"
+"POT-Creation-Date: 2024-04-02 15:17\n"
+"PO-Revision-Date: 2024-04-02 15:17\n"
 "Language-Team: \n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -659,7 +659,7 @@ msgstr "Guardar peluixos en un armari és com guardar els teus sentiments, acabe
 #: /Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
 msgctxt "SUDS_Numbness_Interact_Bigroom_TombsStrings,@0001@"
 msgid "Aquí reposa toda mi familia."
-msgstr "Aquí reposa tota la meva família."
+msgstr "Aquí descansa tota la meva família."
 
 #. Key:	@0002@
 #. SourceLocation:	/Game/Assets/UI/Data/Dialogues/SUDS_Numbness_Interact_Bigroom_Tombs.SUDS_Numbness_Interact_Bigroom_TombsStrings
@@ -908,7 +908,7 @@ msgstr "Va pensar a quedar-se quieta esperant a què algú la rescatés. Però l
 #: /Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
 msgctxt "ST_Numbness_Comments,Numbness_Narrator_04_02"
 msgid "Para encontrar una salida, era mejor seguir andando que quedarse inmóvil."
-msgstr "Per tal de trobar una sortida, era millor continuar caminant que quedar-se immòbil."
+msgstr "Per trobar una sortida, era millor continuar caminant que quedar-se quieta."
 
 #. Key:	Numbness_Narrator_05
 #. SourceLocation:	/Game/Assets/UI/Data/ST_Subtitle.ST_Subtitle
