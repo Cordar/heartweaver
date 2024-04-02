@@ -13,8 +13,7 @@
 				"EnhancedInput",
 				"GameplayAbilities",
 				"UMG",
-				"CoreUObject",
-				"UnrealEd"
+				"CoreUObject"
 			]
 		}
 	],
