@@ -1,6 +1,11 @@
 ﻿[if {isFirstTime}]
-    ACE: ¡Mis peluches! ¿Dónde habrán ido a parar los más viejos?    @0001@
+    ACE: ¡Mis peluches!    @0001@
     ???: ¿A ti te gustan…?    @0002@
+    ACE: ¡Claro! Este caracol era mi compañero de batallas.    @0003@
+    ???: ¿Qué haces? Te vas a caer…    @0004@
+    ???: ¿Ves? Peor que una cría…    @0005@
 [else]
-    ???: Guardar peluches en un armario es como guardar tus sentimientos, acabas olvidando que los tienes.    @0003@
+    ???: No vuelvas a subirte, ¿me oyes?    @0006@
+    ACE: ¿Dónde habrán ido a parar los más viejos?    @0007@
+    ???: Guardar peluches en un armario es como guardar tus sentimientos, acabas olvidando que los tienes.    @0008@
 [endif]
