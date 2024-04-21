@@ -16,6 +16,8 @@ Build
 *.pdb
 *.exe
 *.exp
+*.wav
+*.mp4
 
 # Compiled source files for the engine to use
 Intermediate/*
