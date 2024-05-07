@@ -4650,6 +4650,26 @@
 			"Type": "RequiredResource"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/Binaries/Win64/UnrealEditor-ImagePlate.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/Binaries/Win64/UnrealEditor-ImagePlate.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/Binaries/Win64/UnrealEditor-ImagePlateEditor.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/Binaries/Win64/UnrealEditor-ImagePlateEditor.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/Experimental/LocalizableMessage/Binaries/Win64/UnrealEditor-LocalizableMessage.dll",
 			"Type": "DynamicLibrary"
 		},
@@ -6463,6 +6483,34 @@
 		},
 		{
 			"Path": "$(ProjectDir)/Plugins/KawaiiPhysics/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUD.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUD.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUDEditor.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUDEditor.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUDTest.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor-SPUDTest.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/Binaries/Win64/UnrealEditor.modules",
 			"Type": "RequiredResource"
 		},
 		{
@@ -27480,6 +27528,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(EngineDir)/Plugins/Experimental/ImagePlate/ImagePlate.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(EngineDir)/Plugins/Experimental/LocalizableMessage/LocalizableMessage.uplugin",
 			"Type": "UFS"
 		},
@@ -27829,6 +27881,10 @@
 		},
 		{
 			"Path": "$(ProjectDir)/Plugins/KawaiiPhysics/KawaiiPhysics.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/SPUD/SPUD.uplugin",
 			"Type": "UFS"
 		},
 		{
