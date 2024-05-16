@@ -1,0 +1,9 @@
+{
+	"BuildId": "27405482",
+	"Modules": 
+	{
+		"SPUD": "UnrealEditor-SPUD.dll",
+		"SPUDEditor": "UnrealEditor-SPUDEditor.dll",
+		"SPUDTest": "UnrealEditor-SPUDTest.dll"
+	}
+}
