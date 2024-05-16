@@ -132,7 +132,7 @@ void AKrakenPlayerController::OnClimbActionStarted(const FInputActionValue& Valu
 void AKrakenPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	check(InputComponent)
+	check(InputComponent);
 
 	const UKrakenLocalPlayer* Lp = Cast<UKrakenLocalPlayer>(GetLocalPlayer());
 	check(Lp);
