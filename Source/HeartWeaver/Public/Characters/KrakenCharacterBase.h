@@ -41,6 +41,7 @@ protected:
 	void InitializePrimaryAttributes() const;
 
 	void AddCharacterAbilities();
+	bool bAbilitiesInitialized = false;
 
 private:
 

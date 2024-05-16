@@ -37,10 +37,12 @@ void AKrakenCharacterBase::InitializePrimaryAttributes() const
 
 void AKrakenCharacterBase::AddCharacterAbilities()
 {
+	if (bAbilitiesInitialized) return;
 	UKrakenAbilitySystemComponent* KrakenAbilitySystemComponent = Cast<UKrakenAbilitySystemComponent>(GetAbilitySystemComponent());
 	if (!HasAuthority()) return;
 
 	KrakenAbilitySystemComponent->AddCharacterAbilities(StartupAbilities);
+	bAbilitiesInitialized = true;
 }
 
 
