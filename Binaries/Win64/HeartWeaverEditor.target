@@ -6466,6 +6466,18 @@
 			"Type": "RequiredResource"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/GlobalEventSystem-Unreal/Binaries/Win64/UnrealEditor-GlobalEventSystem.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/GlobalEventSystem-Unreal/Binaries/Win64/UnrealEditor-GlobalEventSystem.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/GlobalEventSystem-Unreal/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/KawaiiPhysics/Binaries/Win64/UnrealEditor-KawaiiPhysics.dll",
 			"Type": "DynamicLibrary"
 		},
@@ -27877,6 +27889,10 @@
 		},
 		{
 			"Path": "$(ProjectDir)/Plugins/FMODStudio/FMODStudio.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/GlobalEventSystem-Unreal/GlobalEventSystem.uplugin",
 			"Type": "UFS"
 		},
 		{
