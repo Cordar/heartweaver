@@ -397,6 +397,11 @@ void UKrakenCharacterMovementComponent::PlayMontage(UAnimMontage* MontageToPlay)
 	OwningCharacterAnimInstance->Montage_Play(MontageToPlay);
 }
 
+void UKrakenCharacterMovementComponent::ChangeGravityDirection(const FVector& NewGravityDirection)
+{
+	SetGravityDirection(NewGravityDirection);
+}
+
 void UKrakenCharacterMovementComponent::OnClimbMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	if(Montage == IdleToClimbMontage)
