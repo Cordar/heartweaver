@@ -40,6 +40,9 @@ public:
 
 	void PlayMontage(UAnimMontage* MontageToPlay);
 
+	UFUNCTION(BlueprintCallable, Category = "Character Movement: Gravity")
+	void ChangeGravityDirection(const FVector& NewGravityDirection);
+
 protected:
 	//~ClimbBPVariables	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character Movement: Climbing")
