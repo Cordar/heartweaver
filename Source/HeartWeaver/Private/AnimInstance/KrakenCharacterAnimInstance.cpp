@@ -43,7 +43,7 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
 {
-	GroundSpeed = UKismetMathLibrary::VSizeXY(ControlledCharacter->GetVelocity());
+	GroundSpeed = UKismetMathLibrary::VSize(ControlledCharacter->GetVelocity());
 }
 
 void UKrakenCharacterAnimInstance::GetAirSpeed()

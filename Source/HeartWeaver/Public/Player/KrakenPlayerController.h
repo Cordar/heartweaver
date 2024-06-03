@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "KrakenPlayerController.generated.h"
 
@@ -24,6 +23,16 @@ class HEARTWEAVER_API AKrakenPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	AKrakenPlayerController();
+	
+	virtual void UpdateRotation(const float DeltaTime) override;
+	// Converts a rotation from world space to gravity relative space.
+	UFUNCTION(BlueprintPure)
+	static FRotator GetGravityRelativeRotation(const FRotator& Rotation, const FVector& GravityDirection);
+ 
+	// Converts a rotation from gravity relative space to world space.
+	UFUNCTION(BlueprintPure)
+	static FRotator GetGravityWorldRotation(const FRotator& Rotation, const FVector& GravityDirection);
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -40,6 +49,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UKrakenAbilitySystemComponent> KrakenAbilitySystemComponent;
+
+	FVector LastFrameGravity = FVector::ZeroVector;
 
 	UKrakenAbilitySystemComponent* GetKrakenAbilitySystemComponent();
 

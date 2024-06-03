@@ -4,10 +4,12 @@
 #include "Characters/KrakenCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "InputActionValue.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
 #include "Camera/CameraActor.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
 #include "Characters/KrakenPushComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Player/KrakenPlayerController.h"
 #include "Player/KrakenPlayerState.h"
 #include "UI/HUD/KrakenHUD.h"
@@ -146,17 +148,22 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 		UE_LOG(LogTemp, Warning, TEXT("FollowCamera is not set in KrakenCharacter. Cannot handle movement input."));
 		return;
 	}
-	
-	const FVector2D MoveVector = Value.Get<FVector2D>();
-	
-	const FRotator Rotation = FollowCamera->GetActorRotation();
-	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	if (const AKrakenPlayerController* KrakenPlayerController = Cast<AKrakenPlayerController>(Controller))
+	{
+		const FVector2D MoveVector = Value.Get<FVector2D>();
+	
+		const FRotator Rotation = FollowCamera->GetActorRotation();
+		const FRotator GravityRelativeRotation = KrakenPlayerController->GetGravityRelativeRotation(Rotation, GetGravityDirection());
+		const FRotator GravityWorldRotationRight = KrakenPlayerController->GetGravityWorldRotation(FRotator(GravityRelativeRotation.Roll, 0.f, GravityRelativeRotation.Yaw), GetGravityDirection());
+		const FRotator GravityWorldRotationForward = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, 0.f, GravityRelativeRotation.Yaw), GetGravityDirection());
 
-	AddMovementInput(ForwardDirection, MoveVector.Y);
-	AddMovementInput(RightDirection, MoveVector.X);
+		const FVector ForwardDirection = UKismetMathLibrary::GetForwardVector(GravityWorldRotationForward);
+		const FVector RightDirection = UKismetMathLibrary::GetRightVector(GravityWorldRotationRight);
+
+		AddMovementInput(ForwardDirection, MoveVector.Y);
+		AddMovementInput(RightDirection, MoveVector.X);
+	}
 }
 
 void AKrakenCharacter::HandlePushMovementInput(const FInputActionValue& Value)
