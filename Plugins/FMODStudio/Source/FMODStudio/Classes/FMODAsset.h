@@ -1,11 +1,13 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2024.
 
 #pragma once
 
 #include "Misc/Guid.h"
 #include "CoreMinimal.h"
+#include "UObject/AssetRegistryTagsContext.h"
 #include "FMODAsset.generated.h"
 
+class FAssetRegistryTagsContext;
 /**
  * FMOD Asset.
  */
@@ -21,7 +23,7 @@ public:
 
 protected:
     /** Get tags to show in content view */
-    virtual void GetAssetRegistryTags(TArray<FAssetRegistryTag> &OutTags) const override;
+    virtual void GetAssetRegistryTags(FAssetRegistryTagsContext Context) const override;
 
 private:
     /** Non default instances of UFMODAsset are assets */

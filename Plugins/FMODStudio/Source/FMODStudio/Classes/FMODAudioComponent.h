@@ -1,4 +1,4 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2024.
 
 #pragma once
 
@@ -140,7 +140,7 @@ class FMODSTUDIO_API UFMODAudioComponent : public USceneComponent
 
     friend struct FFMODEventControlExecutionToken;
     friend struct FPlayingToken;
-    friend FMOD_RESULT F_CALLBACK UFMODAudioComponent_EventCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters);
+    friend FMOD_RESULT F_CALL UFMODAudioComponent_EventCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters);
 
 public:
     /** The event asset to use for this sound. */
@@ -372,6 +372,9 @@ private:
     /** Called when a component is unregistered. Called after DestroyRenderState_Concurrent and OnDestroyPhysicsState are called. */
     virtual void OnUnregister() override;
 
+    /** Overridable native event for when play begins for this actor. */
+    virtual void BeginPlay() override;
+
     /** Overridable function called whenever this actor is being removed from a level. */
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
@@ -381,6 +384,11 @@ private:
 
 #if WITH_EDITORONLY_DATA
     void UpdateSpriteTexture();
+#endif
+
+#if WITH_EDITOR
+    /** Function assigned to the FMODStudioModule PreShutdown delegate to clean up before the Studio System is released. */
+    void Shutdown();
 #endif
 
     /** Release any cached parameters then the Studio Instance. */

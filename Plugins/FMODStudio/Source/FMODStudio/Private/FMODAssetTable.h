@@ -1,4 +1,4 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2024.
 
 #pragma once
 
@@ -42,6 +42,6 @@ private:
     FString GetLocalizedBankPath(const UDataTable* BankTable) const;
 
     FString ActiveLocale;
-    UFMODBankLookup *BankLookup;
-    UDataTable *AssetLookup;
+    TObjectPtr<UFMODBankLookup> BankLookup;
+    TObjectPtr<UDataTable> AssetLookup;
 };

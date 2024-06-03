@@ -1,4 +1,4 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2024.
 
 #include "FMODAudioComponent.h"
 #include "FMODStudioModule.h"
@@ -378,8 +378,19 @@ void UFMODAudioComponent::OnUnregister()
     Super::OnUnregister();
 }
 
+void UFMODAudioComponent::BeginPlay()
+{
+#if WITH_EDITOR
+    IFMODStudioModule::Get().PreEndPIEEvent().AddUObject(this, &UFMODAudioComponent::Shutdown);
+#endif
+    Super::BeginPlay();
+}
+
 void UFMODAudioComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+#if WITH_EDITOR
+    IFMODStudioModule::Get().PreEndPIEEvent().RemoveAll(this);
+#endif
     Super::EndPlay(EndPlayReason);
     bool shouldStop = false;
 
@@ -509,7 +520,7 @@ void UFMODAudioComponent::Deactivate()
     Super::Deactivate();
 }
 
-FMOD_RESULT F_CALLBACK UFMODAudioComponent_EventCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
+FMOD_RESULT F_CALL UFMODAudioComponent_EventCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
 {
     UFMODAudioComponent *Component = nullptr;
     FMOD::Studio::EventInstance *Instance = (FMOD::Studio::EventInstance *)event;
@@ -549,7 +560,7 @@ void UFMODAudioComponent_ReleaseProgrammerSound(FMOD_STUDIO_PROGRAMMER_SOUND_PRO
     }
 }
 
-FMOD_RESULT F_CALLBACK UFMODAudioComponent_EventCallbackDestroyProgrammerSound(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
+FMOD_RESULT F_CALL UFMODAudioComponent_EventCallbackDestroyProgrammerSound(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE *event, void *parameters)
 {
     UFMODAudioComponent_ReleaseProgrammerSound((FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES *)parameters);
     return FMOD_OK;
@@ -852,6 +863,14 @@ void UFMODAudioComponent::Release()
 {
     ReleaseEventInstance();
 }
+
+#if WITH_EDITOR
+void UFMODAudioComponent::Shutdown()
+{
+    Stop();
+    Release();
+}
+#endif
 
 void UFMODAudioComponent::ReleaseEventCache()
 {
