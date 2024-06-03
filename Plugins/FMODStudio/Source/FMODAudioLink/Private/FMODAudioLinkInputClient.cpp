@@ -1,4 +1,4 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2023-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2024-2024.
 
 #include "FMODAudioLinkInputClient.h"
 #include "FMODAudioLinkLog.h"
@@ -98,7 +98,7 @@ FFMODAudioLinkInputClient::~FFMODAudioLinkInputClient()
     Unregister();
 }
 
-FMOD_RESULT F_CALLBACK pcmreadcallback(FMOD_SOUND* inSound, void* data, unsigned int datalen)
+FMOD_RESULT F_CALL pcmreadcallback(FMOD_SOUND* inSound, void* data, unsigned int datalen)
 {
     FMOD::Sound* sound = (FMOD::Sound*)inSound;
     FFMODAudioLinkInputClient* ConsumerSP;
@@ -109,7 +109,7 @@ FMOD_RESULT F_CALLBACK pcmreadcallback(FMOD_SOUND* inSound, void* data, unsigned
     return FMOD_OK;
 }
 
-FMOD_RESULT F_CALLBACK SoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void* parameters)
+FMOD_RESULT F_CALL SoundCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* event, void* parameters)
 {
     FMOD_RESULT result = FMOD_OK;
     FMOD::Studio::EventInstance* eventInstance = (FMOD::Studio::EventInstance*)event;
@@ -182,7 +182,8 @@ void FFMODAudioLinkInputClient::Start(USceneComponent* InComponent)
     auto SelfSP = AsShared();
     auto PlayLambda = [SelfSP, LinkEvent, InComponent]()
         {
-            UE_LOG(LogFMODAudioLink, Verbose, TEXT("FFMODAudioLinkInputClient::Start: SelSP = %" PRIu64 ", LinkEvent = %s, InComponent = %" PRIu64 "."), &SelfSP, LinkEvent.Get(), &InComponent);
+            UE_LOG(LogFMODAudioLink, Verbose, TEXT("FFMODAudioLinkInputClient::Start: SelSP = %" PRIu64 ", LinkEvent = %s, InComponent = %" PRIu64 ".")
+                    , &SelfSP, *LinkEvent.Get()->GetName(), &InComponent);
 
             FMOD::Studio::EventDescription* EventDesc = IFMODStudioModule::Get().GetEventDescription(LinkEvent.Get());
             if (EventDesc != nullptr)

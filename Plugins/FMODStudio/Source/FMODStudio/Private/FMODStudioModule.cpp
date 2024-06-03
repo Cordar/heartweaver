@@ -1,4 +1,4 @@
-// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2023.
+// Copyright (c), Firelight Technologies Pty, Ltd. 2012-2024.
 
 #include "FMODStudioModule.h"
 #include "FMODSettings.h"
@@ -62,15 +62,15 @@ const TCHAR *FMODSystemContextNames[EFMODSystemContext::Max] = {
     TEXT("Auditioning"), TEXT("Runtime"), TEXT("Editor"),
 };
 
-void *F_CALLBACK FMODMemoryAlloc(unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
+void *F_CALL FMODMemoryAlloc(unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
 {
     return FMemory::Malloc(size);
 }
-void *F_CALLBACK FMODMemoryRealloc(void *ptr, unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
+void *F_CALL FMODMemoryRealloc(void *ptr, unsigned int size, FMOD_MEMORY_TYPE type, const char *sourcestr)
 {
     return FMemory::Realloc(ptr, size);
 }
-void F_CALLBACK FMODMemoryFree(void *ptr, FMOD_MEMORY_TYPE type, const char *sourcestr)
+void F_CALL FMODMemoryFree(void *ptr, FMOD_MEMORY_TYPE type, const char *sourcestr)
 {
     FMemory::Free(ptr);
 }
@@ -206,6 +206,9 @@ public:
     void UnloadBanks(EFMODSystemContext::Type Type);
 
 #if WITH_EDITOR
+    FSimpleMulticastDelegate PreEndPIEDelegate;
+    FSimpleMulticastDelegate &PreEndPIEEvent() override { return PreEndPIEDelegate; };
+    virtual void PreEndPIE() override;
     void ReloadBanks();
     void LoadEditorBanks();
     void UnloadEditorBanks();
@@ -465,7 +468,7 @@ void FFMODStudioModule::StartupModule()
     if (FParse::Param(FCommandLine::Get(), TEXT("nosound")) || FApp::IsBenchmarking() || IsRunningDedicatedServer() || IsRunningCommandlet())
     {
         bUseSound = false;
-        UE_LOG(LogFMOD, Log, TEXT("Running in nosound mode"));
+        UE_LOG(LogFMOD, Log, TEXT("Disabling FMOD Runtime."));
     }
 
     if (FParse::Param(FCommandLine::Get(), TEXT("noliveupdate")))
@@ -478,19 +481,7 @@ void FFMODStudioModule::StartupModule()
         verifyfmod(FMOD::Debug_Initialize(FMOD_DEBUG_LEVEL_WARNING, FMOD_DEBUG_MODE_CALLBACK, FMODLogCallback));
 
         const UFMODSettings &Settings = *GetDefault<UFMODSettings>();
-
         int32 size = Settings.GetMemoryPoolSize();
-
-        if (size == 0)
-        {
-#if defined(FMOD_PLATFORM_HEADER)
-            size = FMODPlatform_MemoryPoolSize();
-#elif PLATFORM_IOS || PLATFORM_TVOS || PLATFORM_ANDROID
-            size = Settings.MemoryPoolSizes.Mobile;
-#else
-            size = Settings.MemoryPoolSizes.Desktop;
-#endif
-        }
 
         if (!GIsEditor && size > 0)
         {
@@ -704,16 +695,12 @@ void FFMODStudioModule::CreateStudioSystem(EFMODSystemContext::Type Type)
     advSettings.cbSize = sizeof(FMOD_ADVANCEDSETTINGS);
     advSettings.vol0virtualvol = Settings.Vol0VirtualLevel;
 
-    if (!Settings.SetCodecs(advSettings))
-    {
-#if defined(FMOD_PLATFORM_HEADER)
-        FMODPlatform_SetRealChannelCount(&advSettings);
-#elif PLATFORM_IOS || PLATFORM_TVOS || PLATFORM_ANDROID
-        advSettings.maxFADPCMCodecs = Settings.RealChannelCount;
-#else
-        advSettings.maxVorbisCodecs = Settings.RealChannelCount;
-#endif
-    }
+    TMap<TEnumAsByte<EFMODCodec::Type>, int32> Codecs = Settings.GetCodecs();
+    advSettings.maxXMACodecs    = Codecs.Contains(EFMODCodec::XMA)      ? Codecs[EFMODCodec::XMA]       : 0;
+    advSettings.maxVorbisCodecs = Codecs.Contains(EFMODCodec::VORBIS)   ? Codecs[EFMODCodec::VORBIS]    : 0;
+    advSettings.maxAT9Codecs    = Codecs.Contains(EFMODCodec::AT9)      ? Codecs[EFMODCodec::AT9]       : 0;
+    advSettings.maxFADPCMCodecs = Codecs.Contains(EFMODCodec::FADPCM)   ? Codecs[EFMODCodec::FADPCM]    : 0;
+    advSettings.maxOpusCodecs   = Codecs.Contains(EFMODCodec::OPUS)     ? Codecs[EFMODCodec::OPUS]      : 0;
 
     if (Type == EFMODSystemContext::Runtime)
     {
@@ -1221,6 +1208,17 @@ void FFMODStudioModule::SetSystemPaused(bool paused)
     }
 }
 
+#if WITH_EDITOR
+void FFMODStudioModule::PreEndPIE()
+{
+    UE_LOG(LogFMOD, Verbose, TEXT("PreEndPIE"));
+    if (PreEndPIEDelegate.IsBound())
+    {
+        PreEndPIEDelegate.Broadcast();
+    }
+}
+#endif
+
 void FFMODStudioModule::ShutdownModule()
 {
     UE_LOG(LogFMOD, Verbose, TEXT("FFMODStudioModule shutdown"));
@@ -1568,15 +1566,33 @@ void FFMODStudioModule::InitializeAudioSession()
         {
             case AVAudioSessionInterruptionTypeBegan:
             {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#if !PLATFORM_TVOS
+                if (@available(iOS 16.0, *))
+                {
+                    // Interruption notifications with reason 'wasSuspended' not present from iOS 16 onwards.
+                }
+                // Starting in iOS 10, if the system suspended the app process and deactivated the audio session
+                // then we get a delayed interruption notification when the app is re-activated. Just ignore that here.
+                else if (@available(iOS 14.5, *))
+                {
+                    if ([[notification.userInfo valueForKey:AVAudioSessionInterruptionReasonKey] intValue] == AVAudioSessionInterruptionReasonAppWasSuspended)
+                    {
+                        return;
+                    }
+                }
+                else
+#endif
                 if (@available(iOS 10.3, *))
                 {
                     if ([[notification.userInfo valueForKey:AVAudioSessionInterruptionWasSuspendedKey] boolValue])
                     {
-                        // If the system suspended the app process and deactivated the audio session then we get a delayed
-                        // interruption notification when the app is re-activated. Just ignore that here.
                         return;
                     }
                 }
+#pragma clang diagnostic pop
+
                 SetSystemPaused(true);
                 break;
             }
