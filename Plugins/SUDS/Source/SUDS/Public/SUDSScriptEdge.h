@@ -81,7 +81,7 @@ public:
 
 	void SetText(const FText& Text);
 	void SetType(ESUDSEdgeType InType) { Type = InType; } 
-	void SetTargetNode(const TWeakObjectPtr<USUDSScriptNode>& InTargetNode) { TargetNode = InTargetNode; }
+	void SetTargetNode(const TWeakObjectPtr<USUDSScriptNode>& InTargetNode);
 	void SetCondition(const FSUDSExpression& InCondition) { Condition = InCondition; }
 
 	const FTextFormat& GetTextFormat() const;

@@ -1,0 +1,9 @@
+{
+	"BuildId": "33043543",
+	"Modules": 
+	{
+		"SPUD": "UnrealEditor-SPUD-Win64-DebugGame.dll",
+		"SPUDEditor": "UnrealEditor-SPUDEditor-Win64-DebugGame.dll",
+		"SPUDTest": "UnrealEditor-SPUDTest-Win64-DebugGame.dll"
+	}
+}

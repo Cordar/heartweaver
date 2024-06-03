@@ -17,6 +17,13 @@ public class HeartWeaver : ModuleRules
 		PublicIncludePaths.Add(Path.Combine( PluginsPath, "SPUD", "Source", "SPUD", "Public"));
 	}
 	
+	protected void AddSUDS() {
+		// Linker
+		PrivateDependencyModuleNames.AddRange(new string[] { "SUDS" });
+		// Headers
+		PublicIncludePaths.Add(Path.Combine( PluginsPath, "SUDS", "Source", "SUDS", "Public"));
+	}
+	
 	public HeartWeaver(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
@@ -26,5 +33,6 @@ public class HeartWeaver : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayTasks", "AnimGraphRuntime" });
 		
 		AddSPUD();
+		AddSUDS();
 	}
 }
