@@ -382,12 +382,6 @@ bool FSUDSScriptImporter::ParseBodyLine(const FStringView& Line,
 	{
 		return ParseTextLine(Line, BodyTree, IndentLevel, LineNo, NameForErrors, Logger, bSilent);
 	}
-	
-
-
-	return true;
-	
-	
 }
 
 bool FSUDSScriptImporter::IsLastNodeOfType(const FSUDSScriptImporter::ParsedTree& Tree, ESUDSParsedNodeType Type)
@@ -549,7 +543,7 @@ bool FSUDSScriptImporter::ParseChoiceLine(const FStringView& Line,
 			GeneratedSpeakerID = OverrideChoiceSpeakerID.GetValue();
 		}
 		int ChoiceTextStart = 1;
-		if (Line[1] == '-')
+		if (Line.Len() > 1 && Line[1] == '-')
 		{
 			// *- prefix, override speaker line
 			bGenerateSpeakerLine = false;
@@ -1329,7 +1323,7 @@ bool FSUDSScriptImporter::RetrieveAndRemoveTextID(FStringView& InOutLine, FStrin
 	int Number;
 	if (RetrieveTextIDFromLine(InOutLine, OutTextID, Number))
 	{
-		TextIDHighestNumber = Number;
+		TextIDHighestNumber = FMath::Max(TextIDHighestNumber, Number);
 		return true;
 	}
 
