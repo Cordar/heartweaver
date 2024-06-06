@@ -148,22 +148,18 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 		UE_LOG(LogTemp, Warning, TEXT("FollowCamera is not set in KrakenCharacter. Cannot handle movement input."));
 		return;
 	}
-
-	if (const AKrakenPlayerController* KrakenPlayerController = Cast<AKrakenPlayerController>(Controller))
-	{
-		const FVector2D MoveVector = Value.Get<FVector2D>();
 	
-		const FRotator Rotation = FollowCamera->GetActorRotation();
-		const FRotator GravityRelativeRotation = KrakenPlayerController->GetGravityRelativeRotation(Rotation, GetGravityDirection());
-		const FRotator GravityWorldRotationRight = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, GravityRelativeRotation.Yaw, GravityRelativeRotation.Roll), GetGravityDirection());
-		const FRotator GravityWorldRotationForward = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, GravityRelativeRotation.Yaw, 0.f), GetGravityDirection());
+	const FVector2D MoveVector = Value.Get<FVector2D>();
 
-		const FVector ForwardDirection = UKismetMathLibrary::GetForwardVector(GravityWorldRotationForward);
-		const FVector RightDirection = UKismetMathLibrary::GetRightVector(GravityWorldRotationRight);
+	const FVector GravityDirection = GetGravityDirection(); // Assuming GetGravityDirection returns the direction of gravity
 
-		AddMovementInput(ForwardDirection, MoveVector.Y);
-		AddMovementInput(RightDirection, MoveVector.X);
-	}
+	// Calculate the forward and right directions based on the gravity direction and the camera's orientation
+	const FVector ForwardDirection = FVector::CrossProduct(GravityDirection, FollowCamera->GetActorRightVector()).GetSafeNormal();
+	const FVector RightDirection = FVector::CrossProduct(GravityDirection, FollowCamera->GetActorUpVector()).GetSafeNormal();
+
+	// Add movement input in the calculated directions
+	AddMovementInput(ForwardDirection, MoveVector.Y);
+	AddMovementInput(RightDirection, MoveVector.X);
 }
 
 void AKrakenCharacter::HandlePushMovementInput(const FInputActionValue& Value)
