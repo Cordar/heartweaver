@@ -155,8 +155,8 @@ void AKrakenCharacter::HandleGroundMovementInput(const FInputActionValue& Value)
 	
 		const FRotator Rotation = FollowCamera->GetActorRotation();
 		const FRotator GravityRelativeRotation = KrakenPlayerController->GetGravityRelativeRotation(Rotation, GetGravityDirection());
-		const FRotator GravityWorldRotationRight = KrakenPlayerController->GetGravityWorldRotation(FRotator(GravityRelativeRotation.Roll, 0.f, GravityRelativeRotation.Yaw), GetGravityDirection());
-		const FRotator GravityWorldRotationForward = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, 0.f, GravityRelativeRotation.Yaw), GetGravityDirection());
+		const FRotator GravityWorldRotationRight = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, GravityRelativeRotation.Yaw, GravityRelativeRotation.Roll), GetGravityDirection());
+		const FRotator GravityWorldRotationForward = KrakenPlayerController->GetGravityWorldRotation(FRotator(0.f, GravityRelativeRotation.Yaw, 0.f), GetGravityDirection());
 
 		const FVector ForwardDirection = UKismetMathLibrary::GetForwardVector(GravityWorldRotationForward);
 		const FVector RightDirection = UKismetMathLibrary::GetRightVector(GravityWorldRotationRight);
