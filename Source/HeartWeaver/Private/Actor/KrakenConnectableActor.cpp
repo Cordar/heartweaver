@@ -5,9 +5,6 @@
 
 AKrakenConnectableActor::AKrakenConnectableActor()
 {
-	PrimaryActorTick.bCanEverTick = false;
-
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 }
 
 void AKrakenConnectableActor::BeginPlay()
