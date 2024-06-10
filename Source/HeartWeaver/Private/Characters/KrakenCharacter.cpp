@@ -49,6 +49,11 @@ AKrakenCharacter::AKrakenCharacter(const FObjectInitializer& ObjectInitializer)
 	KrakenPushComponent = CreateDefaultSubobject<UKrakenPushComponent>(TEXT("Push Component"));
 }
 
+void AKrakenCharacter::SetEmotionState(const EEmotionState NewEmotionState)
+{
+	EmotionState = NewEmotionState;
+}
+
 void AKrakenCharacter::BeginPlay()
 {
 	Super::BeginPlay();
