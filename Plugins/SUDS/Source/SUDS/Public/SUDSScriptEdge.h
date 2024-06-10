@@ -59,18 +59,9 @@ public:
 	{
 	}
 
-	FSUDSScriptEdge(USUDSScriptNode* ToNode, ESUDSEdgeType InType, int LineNo) : Type(InType),
-		TargetNode(ToNode),
-		SourceLineNo(LineNo)
-	{
-	}
+	FSUDSScriptEdge(USUDSScriptNode* ToNode, ESUDSEdgeType InType, int LineNo);
 
-	FSUDSScriptEdge(const FText& InText, USUDSScriptNode* ToNode, int LineNo) : Text(InText),
-		Type(ESUDSEdgeType::Decision),
-		TargetNode(ToNode),
-		SourceLineNo(LineNo)
-	{
-	}
+	FSUDSScriptEdge(const FText& InText, USUDSScriptNode* ToNode, int LineNo);
 
 	FText GetText() const { return Text; }
 	FString GetTextID() const;

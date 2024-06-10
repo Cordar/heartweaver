@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "KrakenCharacterBase.h"
+#include "KrakenCharacterTypes.h"
 
 #include "KrakenCharacter.generated.h"
 
@@ -46,6 +47,11 @@ public:
 
 	FORCEINLINE UKrakenPushComponent* GetPushComponent() const { return KrakenPushComponent; }
 
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	EEmotionState GetEmotionState() const { return EmotionState; }
+	UFUNCTION(BlueprintCallable, Category = "Status")
+	void SetEmotionState(const EEmotionState NewEmotionState);
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -67,6 +73,8 @@ protected:
 
 	FTimerHandle SaveSafeLocationTimerHandle;
 	//~End of PlayerLocation
+
+	EEmotionState EmotionState = EEmotionState::ES_Neutral;
 
 private:
 	virtual void InitAbilityActorInfo() override;

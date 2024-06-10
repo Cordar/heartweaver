@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Characters/KrakenCharacterTypes.h"
 #include "KrakenCharacterAnimInstance.generated.h"
 
 class UKrakenCharacterMovementComponent;
@@ -75,4 +76,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
 	float PushSpeed;
 	void GetPushSpeed();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Reference, meta = (AllowPrivateAccess = "true"))
+    EEmotionState EmotionState;
+    void GetEmotionState();
 };

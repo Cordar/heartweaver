@@ -39,6 +39,7 @@ void UKrakenCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	GetIsMovingAnObject();
 	GetPushDirection();
 	GetPushSpeed();
+	GetEmotionState();
 }
 
 void UKrakenCharacterAnimInstance::GetGroundSpeed()
@@ -105,4 +106,9 @@ void UKrakenCharacterAnimInstance::GetPushSpeed()
 	{
 		PushSpeed = PushComponent->PushVelocity != FVector::ZeroVector ? PushComponent->PushSpeed : 0.f;
 	}
+}
+
+void UKrakenCharacterAnimInstance::GetEmotionState()
+{
+	EmotionState = ControlledCharacter->GetEmotionState();
 }

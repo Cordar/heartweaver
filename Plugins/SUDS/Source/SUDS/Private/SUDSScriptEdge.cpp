@@ -4,6 +4,20 @@
 
 #include "SUDSScriptNode.h"
 
+
+FSUDSScriptEdge::FSUDSScriptEdge(USUDSScriptNode* ToNode, ESUDSEdgeType InType, int LineNo): Type(InType),
+	TargetNode(ToNode),
+	SourceLineNo(LineNo)
+{
+}
+
+FSUDSScriptEdge::FSUDSScriptEdge(const FText& InText, USUDSScriptNode* ToNode, int LineNo): Text(InText),
+	Type(ESUDSEdgeType::Decision),
+	TargetNode(ToNode),
+	SourceLineNo(LineNo)
+{
+}
+
 void FSUDSScriptEdge::ExtractFormat() const
 {
 	// Only do this on demand, and only once
