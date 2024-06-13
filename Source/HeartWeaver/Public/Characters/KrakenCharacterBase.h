@@ -12,6 +12,7 @@ class UGameplayAbility;
 class UGameplayEffect;
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UKrakenCharacterMovementComponent;
 
 UCLASS(Abstract)
 class HEARTWEAVER_API AKrakenCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -42,6 +43,9 @@ protected:
 
 	void AddCharacterAbilities();
 	bool bAbilitiesInitialized = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
 
 private:
 
