@@ -15,7 +15,6 @@ class UInputMappingContext;
 class UKrakenInputConfig;
 class USpringArmComponent;
 class ACameraActor;
-class UKrakenCharacterMovementComponent;
 class AKrakenGrabableActor;
 
 UCLASS(Blueprintable, Meta = (BlueprintSpawnableComponent))
@@ -59,9 +58,6 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<ACameraActor> FollowCamera;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	TObjectPtr<UKrakenCharacterMovementComponent> KrakenCharacterMovementComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grabable")
 	TObjectPtr<AKrakenInteractableActor> KrakenInteractableActor;
