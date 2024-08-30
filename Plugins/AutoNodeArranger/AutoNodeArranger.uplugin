@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 2,
+	"VersionName": "4.1.5",
+	"FriendlyName": "Auto Node Arranger",
+	"Description": "Plugin for automatic arrangement of graph nodes.",
+	"Category": "Editor",
+	"CreatedBy": "bstt",
+	"CreatedByURL": "https://github.com/bstt",
+	"DocsURL": "https://github.com/bstt/AutoNodeArranger",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/565cf724479c4c2f9138b6428cfd74b1",
+	"SupportURL": "https://github.com/bstt/AutoNodeArranger#5-Contact-me-1",
+	"EngineVersion": "5.4.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "AutoNodeArranger",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
+		}
+	]
+}
