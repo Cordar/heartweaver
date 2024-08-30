@@ -6738,6 +6738,42 @@
 			"Type": "RequiredResource"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/AutoNodeArranger/Binaries/Win64/UnrealEditor-AutoNodeArranger.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/AutoNodeArranger/Binaries/Win64/UnrealEditor-AutoNodeArranger.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/AutoNodeArranger/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DarkerNodes/Binaries/Win64/UnrealEditor-DarkerNodes.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DarkerNodes/Binaries/Win64/UnrealEditor-DarkerNodes.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DarkerNodes/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/ElectronicNodes/Binaries/Win64/UnrealEditor-ElectronicNodes.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/ElectronicNodes/Binaries/Win64/UnrealEditor-ElectronicNodes.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/ElectronicNodes/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/FMODStudioNiagara/Binaries/Win64/UnrealEditor-FMODStudioNiagara.dll",
 			"Type": "DynamicLibrary"
 		},
@@ -29924,6 +29960,18 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/AutoNodeArranger/AutoNodeArranger.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DarkerNodes/DarkerNodes.uplugin",
+			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/ElectronicNodes/ElectronicNodes.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/FMODStudioNiagara/FMODStudioNiagara.uplugin",
 			"Type": "UFS"
 		},
@@ -29978,6 +30026,7 @@
 		"AudioCapture",
 		"AudioSynesthesia",
 		"AudioWidgets",
+		"AutoNodeArranger",
 		"AutomationUtils",
 		"AvfMedia",
 		"BackChannel",
@@ -30009,6 +30058,7 @@
 		"CryptoKeys",
 		"CurveEditorTools",
 		"CustomMeshComponent",
+		"DarkerNodes",
 		"DataRegistry",
 		"DataValidation",
 		"Dataflow",
@@ -30016,6 +30066,7 @@
 		"DumpGPUServices",
 		"EditorDebugTools",
 		"EditorScriptingUtilities",
+		"ElectronicNodes",
 		"EngineAssetDefinitions",
 		"EnhancedInput",
 		"EnvironmentQueryEditor",
