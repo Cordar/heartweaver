@@ -214,25 +214,12 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
 
-	// De momento esto no funciona
-	// TArray<UPrimitiveComponent*> OverlappingComponents;
-	// UKismetSystemLibrary::ComponentOverlapComponents(Box, Box->GetComponentTransform(), OverlapQuery, AActor::StaticClass(), ActorsToIgnore, OverlappingComponents);
-	//
-	// UE_LOG(LogTemp, Warning, TEXT("Component Overlap \n ---------------"));
-	// UE_LOG(LogTemp, Warning, TEXT("Overlapping Components length: %i"), OverlappingComponents.Num());
-	//
-	// for (int i = 0; i < OverlappingComponents.Num(); i++)
-	// {
-	// 	FString ComponentName = OverlappingComponents[i]->GetName();
-	// 	UE_LOG(LogTemp, Warning, TEXT("Componente: %s"), *ComponentName);
-	// }
-
 	// Obtenemos todos los actores que estén dentro de nuestra caja
 	TArray<AActor*> OverlappingActors;
 	UKismetSystemLibrary::ComponentOverlapActors(Box, Box->GetComponentTransform(), OverlapQuery, AActor::StaticClass(),
 	                                             ActorsToIgnore, OverlappingActors);
-	UE_LOG(LogTemp, Warning, TEXT("Actor Overlap \n ---------------"));
-	UE_LOG(LogTemp, Warning, TEXT("Overlapping Actors length: %i"), OverlappingActors.Num());
+	// UE_LOG(LogTemp, Warning, TEXT("Actor Overlap \n ---------------"));
+	// UE_LOG(LogTemp, Warning, TEXT("Overlapping Actors length: %i"), OverlappingActors.Num());
 
 	for (int i = 0; i < OverlappingActors.Num(); i++)
 	{
@@ -249,7 +236,7 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 		for (int C = 0; C < Components.Num(); C++)
 		{
 			FString ComponentName = Components[C]->GetName();
-			UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ComponentName);
+			// UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ComponentName);
 
 			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(Components[C]);
 			if (UStaticMesh* Mesh = MeshComponent->GetStaticMesh())
@@ -257,10 +244,16 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 				if (UBodySetup* Body = Mesh->GetBodySetup())
 				{
 					TArray<FKBoxElem> BoxElems = Body->AggGeom.BoxElems;
-					UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
+					TArray<FKSphereElem> SphereElems = Body->AggGeom.SphereElems;
+					// UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
 					for (int B = 0; B < BoxElems.Num(); B++)
 					{
 						GenerateBoxCollision(BoxElems[B], MeshComponent->GetComponentTransform());
+					}
+
+					for (int S = 0; S < SphereElems.Num(); S++)
+					{
+						// GenerateSphereCollision(SphereElems[S], MeshComponent->GetComponentTransform());
 					}
 				}
 			}
@@ -275,7 +268,7 @@ void AKrakenNavBox::HandleFloorCollision()
 
 	TArray<FVector> DeleteGridMap;
 	TSet<FVector> FloorGridMap;
-	
+
 	for (const FVector Voxel : GridMap)
 	{
 		FVector Point = Voxel;
@@ -298,6 +291,9 @@ void AKrakenNavBox::HandleFloorCollision()
 				FloorGridMap.Add(VoxelizedPoint);
 				DeleteGridMap.Add(Point);
 			}
+		}else
+		{
+			DeleteGridMap.Add(Point);
 		}
 	}
 
@@ -319,10 +315,10 @@ void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform
 
 	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
 
-	FVector VoxelizedWorldBoxCenter = BoxElem.Center;
+	FVector BoxCenter = BoxElem.Center;
 
-	FVector InitialPoint = VoxelizedWorldBoxCenter - BoxLocalHalfExtent;
-	FVector FinalPoint = VoxelizedWorldBoxCenter + BoxLocalHalfExtent;
+	FVector InitialPoint = BoxCenter - BoxLocalHalfExtent;
+	FVector FinalPoint = BoxCenter + BoxLocalHalfExtent;
 
 	// La cantidad de puntos que va a tener la caja es igual al volumen dividido por la distancia
 	int VoxelAmmount = ((BoxLocalHalfExtent.X * 2 + GridDistance) * (BoxLocalHalfExtent.Y * 2 + GridDistance) * (
@@ -357,12 +353,93 @@ void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform
 				if (GridMap.Contains(VoxelizedPoint))
 				{
 					TestGridMap.Add(VoxelizedPoint);
-					// Bloquamos el punto
-					// GridMap[VoxelizedPoint].Value = static_cast<unsigned char>(EVoxelValue::BLOCKED);
 					GridMap.Remove(VoxelizedPoint);
 				}
 
-				CurrentPoint.X += GridDistance;
+				CurrentPoint.X += (GridDistance );
+			}
+			CurrentPoint.X = InitialPoint.X;
+			CurrentPoint.Y += (GridDistance );
+		}
+		CurrentPoint.X = InitialPoint.X;
+		CurrentPoint.Y = InitialPoint.Y;
+		CurrentPoint.Z += (GridDistance );
+	}
+}
+
+void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform)
+{
+	// TODO: Que esto funcione bien, por alguna razón aumentar el radio empeora los resultados
+	
+	FVector ComponentScale = Transform.GetScale3D();
+	float SphereRadius = /*FMath::Min(FMath::Min(ComponentScale.X, ComponentScale.Y), ComponentScale.Z) **/10.0f * SphereElem.Radius;
+
+	UE_LOG(LogTemp, Warning, TEXT("Sphere radius: %f"), SphereRadius);
+	
+	FVector BoxLocalHalfExtent = FVector(1.0f, 1.0f, 1.0f) * SphereRadius;
+
+	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
+
+	FVector SphereCenter = SphereElem.Center;
+
+	FString SphereCenterText = SphereCenter.ToString();
+	UE_LOG(LogTemp, Warning, TEXT("Local Sphere center: %s"), *SphereCenterText);
+
+	FVector InitialPoint = SphereCenter - BoxLocalHalfExtent;
+	FVector FinalPoint = SphereCenter + BoxLocalHalfExtent;
+
+	// La cantidad de puntos que va a tener la caja es igual al volumen dividido por la distancia
+	int VoxelAmmount = ((BoxLocalHalfExtent.X * 2 + GridDistance) * (BoxLocalHalfExtent.Y * 2 + GridDistance) * (
+		BoxLocalHalfExtent.Z * 2 + GridDistance)) / (GridDistance * 10000);
+	UE_LOG(LogTemp, Warning, TEXT("Voxel Ammount: %i"), VoxelAmmount);
+
+	FString InitialPointText = InitialPoint.ToString();
+	FString FinalPointText = FinalPoint.ToString();
+	UE_LOG(LogTemp, Warning, TEXT("InitialPoint On Sphere: %s"), *InitialPointText);
+	UE_LOG(LogTemp, Warning, TEXT("InitialPoint On Sphere: %s"), *FinalPointText);
+
+
+	FVector TransformedCenter = Transform.TransformPosition(SphereCenter);
+	DrawDebugSphere(GetWorld(), TransformedCenter, SphereRadius, 20, FColor::Emerald, false, 50.0f, 0, 3.0f);
+
+	FString SphereCenterGlobalText = TransformedCenter.ToString();
+	UE_LOG(LogTemp, Warning, TEXT("Global Sphere center: %s"), *SphereCenterGlobalText);
+	
+	if (VoxelAmmount > 50000)
+	{
+		UE_LOG(LogTemp, Warning,
+		       TEXT("Cálculo de vóxeles excedido en caja de colisión. Intentando calcular %i en un límite de 50000"),
+		       VoxelAmmount);
+		return;
+	}
+
+	FVector CurrentPoint = InitialPoint;
+
+	// Obtenemos los puntos en el espacio local SIN VOXELIZAR
+	while (CurrentPoint.Z <= FinalPoint.Z)
+	{
+		while (CurrentPoint.Y <= FinalPoint.Y)
+		{
+			while (CurrentPoint.X <= FinalPoint.X)
+			{
+				if (FVector().Distance(SphereCenter, CurrentPoint) < SphereElem.Radius)
+				{
+					FVector TransformedPoint = Transform.TransformPosition(CurrentPoint / ComponentScale);
+
+					FVector VoxelizedPoint = TransformedPoint - FVector(
+						UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.X, GridDistance),
+						UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Y, GridDistance),
+						UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Z, GridDistance));
+
+					TestGridMap.Add(VoxelizedPoint);
+					// Si tenemos el punto VOXELIZADO
+					if (GridMap.Contains(VoxelizedPoint))
+					{
+						GridMap.Remove(VoxelizedPoint);
+					}
+
+				}
+					CurrentPoint.X += GridDistance;
 			}
 			CurrentPoint.X = InitialPoint.X;
 			CurrentPoint.Y += GridDistance;

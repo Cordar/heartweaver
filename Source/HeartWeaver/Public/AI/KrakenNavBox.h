@@ -9,6 +9,7 @@
 
 // struct FNavMeshVoxelInfo;
 
+struct FKSphereElem;
 struct FKBoxElem;
 class UBoxComponent;
 
@@ -16,7 +17,7 @@ UCLASS()
 class HEARTWEAVER_API AKrakenNavBox : public AActor
 {
 	GENERATED_BODY()
-	
+
 	bool bCalculatingNavMesh = false;
 
 	USceneComponent* Root;
@@ -44,22 +45,20 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	UBoxComponent* Box;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AKrakenNavBox();
 
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 #endif
-	
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -76,7 +75,6 @@ public:
 	bool IsInWorldEditor();
 
 private:
-
 	/*
 	 * Llamado desde el generador de malla, comprueba y bloquea todos los vóxeles que estén dentro de una colisión
 	 */
@@ -86,11 +84,16 @@ private:
 	 * Según la orientación de la caja designamos la altura Z relativa correspondiente
 	 */
 	void HandleFloorCollision();
-	
+
 	/*
 	 * Dada una caja de colisión, llena su interior de valores de bloqueo
 	 */
 	void GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform);
+
+	/*
+	* Dada una esfera de colisión, llena su interior de valores de bloqueo
+	*/
+	void GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform);
 
 	void DrawDebugVisualization();
 };
