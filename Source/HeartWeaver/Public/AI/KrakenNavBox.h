@@ -22,18 +22,21 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 	USceneComponent* Root;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	float AgentHeight;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bUpdateNavMesh = false;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
-	TMap<FVector, FNavMeshVoxelInfo> GridMap;
+	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	TSet<FVector> GridMap;
+
+	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	TSet<FVector> TestGridMap;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
-	TMap<FVector, FNavMeshVoxelInfo> TestGridMap;
+	float GridDistance;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
-	double GridDistance;
-
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	// UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	TArray<FVector> LinealGrid;
 
 	// Array creado aquí para ahorrar memoria
@@ -64,7 +67,7 @@ public:
 	 * Genera la matriz de vóxeles para el sistema de navegación
 	 */
 	UFUNCTION(BlueprintCallable)
-	void GenerateGridInsideBox();
+	void GenerateGridInsideBox(bool GenerateOnlyFloorLevel);
 
 	/*
 	 * Esta función detecta si estamos en el editor y solo si estamos en un nivel y no en la previsualización del blueprint
@@ -80,7 +83,14 @@ private:
 	void HandleStaticMeshesCollision();
 
 	/*
+	 * Según la orientación de la caja designamos la altura Z relativa correspondiente
+	 */
+	void HandleFloorCollision();
+	
+	/*
 	 * Dada una caja de colisión, llena su interior de valores de bloqueo
 	 */
 	void GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform);
+
+	void DrawDebugVisualization();
 };

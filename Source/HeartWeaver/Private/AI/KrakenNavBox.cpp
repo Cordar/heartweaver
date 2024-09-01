@@ -42,7 +42,7 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 		{
 			bUpdateNavMesh = false;
 			bCalculatingNavMesh = true;
-			GenerateGridInsideBox();
+			GenerateGridInsideBox(true);
 		}
 	}
 }
@@ -61,7 +61,7 @@ void AKrakenNavBox::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AKrakenNavBox::GenerateGridInsideBox()
+void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 {
 	// Tenemos cuidado que no sea un número demasiado pequeño
 	if (GridDistance <= 20.0f)
@@ -73,10 +73,15 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	FTransform BoxGlobalTransform = Box->GetComponentTransform();
 
 	// Primero hacemos el cálculo en local así que este valor es 0,0,0
-	FVector VoxelizedWorldBoxCenter = FVector();
+	FVector VoxelizedWorldBoxCenter = FVector(0.0f, 0.0f, 0.0f);
 
 	FVector InitialPoint = VoxelizedWorldBoxCenter - BoxLocalHalfExtent;
 	FVector FinalPoint = VoxelizedWorldBoxCenter + BoxLocalHalfExtent;
+
+	// Les añadimos un poco de valor para evitar que voxelice una unidad entera hacia abajo cuando
+	// no nos interesa
+	// InitialPoint = InitialPoint + FVector(0.0001f,0.0001f,0.0001f);
+	// FinalPoint = InitialPoint + FVector(0.0001f,0.0001f,0.0001f);
 
 	FString InitialPointText = InitialPoint.ToString();
 	FString FinalPointText = FinalPoint.ToString();
@@ -101,10 +106,17 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	GridMap.Empty();
 	TestGridMap.Empty();
 
-	// LocalGrid.SetNum(VoxelAmmount + 1);
-	// LinealGrid.SetNum(VoxelAmmount + 1);
+	LocalGrid.Reserve(VoxelAmmount);
+	LinealGrid.Reserve(VoxelAmmount);
+	GridMap.Reserve(VoxelAmmount);
+	TestGridMap.Reserve(VoxelAmmount);
 
 	FVector CurrentPoint = InitialPoint;
+
+	if (GenerateOnlyFloorLevel)
+	{
+		CurrentPoint.Z = FinalPoint.Z;
+	}
 
 	// Obtenemos los puntos en el espacio local SIN VOXELIZAR
 	int GridIndex = 0;
@@ -116,7 +128,7 @@ void AKrakenNavBox::GenerateGridInsideBox()
 			{
 				// LocalGrid[GridIndex] = CurrentPoint;
 				// GridIndex++;
-				LocalGrid.Add(CurrentPoint);
+				LocalGrid.AddUnique(CurrentPoint);
 
 				CurrentPoint.X += GridDistance;
 			}
@@ -133,29 +145,33 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	// Transformamos los puntos para que vayan en función de la rotación de la caja
 	for (int i = 0; i < LocalGridSize; i++)
 	{
-		FVector TransformedPoint = BoxGlobalTransform.TransformPosition(LocalGrid[i]);
-		LocalGrid[i] = TransformedPoint;
-	}
+		FVector LocalPoint = LocalGrid[i];
+		FVector GlobalPoint = BoxGlobalTransform.TransformPosition(LocalPoint);
 
-	// Voxelizamos los puntos para que vayan en función de las coordenadas globales
-	for (int i = 0; i < LocalGridSize; i++)
-	{
-		FVector VoxelizedPoint = LocalGrid[i] - FVector(
-			UKismetMathLibrary::GenericPercent_FloatFloat(LocalGrid[i].X, GridDistance),
-			UKismetMathLibrary::GenericPercent_FloatFloat(LocalGrid[i].Y, GridDistance),
-			UKismetMathLibrary::GenericPercent_FloatFloat(LocalGrid[i].Z, GridDistance));
+		FVector VoxelizedPoint = GlobalPoint - FVector(
+			(UKismetMathLibrary::GenericPercent_FloatFloat((GlobalPoint.X), GridDistance)),
+			(UKismetMathLibrary::GenericPercent_FloatFloat((GlobalPoint.Y), GridDistance)),
+			(UKismetMathLibrary::GenericPercent_FloatFloat((GlobalPoint.Z), GridDistance)));
 
+
+		FString InitialPointString = GlobalPoint.ToString();
+		FString VoxelizedPointString = VoxelizedPoint.ToString();
+
+		// UE_LOG(LogTemp, Warning, TEXT("InitialPointString: %s"), *InitialPointString);
+		// UE_LOG(LogTemp, Warning, TEXT("VoxelizedPointString: %s"), *VoxelizedPointString);
 
 		if (!GridMap.Contains(VoxelizedPoint))
 		{
-			FNavMeshVoxelInfo VoxelInfo;
-			GridMap.Add(VoxelizedPoint, VoxelInfo);
-			// LinealGrid[i] = VoxelizedPoint;
+			// FNavMeshVoxelInfo VoxelInfo;
+			GridMap.Add(VoxelizedPoint);
 			LinealGrid.Add(VoxelizedPoint);
 		}
 	}
 
 	HandleStaticMeshesCollision();
+	HandleFloorCollision();
+
+	DrawDebugVisualization();
 
 	bCalculatingNavMesh = false;
 }
@@ -248,15 +264,58 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 					}
 				}
 			}
-			
 		}
+	}
+}
+
+void AKrakenNavBox::HandleFloorCollision()
+{
+	UWorld* World = GetWorld();
+	FVector DownVector = FVector() - GetActorUpVector();
+
+	TArray<FVector> DeleteGridMap;
+	TSet<FVector> FloorGridMap;
+	
+	for (const FVector Voxel : GridMap)
+	{
+		FVector Point = Voxel;
+		FHitResult Hit;
+
+		FVector Start = Point;
+		FVector End = Point + (DownVector * AgentHeight);
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(this);
+
+		if (World->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, CollisionParams))
+		{
+			FVector VoxelizedPoint = Hit.ImpactPoint - FVector(
+				UKismetMathLibrary::GenericPercent_FloatFloat(Hit.ImpactPoint.X, GridDistance),
+				UKismetMathLibrary::GenericPercent_FloatFloat(Hit.ImpactPoint.Y, GridDistance),
+				UKismetMathLibrary::GenericPercent_FloatFloat(Hit.ImpactPoint.Z, GridDistance));
+
+			if (!GridMap.Contains(VoxelizedPoint))
+			{
+				FloorGridMap.Add(VoxelizedPoint);
+				DeleteGridMap.Add(Point);
+			}
+		}
+	}
+
+	for (int i = 0; i < DeleteGridMap.Num(); i++)
+	{
+		GridMap.Remove(DeleteGridMap[i]);
+	}
+
+	for (const FVector Voxel : FloorGridMap)
+	{
+		GridMap.Add(Voxel);
 	}
 }
 
 void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform)
 {
 	FVector ComponentScale = Transform.GetScale3D();
-	FVector BoxLocalHalfExtent = FVector(BoxElem.X / 2.0f, BoxElem.Y / 2.0f,BoxElem.Z / 2.0f);
+	FVector BoxLocalHalfExtent = FVector(BoxElem.X / 2.0f, BoxElem.Y / 2.0f, BoxElem.Z / 2.0f);
 
 	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
 
@@ -272,8 +331,9 @@ void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform
 
 	if (VoxelAmmount > 50000)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Cálculo de vóxeles excedido en caja de colisión. Intentando calcular %i en un límite de 50000"),
-			   VoxelAmmount);
+		UE_LOG(LogTemp, Warning,
+		       TEXT("Cálculo de vóxeles excedido en caja de colisión. Intentando calcular %i en un límite de 50000"),
+		       VoxelAmmount);
 		return;
 	}
 
@@ -286,22 +346,22 @@ void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform
 		{
 			while (CurrentPoint.X <= FinalPoint.X)
 			{
-				FVector TransformedPoint = Transform.TransformPosition(CurrentPoint/ ComponentScale);
+				FVector TransformedPoint = Transform.TransformPosition(CurrentPoint / ComponentScale);
 
 				FVector VoxelizedPoint = TransformedPoint - FVector(
-			UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.X, GridDistance),
-			UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Y, GridDistance),
-			UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Z, GridDistance));
+					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.X, GridDistance),
+					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Y, GridDistance),
+					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Z, GridDistance));
 
-				TestGridMap.Add(VoxelizedPoint);
 				// Si tenemos el punto VOXELIZADO
 				if (GridMap.Contains(VoxelizedPoint))
 				{
+					TestGridMap.Add(VoxelizedPoint);
 					// Bloquamos el punto
 					// GridMap[VoxelizedPoint].Value = static_cast<unsigned char>(EVoxelValue::BLOCKED);
 					GridMap.Remove(VoxelizedPoint);
 				}
-				
+
 				CurrentPoint.X += GridDistance;
 			}
 			CurrentPoint.X = InitialPoint.X;
@@ -311,5 +371,18 @@ void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform
 		CurrentPoint.Y = InitialPoint.Y;
 		CurrentPoint.Z += GridDistance;
 	}
-	
+}
+
+void AKrakenNavBox::DrawDebugVisualization()
+{
+	UWorld* World = GetWorld();
+	FlushPersistentDebugLines(World);
+	for (FVector Pos : GridMap)
+	{
+		DrawDebugSphere(World, Pos, 10.0f, 4, FColor::Yellow, false, 50.0f);
+	}
+	for (FVector Pos : TestGridMap)
+	{
+		DrawDebugSphere(World, Pos, 10.0f, 4, FColor::Red, false, 50.0f);
+	}
 }
