@@ -3,6 +3,7 @@
 
 #include "AI/KrakenNavBox.h"
 
+#include "AI/KrakenPathfinding.h"
 #include "Components/BoxComponent.h"
 #include "Engine/BlockingVolume.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -46,6 +47,12 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 			bCalculatingNavMesh = true;
 			GenerateGridInsideBox();
 		}
+	}
+
+	if (bGenerateRandomPath)
+	{
+		bGenerateRandomPath = false;
+		TestPathfinding();
 	}
 }
 #endif
@@ -640,6 +647,44 @@ void AKrakenNavBox::HandleAvoidanceRadius()
 	}
 }
 
+void AKrakenNavBox::TestPathfinding()
+{
+	int StartPointIndex = FMath::RandRange(0, GridMap.Num() - 1);
+	int EndPointIndex = FMath::RandRange(0, GridMap.Num() - 1);
+
+	FVector StartPoint = FVector(0, 0, 0);
+	FVector EndPoint = FVector(0, 0, 0);
+
+	int TempIndex = 0;
+	for (FVector Voxel : GridMap)
+	{
+		TempIndex++;
+		if (TempIndex == StartPointIndex)
+		{
+			StartPoint = Voxel;
+		}
+		if (TempIndex == EndPointIndex)
+		{
+			EndPoint = Voxel;
+		}
+	}
+
+	FlushPersistentDebugLines(GetWorld());
+	DrawDebugSphere(GetWorld(), StartPoint, 30.0f, 3, FColor::Green, false, 50.0f);
+	DrawDebugSphere(GetWorld(), EndPoint, 30.0f, 3, FColor::Purple, false, 50.0f);
+
+	UE_LOG(LogTemp, Warning, TEXT("========================================================================"));
+
+	TArray<FVector> Path = KrakenPathfinding::GetPath(StartPoint, EndPoint, GridDistance, &GridMap);
+	UE_LOG(LogTemp, Warning, TEXT("Path Ammount: %i"), Path.Num());
+
+	for (int i = 0; i < Path.Num() - 1; i++)
+	{
+		DrawDebugLine(GetWorld(), Path[i], Path[i + 1], FColor:: White, true, 99.0f, 0, 4.0f);
+	}
+
+}
+
 void AKrakenNavBox::DrawDebugVisualization()
 {
 	FTransform BoxGlobalTransform = Box->GetComponentTransform();
@@ -654,7 +699,7 @@ void AKrakenNavBox::DrawDebugVisualization()
 		{
 			for (FVector Pos : GridMap)
 			{
-				DrawDebugSphere(World, Pos, 10.0f, 3, FColor::Yellow, false, 50.0f);
+				DrawDebugSphere(World, Pos, 5.0f, 3, FColor::Yellow, false, 50.0f);
 			}
 		}
 		else
@@ -663,12 +708,12 @@ void AKrakenNavBox::DrawDebugVisualization()
 			{
 				FVector GlobalPoint = BoxGlobalTransform.TransformPosition(Pos);
 
-				DrawDebugSphere(World, GlobalPoint, 10.0f, 3, FColor::Blue, false, 50.0f);
+				DrawDebugSphere(World, GlobalPoint, 5.0f, 3, FColor::Blue, false, 50.0f);
 			}
 		}
 		for (FVector Pos : TestGridMap)
 		{
-			DrawDebugSphere(World, Pos, 10.0f, 3, FColor::Red, false, 50.0f);
+			DrawDebugSphere(World, Pos, 5.0f, 3, FColor::Red, false, 50.0f);
 		}
 	}
 }

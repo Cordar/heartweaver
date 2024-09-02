@@ -64,7 +64,10 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bDrawLocalDebug = false;
-
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bGenerateRandomPath = false;
+	
 public:
 	// Sets default values for this actor's properties
 	AKrakenNavBox();
@@ -117,6 +120,8 @@ private:
 	void GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform);
 
 	void HandleAvoidanceRadius();
+
+	void TestPathfinding();
 
 	void DrawDebugVisualization();
 };
