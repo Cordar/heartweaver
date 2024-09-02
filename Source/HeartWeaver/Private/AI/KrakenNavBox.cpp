@@ -43,7 +43,7 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 		{
 			bUpdateNavMesh = false;
 			bCalculatingNavMesh = true;
-			GenerateGridInsideBox(true);
+			GenerateGridInsideBox();
 		}
 	}
 }
@@ -62,7 +62,7 @@ void AKrakenNavBox::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
+void AKrakenNavBox::GenerateGridInsideBox()
 {
 	// Tenemos cuidado que no sea un número demasiado pequeño
 	if (GridDistance <= 10.0f)
@@ -114,9 +114,10 @@ void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 
 	FVector CurrentPoint = InitialPoint;
 
-	if (GenerateOnlyFloorLevel)
+	if (bGenerateOnlyFloorLevel)
 	{
 		CurrentPoint.Z = FinalPoint.Z;
+		DesignedZAnalisisLevel = CurrentPoint.Z;
 	}
 
 	// Obtenemos los puntos en el espacio local SIN VOXELIZAR
@@ -171,7 +172,7 @@ void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 
 	HandleStaticMeshesCollision();
 	HandleBlockingVolumeCollision();
-	
+
 	HandleFloorCollision();
 
 	DrawDebugVisualization();
@@ -252,7 +253,8 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 					// UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
 					for (int B = 0; B < BoxElems.Num(); B++)
 					{
-						FVector BoxLocalHalfExtent = FVector(BoxElems[B].X / 2.0f, BoxElems[B].Y / 2.0f, BoxElems[B].Z / 2.0f);
+						FVector BoxLocalHalfExtent = FVector(BoxElems[B].X / 2.0f, BoxElems[B].Y / 2.0f,
+						                                     BoxElems[B].Z / 2.0f);
 						FVector BoxCenter = BoxElems[B].Center;
 						GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, MeshComponent->GetComponentTransform());
 					}
@@ -272,7 +274,7 @@ void AKrakenNavBox::HandleBlockingVolumeCollision()
 	UE_LOG(LogTemp, Warning, TEXT("HandleBlockingVolumeCollision"));
 
 
-		TArray<TEnumAsByte<EObjectTypeQuery>> OverlapQuery;
+	TArray<TEnumAsByte<EObjectTypeQuery>> OverlapQuery;
 	// Objectos estáticos
 	OverlapQuery.Add(EObjectTypeQuery::ObjectTypeQuery1);
 	TArray<AActor*> ActorsToIgnore;
@@ -280,7 +282,8 @@ void AKrakenNavBox::HandleBlockingVolumeCollision()
 
 	// Obtenemos todos los actores que estén dentro de nuestra caja
 	TArray<AActor*> OverlappingBlockingVolumes;
-	UKismetSystemLibrary::ComponentOverlapActors(Box, Box->GetComponentTransform(), OverlapQuery, ABlockingVolume::StaticClass(),
+	UKismetSystemLibrary::ComponentOverlapActors(Box, Box->GetComponentTransform(), OverlapQuery,
+	                                             ABlockingVolume::StaticClass(),
 	                                             ActorsToIgnore, OverlappingBlockingVolumes);
 	// UE_LOG(LogTemp, Warning, TEXT("Actor Overlap \n ---------------"));
 	// UE_LOG(LogTemp, Warning, TEXT("Overlapping Actors length: %i"), OverlappingActors.Num());
@@ -294,14 +297,13 @@ void AKrakenNavBox::HandleBlockingVolumeCollision()
 	// Por cada actor iteramos por todos los meshes státicos que tenga
 	for (int A = 0; A < OverlappingBlockingVolumes.Num(); A++)
 	{
-		ABlockingVolume* Volume = Cast<ABlockingVolume>( OverlappingBlockingVolumes[A]);
-			// Volume->Brush->Bounds.
+		ABlockingVolume* Volume = Cast<ABlockingVolume>(OverlappingBlockingVolumes[A]);
+		// Volume->Brush->Bounds.
 
 		FVector BoxLocalHalfExtent = Volume->Brush->Bounds.BoxExtent;
-		FVector BoxCenter = FVector(0.0f,0.0f,0.0f);
+		FVector BoxCenter = FVector(0.0f, 0.0f, 0.0f);
 		GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, Volume->GetTransform());
 	}
-	
 }
 
 void AKrakenNavBox::HandleFloorCollision()
@@ -334,7 +336,8 @@ void AKrakenNavBox::HandleFloorCollision()
 				FloorGridMap.Add(VoxelizedPoint);
 				DeleteGridMap.Add(Point);
 			}
-		}else
+		}
+		else
 		{
 			DeleteGridMap.Add(Point);
 		}
@@ -360,62 +363,101 @@ void AKrakenNavBox::GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalf
 	FVector InitialPoint = BoxCenter - BoxLocalHalfExtent;
 	FVector FinalPoint = BoxCenter + BoxLocalHalfExtent;
 
-	// La cantidad de puntos que va a tener la caja es igual al volumen dividido por la distancia
-	int VoxelAmmount = ((BoxLocalHalfExtent.X * 2 + GridDistance) * (BoxLocalHalfExtent.Y * 2 + GridDistance) * (
-		BoxLocalHalfExtent.Z * 2 + GridDistance)) / (GridDistance * 10000);
-	UE_LOG(LogTemp, Warning, TEXT("Voxel Ammount: %i"), VoxelAmmount);
+	// Obtenemos los puntos en el espacio local
+	TArray<FVector> BoxPoints;
+	BoxPoints.Add(InitialPoint);
+	BoxPoints.Add(FVector(FinalPoint.X, InitialPoint.Y, InitialPoint.Z));
+	BoxPoints.Add(FVector(InitialPoint.X, FinalPoint.Y, InitialPoint.Z));
+	BoxPoints.Add(FVector(InitialPoint.X, InitialPoint.Y, FinalPoint.Z));
 
-	if (VoxelAmmount > 50000)
+	BoxPoints.Add(FinalPoint);
+	BoxPoints.Add(FVector(InitialPoint.X, FinalPoint.Y, FinalPoint.Z));
+	BoxPoints.Add(FVector(FinalPoint.X, InitialPoint.Y, FinalPoint.Z));
+	BoxPoints.Add(FVector(FinalPoint.X, FinalPoint.Y, InitialPoint.Z));
+
+	// Obtenemos el bounding box GLOBAL de la caja
+	FVector MinBoundingBox = FVector(UE_BIG_NUMBER,UE_BIG_NUMBER,UE_BIG_NUMBER);
+	FVector MaxBoundingBox = FVector(UE_SMALL_NUMBER,UE_SMALL_NUMBER,UE_SMALL_NUMBER);
+	for (int i = 0; i < BoxPoints.Num(); i++)
 	{
-		UE_LOG(LogTemp, Warning,
-		       TEXT("Cálculo de vóxeles excedido en caja de colisión. Intentando calcular %i en un límite de 50000"),
-		       VoxelAmmount);
-		return;
+		MinBoundingBox = FVector(
+			FMath::Min(MinBoundingBox.X, Transform.TransformPosition(BoxPoints[i] / ComponentScale).X),
+			FMath::Min(MinBoundingBox.Y, Transform.TransformPosition(BoxPoints[i] / ComponentScale).Y),
+			FMath::Min(MinBoundingBox.Z, Transform.TransformPosition(BoxPoints[i] / ComponentScale).Z));
+
+		MaxBoundingBox = FVector(
+			FMath::Max(MaxBoundingBox.X, Transform.TransformPosition(BoxPoints[i] / ComponentScale).X),
+			FMath::Max(MaxBoundingBox.Y, Transform.TransformPosition(BoxPoints[i] / ComponentScale).Y),
+			FMath::Max(MaxBoundingBox.Z, Transform.TransformPosition(BoxPoints[i] / ComponentScale).Z));
+		// DrawDebugSphere(GetWorld(), Transform.TransformPosition(BoxPoints[i] / ComponentScale), 20.0f, 10, FColor::Blue,
+		//                 true, 99.0f);
 	}
 
-	FVector CurrentPoint = InitialPoint;
+	// DrawDebugSphere(GetWorld(), MinBoundingBox, 20.0f, 10, FColor::Blue, true, 99.0f);
+	// DrawDebugSphere(GetWorld(), MaxBoundingBox, 20.0f, 10, FColor::Blue, true, 99.0f);
+
+	FVector CurrentPoint = MinBoundingBox;
+
+	// TODO: Técnicamente en caso de generar solo un piso se podría optimizar un poco
+	// if (bGenerateOnlyFloorLevel)
+	// {
+	// 	
+	// }
 
 	// Obtenemos los puntos en el espacio local SIN VOXELIZAR
-	while (CurrentPoint.Z <= FinalPoint.Z)
+	while (CurrentPoint.Z <= MaxBoundingBox.Z)
 	{
-		while (CurrentPoint.Y <= FinalPoint.Y)
+		while (CurrentPoint.Y <= MaxBoundingBox.Y)
 		{
-			while (CurrentPoint.X <= FinalPoint.X)
+			while (CurrentPoint.X <= MaxBoundingBox.X)
 			{
-				FVector TransformedPoint = Transform.TransformPosition(CurrentPoint / ComponentScale);
+				FVector InverseTransformedPoint = Transform.InverseTransformPosition(CurrentPoint) * ComponentScale;
 
-				FVector VoxelizedPoint = TransformedPoint - FVector(
-					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.X, GridDistance),
-					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Y, GridDistance),
-					UKismetMathLibrary::GenericPercent_FloatFloat(TransformedPoint.Z, GridDistance));
-
-				// Si tenemos el punto VOXELIZADO
-				if (GridMap.Contains(VoxelizedPoint))
+				if (InverseTransformedPoint.X < InitialPoint.X || InverseTransformedPoint.Y < InitialPoint.Y
+					|| InverseTransformedPoint.Z < InitialPoint.Z || InverseTransformedPoint.X > FinalPoint.X ||
+					InverseTransformedPoint.Y > FinalPoint.Y
+					|| InverseTransformedPoint.Z > FinalPoint.Z)
 				{
-					TestGridMap.Add(VoxelizedPoint);
-					GridMap.Remove(VoxelizedPoint);
+				}
+				else
+				{
+					// FVector TransformedPoint = Transform.TransformPosition(CurrentPoint / ComponentScale);
+
+					FVector VoxelizedPoint = CurrentPoint - FVector(
+						UKismetMathLibrary::GenericPercent_FloatFloat(CurrentPoint.X, GridDistance),
+						UKismetMathLibrary::GenericPercent_FloatFloat(CurrentPoint.Y, GridDistance),
+						UKismetMathLibrary::GenericPercent_FloatFloat(CurrentPoint.Z, GridDistance));
+
+					// Si tenemos el punto VOXELIZADO
+					if (GridMap.Contains(VoxelizedPoint))
+					{
+						TestGridMap.Add(VoxelizedPoint);
+						GridMap.Remove(VoxelizedPoint);
+					}
 				}
 
-				CurrentPoint.X += (GridDistance );
+
+				CurrentPoint.X += (GridDistance);
 			}
-			CurrentPoint.X = InitialPoint.X;
-			CurrentPoint.Y += (GridDistance );
+			CurrentPoint.X = MinBoundingBox.X;
+			CurrentPoint.Y += (GridDistance);
 		}
-		CurrentPoint.X = InitialPoint.X;
-		CurrentPoint.Y = InitialPoint.Y;
-		CurrentPoint.Z += (GridDistance );
+		CurrentPoint.X = MinBoundingBox.X;
+		CurrentPoint.Y = MinBoundingBox.Y;
+		CurrentPoint.Z += (GridDistance);
 	}
 }
 
 void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform)
 {
 	// TODO: Que esto funcione bien, por alguna razón aumentar el radio empeora los resultados
-	
+
 	FVector ComponentScale = Transform.GetScale3D();
-	float SphereRadius = /*FMath::Min(FMath::Min(ComponentScale.X, ComponentScale.Y), ComponentScale.Z) **/10.0f * SphereElem.Radius;
+	float SphereRadius = /*FMath::Min(FMath::Min(ComponentScale.X, ComponentScale.Y), ComponentScale.Z) **/10.0f *
+		SphereElem.Radius;
 
 	UE_LOG(LogTemp, Warning, TEXT("Sphere radius: %f"), SphereRadius);
-	
+
 	FVector BoxLocalHalfExtent = FVector(1.0f, 1.0f, 1.0f) * SphereRadius;
 
 	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
@@ -444,7 +486,7 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 
 	FString SphereCenterGlobalText = TransformedCenter.ToString();
 	UE_LOG(LogTemp, Warning, TEXT("Global Sphere center: %s"), *SphereCenterGlobalText);
-	
+
 	if (VoxelAmmount > 50000)
 	{
 		UE_LOG(LogTemp, Warning,
@@ -477,9 +519,8 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 					{
 						GridMap.Remove(VoxelizedPoint);
 					}
-
 				}
-					CurrentPoint.X += GridDistance;
+				CurrentPoint.X += GridDistance;
 			}
 			CurrentPoint.X = InitialPoint.X;
 			CurrentPoint.Y += GridDistance;

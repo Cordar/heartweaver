@@ -28,6 +28,11 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bUpdateNavMesh = false;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bGenerateOnlyFloorLevel = true;
+
+	float DesignedZAnalisisLevel;
+
 	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	TSet<FVector> GridMap;
 
@@ -66,7 +71,7 @@ public:
 	 * Genera la matriz de vóxeles para el sistema de navegación
 	 */
 	UFUNCTION(BlueprintCallable)
-	void GenerateGridInsideBox(bool GenerateOnlyFloorLevel);
+	void GenerateGridInsideBox();
 
 	/*
 	 * Esta función detecta si estamos en el editor y solo si estamos en un nivel y no en la previsualización del blueprint
