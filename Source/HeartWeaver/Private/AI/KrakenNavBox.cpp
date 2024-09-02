@@ -5,6 +5,7 @@
 
 #include "AI/NavMeshVoxelInfo.h"
 #include "Components/BoxComponent.h"
+#include "Engine/BlockingVolume.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/BodySetup.h"
@@ -64,9 +65,9 @@ void AKrakenNavBox::Tick(float DeltaTime)
 void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 {
 	// Tenemos cuidado que no sea un número demasiado pequeño
-	if (GridDistance <= 20.0f)
+	if (GridDistance <= 10.0f)
 	{
-		GridDistance = 20.0f;
+		GridDistance = 10.0f;
 	}
 
 	FVector BoxLocalHalfExtent = Box->GetScaledBoxExtent();
@@ -160,7 +161,7 @@ void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 		// UE_LOG(LogTemp, Warning, TEXT("InitialPointString: %s"), *InitialPointString);
 		// UE_LOG(LogTemp, Warning, TEXT("VoxelizedPointString: %s"), *VoxelizedPointString);
 
-		if (!GridMap.Contains(VoxelizedPoint))
+		// if (!GridMap.Contains(VoxelizedPoint))
 		{
 			// FNavMeshVoxelInfo VoxelInfo;
 			GridMap.Add(VoxelizedPoint);
@@ -169,6 +170,8 @@ void AKrakenNavBox::GenerateGridInsideBox(bool GenerateOnlyFloorLevel)
 	}
 
 	HandleStaticMeshesCollision();
+	HandleBlockingVolumeCollision();
+	
 	HandleFloorCollision();
 
 	DrawDebugVisualization();
@@ -206,6 +209,7 @@ bool AKrakenNavBox::IsInWorldEditor()
 
 void AKrakenNavBox::HandleStaticMeshesCollision()
 {
+	UE_LOG(LogTemp, Warning, TEXT("HandleStaticMeshesCollision"));
 	// TODO 1: En vez de utilizar la caja con la que se crea el NavMesh, usar una caja formada por los vóxeles generados
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> OverlapQuery;
@@ -223,22 +227,22 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 
 	for (int i = 0; i < OverlappingActors.Num(); i++)
 	{
-		FString ComponentName = OverlappingActors[i]->GetName();
-		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *ComponentName);
+		FString ActorName = OverlappingActors[i]->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *ActorName);
 	}
 
 	// Por cada actor iteramos por todos los meshes státicos que tenga
 	for (int A = 0; A < OverlappingActors.Num(); A++)
 	{
-		TArray<UStaticMeshComponent*> Components;
-		OverlappingActors[A]->GetComponents(UStaticMeshComponent::StaticClass(), Components);
+		TArray<UStaticMeshComponent*> StaticMeshComponents;
+		OverlappingActors[A]->GetComponents(UStaticMeshComponent::StaticClass(), StaticMeshComponents);
 
-		for (int C = 0; C < Components.Num(); C++)
+		for (int C = 0; C < StaticMeshComponents.Num(); C++)
 		{
-			FString ComponentName = Components[C]->GetName();
+			FString ComponentName = StaticMeshComponents[C]->GetName();
 			// UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ComponentName);
 
-			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(Components[C]);
+			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(StaticMeshComponents[C]);
 			if (UStaticMesh* Mesh = MeshComponent->GetStaticMesh())
 			{
 				if (UBodySetup* Body = Mesh->GetBodySetup())
@@ -248,7 +252,9 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 					// UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
 					for (int B = 0; B < BoxElems.Num(); B++)
 					{
-						GenerateBoxCollision(BoxElems[B], MeshComponent->GetComponentTransform());
+						FVector BoxLocalHalfExtent = FVector(BoxElems[B].X / 2.0f, BoxElems[B].Y / 2.0f, BoxElems[B].Z / 2.0f);
+						FVector BoxCenter = BoxElems[B].Center;
+						GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, MeshComponent->GetComponentTransform());
 					}
 
 					for (int S = 0; S < SphereElems.Num(); S++)
@@ -259,6 +265,43 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 			}
 		}
 	}
+}
+
+void AKrakenNavBox::HandleBlockingVolumeCollision()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HandleBlockingVolumeCollision"));
+
+
+		TArray<TEnumAsByte<EObjectTypeQuery>> OverlapQuery;
+	// Objectos estáticos
+	OverlapQuery.Add(EObjectTypeQuery::ObjectTypeQuery1);
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+
+	// Obtenemos todos los actores que estén dentro de nuestra caja
+	TArray<AActor*> OverlappingBlockingVolumes;
+	UKismetSystemLibrary::ComponentOverlapActors(Box, Box->GetComponentTransform(), OverlapQuery, ABlockingVolume::StaticClass(),
+	                                             ActorsToIgnore, OverlappingBlockingVolumes);
+	// UE_LOG(LogTemp, Warning, TEXT("Actor Overlap \n ---------------"));
+	// UE_LOG(LogTemp, Warning, TEXT("Overlapping Actors length: %i"), OverlappingActors.Num());
+
+	for (int i = 0; i < OverlappingBlockingVolumes.Num(); i++)
+	{
+		FString ActorName = OverlappingBlockingVolumes[i]->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *ActorName);
+	}
+
+	// Por cada actor iteramos por todos los meshes státicos que tenga
+	for (int A = 0; A < OverlappingBlockingVolumes.Num(); A++)
+	{
+		ABlockingVolume* Volume = Cast<ABlockingVolume>( OverlappingBlockingVolumes[A]);
+			// Volume->Brush->Bounds.
+
+		FVector BoxLocalHalfExtent = Volume->Brush->Bounds.BoxExtent;
+		FVector BoxCenter = FVector(0.0f,0.0f,0.0f);
+		GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, Volume->GetTransform());
+	}
+	
 }
 
 void AKrakenNavBox::HandleFloorCollision()
@@ -286,7 +329,7 @@ void AKrakenNavBox::HandleFloorCollision()
 				UKismetMathLibrary::GenericPercent_FloatFloat(Hit.ImpactPoint.Y, GridDistance),
 				UKismetMathLibrary::GenericPercent_FloatFloat(Hit.ImpactPoint.Z, GridDistance));
 
-			if (!GridMap.Contains(VoxelizedPoint))
+			// if (!GridMap.Contains(VoxelizedPoint))
 			{
 				FloorGridMap.Add(VoxelizedPoint);
 				DeleteGridMap.Add(Point);
@@ -308,14 +351,11 @@ void AKrakenNavBox::HandleFloorCollision()
 	}
 }
 
-void AKrakenNavBox::GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform)
+void AKrakenNavBox::GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalfExtent, FTransform Transform)
 {
 	FVector ComponentScale = Transform.GetScale3D();
-	FVector BoxLocalHalfExtent = FVector(BoxElem.X / 2.0f, BoxElem.Y / 2.0f, BoxElem.Z / 2.0f);
 
 	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
-
-	FVector BoxCenter = BoxElem.Center;
 
 	FVector InitialPoint = BoxCenter - BoxLocalHalfExtent;
 	FVector FinalPoint = BoxCenter + BoxLocalHalfExtent;

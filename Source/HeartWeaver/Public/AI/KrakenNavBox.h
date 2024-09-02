@@ -80,6 +80,8 @@ private:
 	 */
 	void HandleStaticMeshesCollision();
 
+	void HandleBlockingVolumeCollision();
+
 	/*
 	 * Según la orientación de la caja designamos la altura Z relativa correspondiente
 	 */
@@ -88,7 +90,7 @@ private:
 	/*
 	 * Dada una caja de colisión, llena su interior de valores de bloqueo
 	 */
-	void GenerateBoxCollision(FKBoxElem BoxElem, FTransform Transform);
+	void GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalfExtent, FTransform Transform);
 
 	/*
 	* Dada una esfera de colisión, llena su interior de valores de bloqueo
