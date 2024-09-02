@@ -112,7 +112,7 @@ TArray<FVector> KrakenPathfinding::ReconstructPath(FNode* EndNode)
         CurrentNode = CurrentNode->Parent;
     }
 
-    // Path.Reverse(); // Invertir el camino para que vaya de inicio a fin
+    ReverseArray(Path);
     return Path;
 }
 
@@ -141,4 +141,17 @@ TArray<FVector> KrakenPathfinding::GetNeighbors(FVector CurrentPosition, float G
     }
 
     return Neighbors;
+}
+
+void KrakenPathfinding::ReverseArray(TArray<FVector>& Array)
+{
+    int32 StartIndex = 0;
+    int32 EndIndex = Array.Num() - 1;
+
+    while (StartIndex < EndIndex)
+    {
+        Array.Swap(StartIndex, EndIndex);
+        ++StartIndex;
+        --EndIndex;
+    }
 }

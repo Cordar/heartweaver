@@ -20,4 +20,5 @@ public:
 
 	static TArray<FVector> GetNeighbors(FVector CurrentPosition, float GridDistance, TSet<FVector>* GridMap);
 
+	static void ReverseArray(TArray<FVector>& Array);
 };

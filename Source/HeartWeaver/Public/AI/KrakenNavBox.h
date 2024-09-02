@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NavMeshVoxelInfo.h"
 #include "GameFramework/Actor.h"
 #include "KrakenNavBox.generated.h"
 
@@ -20,6 +19,7 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	bool bCalculatingNavMesh = false;
 
+	UPROPERTY()
 	USceneComponent* Root;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
@@ -36,7 +36,7 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	float DesignedZAnalisisLevel;
 
-	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	UPROPERTY()
 	TSet<FVector> GridMap;
 
 	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
@@ -67,6 +67,9 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bGenerateRandomPath = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bGenerateDebug = false;
 	
 public:
 	// Sets default values for this actor's properties
@@ -89,6 +92,15 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void GenerateGridInsideBox();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector GetClosestPointInNavMesh(FVector Point);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector GetRandomPointInNavMesh();
 
 	/*
 	 * Esta función detecta si estamos en el editor y solo si estamos en un nivel y no en la previsualización del blueprint

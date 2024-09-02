@@ -54,6 +54,12 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 		bGenerateRandomPath = false;
 		TestPathfinding();
 	}
+
+	if (bGenerateDebug)
+	{
+		bGenerateDebug = false;
+		DrawDebugVisualization();
+	}
 }
 #endif
 
@@ -192,6 +198,47 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	DrawDebugVisualization();
 
 	bCalculatingNavMesh = false;
+}
+
+FVector AKrakenNavBox::GetClosestPointInNavMesh(FVector Point)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Gridmap Ammount: %i"), GridMap.Num());
+
+	float MinDistance = 9999999999.9f;
+	FVector SelectedVoxel = FVector(0.0f, 0.0f, 0.0f);
+	for (FVector Voxel : GridMap)
+	{
+		float Distance = FVector::Dist(Voxel, Point);
+		if (Distance < MinDistance)
+		{
+			MinDistance = Distance;
+			SelectedVoxel = Voxel;
+		}
+	}
+	return SelectedVoxel;
+}
+
+TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint)
+{
+	FVector InitialPoint = GetClosestPointInNavMesh(StartPoint);
+	FVector FinalPoint = GetClosestPointInNavMesh(EndPoint);
+
+	return KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap);
+}
+
+FVector AKrakenNavBox::GetRandomPointInNavMesh()
+{
+	int Index = FMath::RandRange(0, GridMap.Num() - 1);
+	int TempIndex = 0;
+	for (FVector Voxel : GridMap)
+	{
+		TempIndex++;
+		if (TempIndex == Index)
+		{
+			return Voxel;
+		}
+	}
+	return FVector(0.0f, 0.0f, 0.0f);
 }
 
 bool AKrakenNavBox::IsInWorldEditor()
@@ -680,9 +727,8 @@ void AKrakenNavBox::TestPathfinding()
 
 	for (int i = 0; i < Path.Num() - 1; i++)
 	{
-		DrawDebugLine(GetWorld(), Path[i], Path[i + 1], FColor:: White, true, 99.0f, 0, 4.0f);
+		DrawDebugLine(GetWorld(), Path[i], Path[i + 1], FColor::White, true, 99.0f, 0, 4.0f);
 	}
-
 }
 
 void AKrakenNavBox::DrawDebugVisualization()
