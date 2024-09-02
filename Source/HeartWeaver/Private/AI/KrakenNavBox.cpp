@@ -26,7 +26,7 @@ AKrakenNavBox::AKrakenNavBox()
 	AvoidanceRadius = 100.0f;
 
 	Box->SetWorldScale3D(FVector(1, 1, 1));
-	Box->SetRelativeLocation(FVector());
+	Box->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	Box->SetBoxExtent(GetActorScale3D() * 50.0f);
 }
 #if WITH_EDITOR
@@ -37,7 +37,7 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 	if (!bCalculatingNavMesh)
 	{
 		Box->SetWorldScale3D(FVector(1, 1, 1));
-		Box->SetRelativeLocation(FVector());
+		Box->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 		Box->SetBoxExtent(GetActorScale3D() * 50.0f);
 
 		if (bUpdateNavMesh)
@@ -318,7 +318,7 @@ void AKrakenNavBox::HandleFloorCollision()
 	FTransform BoxGlobalTransform = Box->GetComponentTransform();
 
 	UWorld* World = GetWorld();
-	FVector DownVector = FVector() - GetActorUpVector();
+	FVector DownVector = FVector(0.0f, 0.0f, 0.0f) - GetActorUpVector();
 
 	TArray<FVector> DeleteGridMap;
 	TSet<FVector> FloorGridMap;
@@ -525,7 +525,7 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 		{
 			while (CurrentPoint.X <= FinalPoint.X)
 			{
-				if (FVector().Distance(SphereCenter, CurrentPoint) < SphereElem.Radius)
+				if (FVector(0.0f, 0.0f, 0.0f).Distance(SphereCenter, CurrentPoint) < SphereElem.Radius)
 				{
 					FVector TransformedPoint = Transform.TransformPosition(CurrentPoint / ComponentScale);
 
@@ -571,35 +571,66 @@ void AKrakenNavBox::HandleAvoidanceRadius()
 
 		for (int i = 0; i < 4; i++)
 		{
+			FVector Voxel = LocalVoxel;
 			switch (i)
 			{
 			case 0:
-				if (!LocalGridMap.Contains(LocalVoxel + FVector(GridDistance, 0.0f, 0.0f)))
-				{
-					GridLocalBorders.Add(LocalVoxel + FVector(GridDistance, 0.0f, 0.0f));
-				}
+				Voxel = Voxel + FVector(GridDistance, 0.0f, 0.0f);
 				break;
 			case 1:
-				if (!LocalGridMap.Contains(LocalVoxel + FVector(-GridDistance, 0.0f, 0.0f)))
-				{
-					GridLocalBorders.Add(LocalVoxel + FVector(-GridDistance, 0.0f, 0.0f));
-				}
+				Voxel = Voxel + FVector(-GridDistance, 0.0f, 0.0f);
 				break;
-			// case 2:
-			// 	if (!LocalGridMap.Contains(LocalVoxel + FVector(0.0f, GridDistance, 0.0f)))
-			// 	{
-			// 		GridLocalBorders.Add(LocalVoxel + FVector(0.0f, GridDistance, 0.0f));
-			// 	}
-			// 	break;
-			// case 3:
-			// 	if (!LocalGridMap.Contains(LocalVoxel + FVector(0.0f, -GridDistance, 0.0f)))
-			// 	{
-			// 		GridLocalBorders.Add(LocalVoxel + FVector(0.0f, -GridDistance, 0.0f));
-			// 	}
-			// 	break;
+			case 2:
+				Voxel = Voxel + FVector(0.0f, GridDistance, 0.0f);
+				break;
+			case 3:
+				Voxel = Voxel + FVector(0.0f, -GridDistance, 0.0f);
+				break;
+
 			default: break;
 			}
+
+			bool AddBorder = true;
+			for (const FVector SecondLocalVoxel : LocalGridMap)
+			{
+				if (FVector::Dist(SecondLocalVoxel, Voxel) < 0.1f)
+				{
+					AddBorder = false;
+					break;
+				}
+			}
+			if (AddBorder)
+			{
+				GridLocalBorders.Add(Voxel);
+			}
+			// if (!LocalGridMap.Contains(Voxel))
+			// {
+			// 	GridLocalBorders.Add(Voxel);
+			// }
 		}
+	}
+
+	TArray<FVector> DeleteGridMap;
+
+	for (const FVector LocalVoxel : GridLocalBorders)
+	{
+		FVector Voxel = BoxGlobalTransform.TransformPosition(LocalVoxel);
+
+		for (const FVector GlobalVoxel : GridMap)
+		{
+			if (FVector::Dist(Voxel, GlobalVoxel) < AvoidanceRadius)
+			{
+				DeleteGridMap.Add(GlobalVoxel);
+			}
+		}
+	}
+
+	for (int i = 0; i < DeleteGridMap.Num(); i++)
+	{
+		GridMap.Remove(DeleteGridMap[i]);
+
+		FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(DeleteGridMap[i]);
+		LocalGridMap.Remove(VoxelizedLocalPoint);
 	}
 
 	for (const FVector LocalVoxel : GridLocalBorders)
