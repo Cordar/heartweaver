@@ -3,7 +3,6 @@
 
 #include "AI/KrakenNavBox.h"
 
-#include "AI/NavMeshVoxelInfo.h"
 #include "Components/BoxComponent.h"
 #include "Engine/BlockingVolume.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -22,7 +21,9 @@ AKrakenNavBox::AKrakenNavBox()
 	Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	Box->SetupAttachment(Root);
 
-	GridDistance = 100.0f;
+	GridDistance = 50.0f;
+	AgentHeight = 100.0f;
+	AvoidanceRadius = 100.0f;
 
 	Box->SetWorldScale3D(FVector(1, 1, 1));
 	Box->SetRelativeLocation(FVector());
@@ -102,12 +103,14 @@ void AKrakenNavBox::GenerateGridInsideBox()
 		return;
 	}
 
-	LocalGrid.Empty();
+	LocalGridMap.Empty();
+	TempLocalGridMap.Empty();
 	LinealGrid.Empty();
 	GridMap.Empty();
 	TestGridMap.Empty();
 
-	LocalGrid.Reserve(VoxelAmmount);
+	LocalGridMap.Reserve(VoxelAmmount);
+	TempLocalGridMap.Reserve(VoxelAmmount);
 	LinealGrid.Reserve(VoxelAmmount);
 	GridMap.Reserve(VoxelAmmount);
 	TestGridMap.Reserve(VoxelAmmount);
@@ -121,7 +124,6 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	}
 
 	// Obtenemos los puntos en el espacio local SIN VOXELIZAR
-	int GridIndex = 0;
 	while (CurrentPoint.Z <= FinalPoint.Z)
 	{
 		while (CurrentPoint.Y <= FinalPoint.Y)
@@ -130,7 +132,7 @@ void AKrakenNavBox::GenerateGridInsideBox()
 			{
 				// LocalGrid[GridIndex] = CurrentPoint;
 				// GridIndex++;
-				LocalGrid.AddUnique(CurrentPoint);
+				TempLocalGridMap.Add(CurrentPoint);
 
 				CurrentPoint.X += GridDistance;
 			}
@@ -142,12 +144,9 @@ void AKrakenNavBox::GenerateGridInsideBox()
 		CurrentPoint.Z += GridDistance;
 	}
 
-	const int LocalGridSize = LocalGrid.Num();
-
 	// Transformamos los puntos para que vayan en función de la rotación de la caja
-	for (int i = 0; i < LocalGridSize; i++)
+	for (FVector LocalPoint : TempLocalGridMap)
 	{
-		FVector LocalPoint = LocalGrid[i];
 		FVector GlobalPoint = BoxGlobalTransform.TransformPosition(LocalPoint);
 
 		FVector VoxelizedPoint = GlobalPoint - FVector(
@@ -167,6 +166,9 @@ void AKrakenNavBox::GenerateGridInsideBox()
 			// FNavMeshVoxelInfo VoxelInfo;
 			GridMap.Add(VoxelizedPoint);
 			LinealGrid.Add(VoxelizedPoint);
+
+			FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(VoxelizedPoint);
+			LocalGridMap.Add(VoxelizedLocalPoint);
 		}
 	}
 
@@ -174,6 +176,11 @@ void AKrakenNavBox::GenerateGridInsideBox()
 	HandleBlockingVolumeCollision();
 
 	HandleFloorCollision();
+	HandleAvoidanceRadius();
+
+	UE_LOG(LogTemp, Warning, TEXT("Grid Map length: %i"), GridMap.Num());
+	UE_LOG(LogTemp, Warning, TEXT("Local Grid Map length: %i"), LocalGridMap.Num());
+
 
 	DrawDebugVisualization();
 
@@ -308,6 +315,8 @@ void AKrakenNavBox::HandleBlockingVolumeCollision()
 
 void AKrakenNavBox::HandleFloorCollision()
 {
+	FTransform BoxGlobalTransform = Box->GetComponentTransform();
+
 	UWorld* World = GetWorld();
 	FVector DownVector = FVector() - GetActorUpVector();
 
@@ -346,16 +355,23 @@ void AKrakenNavBox::HandleFloorCollision()
 	for (int i = 0; i < DeleteGridMap.Num(); i++)
 	{
 		GridMap.Remove(DeleteGridMap[i]);
+
+		FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(DeleteGridMap[i]);
+		LocalGridMap.Remove(VoxelizedLocalPoint);
 	}
 
 	for (const FVector Voxel : FloorGridMap)
 	{
 		GridMap.Add(Voxel);
+
+		FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(Voxel);
+		LocalGridMap.Add(VoxelizedLocalPoint);
 	}
 }
 
 void AKrakenNavBox::GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalfExtent, FTransform Transform)
 {
+	FTransform BoxGlobalTransform = Box->GetComponentTransform();
 	FVector ComponentScale = Transform.GetScale3D();
 
 	BoxLocalHalfExtent = BoxLocalHalfExtent * ComponentScale;
@@ -433,6 +449,9 @@ void AKrakenNavBox::GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalf
 					{
 						TestGridMap.Add(VoxelizedPoint);
 						GridMap.Remove(VoxelizedPoint);
+
+						FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(VoxelizedPoint);
+						LocalGridMap.Remove(VoxelizedLocalPoint);
 					}
 				}
 
@@ -450,6 +469,8 @@ void AKrakenNavBox::GenerateBoxCollision(FVector BoxCenter, FVector BoxLocalHalf
 
 void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform)
 {
+	FTransform BoxGlobalTransform = Box->GetComponentTransform();
+
 	// TODO: Que esto funcione bien, por alguna razón aumentar el radio empeora los resultados
 
 	FVector ComponentScale = Transform.GetScale3D();
@@ -482,7 +503,7 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 
 
 	FVector TransformedCenter = Transform.TransformPosition(SphereCenter);
-	DrawDebugSphere(GetWorld(), TransformedCenter, SphereRadius, 20, FColor::Emerald, false, 50.0f, 0, 3.0f);
+	// DrawDebugSphere(GetWorld(), TransformedCenter, SphereRadius, 20, FColor::Emerald, false, 50.0f, 0, 3.0f);
 
 	FString SphereCenterGlobalText = TransformedCenter.ToString();
 	UE_LOG(LogTemp, Warning, TEXT("Global Sphere center: %s"), *SphereCenterGlobalText);
@@ -518,6 +539,9 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 					if (GridMap.Contains(VoxelizedPoint))
 					{
 						GridMap.Remove(VoxelizedPoint);
+
+						FVector VoxelizedLocalPoint = BoxGlobalTransform.InverseTransformPosition(VoxelizedPoint);
+						LocalGridMap.Remove(VoxelizedLocalPoint);
 					}
 				}
 				CurrentPoint.X += GridDistance;
@@ -531,16 +555,89 @@ void AKrakenNavBox::GenerateSphereCollision(FKSphereElem SphereElem, FTransform 
 	}
 }
 
+void AKrakenNavBox::HandleAvoidanceRadius()
+{
+	FTransform BoxGlobalTransform = Box->GetComponentTransform();
+
+	TSet<FVector> GridLocalBorders;
+	GridLocalBorders.Reserve(GridMap.Num());
+
+
+	for (const FVector LocalVoxel : LocalGridMap)
+	{
+		FString LocalVoxelString = LocalVoxel.ToString();
+		UE_LOG(LogTemp, Warning, TEXT("LocalVoxelString: %s"), *LocalVoxelString);
+
+
+		for (int i = 0; i < 4; i++)
+		{
+			switch (i)
+			{
+			case 0:
+				if (!LocalGridMap.Contains(LocalVoxel + FVector(GridDistance, 0.0f, 0.0f)))
+				{
+					GridLocalBorders.Add(LocalVoxel + FVector(GridDistance, 0.0f, 0.0f));
+				}
+				break;
+			case 1:
+				if (!LocalGridMap.Contains(LocalVoxel + FVector(-GridDistance, 0.0f, 0.0f)))
+				{
+					GridLocalBorders.Add(LocalVoxel + FVector(-GridDistance, 0.0f, 0.0f));
+				}
+				break;
+			// case 2:
+			// 	if (!LocalGridMap.Contains(LocalVoxel + FVector(0.0f, GridDistance, 0.0f)))
+			// 	{
+			// 		GridLocalBorders.Add(LocalVoxel + FVector(0.0f, GridDistance, 0.0f));
+			// 	}
+			// 	break;
+			// case 3:
+			// 	if (!LocalGridMap.Contains(LocalVoxel + FVector(0.0f, -GridDistance, 0.0f)))
+			// 	{
+			// 		GridLocalBorders.Add(LocalVoxel + FVector(0.0f, -GridDistance, 0.0f));
+			// 	}
+			// 	break;
+			default: break;
+			}
+		}
+	}
+
+	for (const FVector LocalVoxel : GridLocalBorders)
+	{
+		FVector Voxel = BoxGlobalTransform.TransformPosition(LocalVoxel);
+		DrawDebugSphere(GetWorld(), Voxel, 10.0f, 3, FColor::Orange, false, 50.0f);
+	}
+}
+
 void AKrakenNavBox::DrawDebugVisualization()
 {
+	FTransform BoxGlobalTransform = Box->GetComponentTransform();
 	UWorld* World = GetWorld();
-	FlushPersistentDebugLines(World);
-	for (FVector Pos : GridMap)
+	if (bFlushPreviousDebug)
 	{
-		DrawDebugSphere(World, Pos, 10.0f, 4, FColor::Yellow, false, 50.0f);
+		FlushPersistentDebugLines(World);
 	}
-	for (FVector Pos : TestGridMap)
+	if (bDrawDebug)
 	{
-		DrawDebugSphere(World, Pos, 10.0f, 4, FColor::Red, false, 50.0f);
+		if (!bDrawLocalDebug)
+		{
+			for (FVector Pos : GridMap)
+			{
+				DrawDebugSphere(World, Pos, 10.0f, 3, FColor::Yellow, false, 50.0f);
+			}
+		}
+		else
+		{
+			for (FVector Pos : LocalGridMap)
+			{
+				FVector GlobalPoint = BoxGlobalTransform.TransformPosition(Pos);
+
+				DrawDebugSphere(World, GlobalPoint, 10.0f, 3, FColor::Blue, false, 50.0f);
+			}
+		}
+		for (FVector Pos : TestGridMap)
+		{
+			DrawDebugSphere(World, Pos, 10.0f, 3, FColor::Red, false, 50.0f);
+		}
 	}
 }

@@ -24,6 +24,9 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	float AgentHeight;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	float AvoidanceRadius;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bUpdateNavMesh = false;
@@ -46,10 +49,21 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 	TArray<FVector> LinealGrid;
 
 	// Array creado aquí para ahorrar memoria
-	TArray<FVector> LocalGrid;
+	TSet<FVector> LocalGridMap;
+	TSet<FVector> TempLocalGridMap;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	UBoxComponent* Box;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bFlushPreviousDebug = true;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bDrawDebug = true;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
+	bool bDrawLocalDebug = false;
 
 public:
 	// Sets default values for this actor's properties
@@ -101,6 +115,8 @@ private:
 	* Dada una esfera de colisión, llena su interior de valores de bloqueo
 	*/
 	void GenerateSphereCollision(FKSphereElem SphereElem, FTransform Transform);
+
+	void HandleAvoidanceRadius();
 
 	void DrawDebugVisualization();
 };
