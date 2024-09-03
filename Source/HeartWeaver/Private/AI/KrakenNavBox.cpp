@@ -202,7 +202,7 @@ void AKrakenNavBox::GenerateGridInsideBox()
 
 FVector AKrakenNavBox::GetClosestPointInNavMesh(FVector Point)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Gridmap Ammount: %i"), GridMap.Num());
+	// UE_LOG(LogTemp, Warning, TEXT("Gridmap Ammount: %i"), GridMap.Num());
 
 	float MinDistance = 9999999999.9f;
 	FVector SelectedVoxel = FVector(0.0f, 0.0f, 0.0f);
