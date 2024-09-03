@@ -1,5 +1,9 @@
 ﻿#pragma once
 
+/*
+ * TODO: BORRAR ESTA CLASE. PROBABLEMENTE NO SE VA A UTILIZAR
+ */
+
 #include "CoreMinimal.h"
 #include "NavMeshVoxelInfo.generated.h"
 

@@ -4,11 +4,18 @@
 #include "AI/EnemyAIController.h"
 
 #include "AI/KrakenNavBox.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Characters/KrakenCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "Perception/AIPerceptionComponent.h"
+
+AEnemyAIController::AEnemyAIController()
+{
+	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
+}
 
 
 void AEnemyAIController::BeginPlay()
@@ -26,8 +33,8 @@ void AEnemyAIController::BeginPlay()
 		return;
 	}
 
+	// NavMesh
 	ObtainNavMeshBox();
-
 	if (NavMeshBox)
 	{
 		ControlledCharacter->SetActorLocation(
@@ -35,9 +42,32 @@ void AEnemyAIController::BeginPlay()
 				NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation())));
 		Debug_GenerateRandomPath();
 	}
+
+	// AI Perception
+	if (AIPerception)
+	{
+		AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnPerceptionUpdated);
+		AIPerception->OnTargetPerceptionForgotten.AddDynamic(this, &AEnemyAIController::OnPerceptionForgotten);
+	}
+
+	SetState(InitialState);
 }
 
-void AEnemyAIController::HandlePath(float DeltaSeconds)
+void AEnemyAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if (BehaviorTree)
+	{
+		RunBehaviorTree(BehaviorTree);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("AIController sin Behavior Tree asignado"));
+	}
+}
+
+void AEnemyAIController::HandlePathMovement(float DeltaSeconds)
 {
 	if (CurrentPath.Num() > 0)
 	{
@@ -55,10 +85,78 @@ void AEnemyAIController::HandlePath(float DeltaSeconds)
 			CharacterMovement->AddInputVector(Direction);
 			// MoveToLocation(NextPoint);
 		}
+	}
+}
+
+void AEnemyAIController::SetState(EEnemyState NewState)
+{
+	if (Blackboard)
+	{
+		EEnemyState PreviousState = static_cast<EEnemyState>(Blackboard.Get()->GetValueAsEnum("State"));
+		Blackboard.Get()->SetValueAsEnum("State", static_cast<uint8>(NewState));
+
+		OnStateChange(PreviousState, NewState);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("AIController no tiene Blackboard"));
+	}
+}
+
+EEnemyState AEnemyAIController::GetState()
+{
+	if (Blackboard)
+	{
+		return static_cast<EEnemyState>(Blackboard.Get()->GetValueAsEnum("State"));
+	}
+	{
+		UE_LOG(LogTemp, Error, TEXT("AIController no tiene Blackboard"));
+		return EEnemyState::DEACTIVATED;
+	}
+}
+
+void AEnemyAIController::CreatePathToTarget()
+{
+	if (Blackboard)
+	{
+		if (AActor* Target = Cast<AActor>(Blackboard.Get()->GetValueAsObject("Target")))
+		{
+			FVector InitialPoint = NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation());
+			FVector FinalPoint = NavMeshBox->GetClosestPointInNavMesh(Target->GetActorLocation());
+			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint);
+		}
 		else
 		{
-			Debug_GenerateRandomPath();
+			UE_LOG(LogTemp, Error, TEXT("Target no asignado en la blackboard"));
+			CurrentPath = TArray<FVector>();
 		}
+	}
+}
+
+void AEnemyAIController::CreatePathToLocationTarget()
+{
+	if (Blackboard)
+	{
+		FVector LocationTarget = Blackboard.Get()->GetValueAsVector("LocationTarget");
+		if (LocationTarget.Length() != 0.0f)
+		{
+			FVector InitialPoint = NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation());
+			FVector FinalPoint = NavMeshBox->GetClosestPointInNavMesh(LocationTarget);
+			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("LocationTarget no asignado en la blackboard o asignado a (0,0,0)"));
+			CurrentPath = TArray<FVector>();
+		}
+	}
+}
+
+void AEnemyAIController::SetTarget(AActor* NewTarget)
+{
+	if (Blackboard)
+	{
+		Blackboard.Get()->SetValueAsObject("Target", NewTarget);
 	}
 }
 
@@ -68,7 +166,7 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 
 	if (CurrentPath.Num() > 0)
 	{
-		HandlePath(DeltaSeconds);
+		// HandlePath(DeltaSeconds);
 		Debug_DebugPath();
 	}
 }
@@ -115,14 +213,14 @@ void AEnemyAIController::ObtainNavMeshBox()
 }
 
 
-FVector AEnemyAIController::GetCharacterLocationToNavMeshPoint(FVector NavMeshPoint) const
+FVector AEnemyAIController::GetCharacterLocationToNavMeshPoint(const FVector& NavMeshPoint) const
 {
 	UCapsuleComponent* Capsule = ControlledCharacter->GetCapsuleComponent();
 	FVector NewLocalization = NavMeshPoint + (NavMeshBox->GetActorUpVector()) * Capsule->GetScaledCapsuleHalfHeight();
 	return NewLocalization;
 }
 
-int AEnemyAIController::GetClosestPointInArray(FVector Point, TArray<FVector> Array)
+int AEnemyAIController::GetClosestPointInArray(const FVector& Point, TArray<FVector> Array)
 {
 	float ClosestDistance = UE_BIG_NUMBER;
 	int SelectedIndex = 0;
@@ -136,6 +234,24 @@ int AEnemyAIController::GetClosestPointInArray(FVector Point, TArray<FVector> Ar
 		}
 	}
 	return SelectedIndex;
+}
+
+void AEnemyAIController::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
+	if (AKrakenCharacter* Player = Cast<AKrakenCharacter>(Actor))
+	{
+		SetTarget(Player);
+		SetState(EEnemyState::MOVING_TO_TARGET);
+	}
+}
+
+void AEnemyAIController::OnPerceptionForgotten(AActor* Actor)
+{
+	if (Blackboard)
+	{
+		Blackboard.Get()->SetValueAsObject("Target", nullptr);
+		SetState(EEnemyState::WAITING);
+	}
 }
 
 void AEnemyAIController::Debug_GenerateRandomPath()
