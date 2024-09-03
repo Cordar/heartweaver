@@ -3,6 +3,7 @@
 
 #include "AI/EnemyAIController.h"
 
+#include "AI/EnemyAIPerception.h"
 #include "AI/KrakenNavBox.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Characters/KrakenCharacter.h"
@@ -14,7 +15,7 @@
 
 AEnemyAIController::AEnemyAIController()
 {
-	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
+	// AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 }
 
 
@@ -44,10 +45,11 @@ void AEnemyAIController::BeginPlay()
 	}
 
 	// AI Perception
-	if (AIPerception)
+	if (UEnemyAIPerception* AIPerception = Cast<UEnemyAIPerception> (ControlledCharacter->GetComponentByClass(UEnemyAIPerception::StaticClass())))
 	{
-		AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemyAIController::OnPerceptionUpdated);
-		AIPerception->OnTargetPerceptionForgotten.AddDynamic(this, &AEnemyAIController::OnPerceptionForgotten);
+		// UE_LOG(LogTemp, Warning, TEXT("DETECTAMOS COMPONENTE"));
+		AIPerception->OnActorPerceivedDelegate.AddDynamic(this, &AEnemyAIController::OnPerceptActor);
+		// AIPerception->OnActorUnperceivedDelegate.AddDynamic(this, &AEnemyAIController::OnUnperceptActor);
 	}
 
 	SetState(InitialState);
@@ -164,11 +166,10 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (CurrentPath.Num() > 0)
-	{
-		// HandlePath(DeltaSeconds);
-		Debug_DebugPath();
-	}
+#if UE_BUILD_DEVELOPMENT || WITH_EDITOR
+	Debug_DebugPath();
+#endif
+	
 }
 
 
@@ -236,7 +237,7 @@ int AEnemyAIController::GetClosestPointInArray(const FVector& Point, TArray<FVec
 	return SelectedIndex;
 }
 
-void AEnemyAIController::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+void AEnemyAIController::OnPerceptActor(AActor* Actor)
 {
 	if (AKrakenCharacter* Player = Cast<AKrakenCharacter>(Actor))
 	{
@@ -245,12 +246,15 @@ void AEnemyAIController::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus
 	}
 }
 
-void AEnemyAIController::OnPerceptionForgotten(AActor* Actor)
+void AEnemyAIController::OnUnperceptActor(AActor* Actor)
 {
 	if (Blackboard)
 	{
-		Blackboard.Get()->SetValueAsObject("Target", nullptr);
-		SetState(EEnemyState::WAITING);
+		if (Blackboard.Get()->GetValueAsObject("Target") == Actor)
+		{
+			Blackboard.Get()->SetValueAsObject("Target", nullptr);
+			SetState(EEnemyState::WAITING);
+		}
 	}
 }
 
@@ -266,6 +270,18 @@ void AEnemyAIController::Debug_DebugPath()
 	UWorld* World = GetWorld();
 	for (int i = 0; i < CurrentPath.Num() - 1; i++)
 	{
-		DrawDebugLine(World, CurrentPath[i], CurrentPath[i + 1], FColor::Magenta);
+		FVector CurrentPoint = CurrentPath[i];
+		FVector NextPoint = CurrentPath[i + 1];
+
+		FVector CurrentPointLocal = ControlledCharacter->GetTransform().InverseTransformPosition(CurrentPoint);
+		FVector NextPointLocal = ControlledCharacter->GetTransform().InverseTransformPosition(NextPoint);
+
+		CurrentPointLocal.Z = 0.0f;
+		NextPointLocal.Z = 0.0f;
+
+		FVector CurrentPointGlobal = ControlledCharacter->GetTransform().TransformPosition(CurrentPointLocal);
+		FVector NextPointGlobal = ControlledCharacter->GetTransform().TransformPosition(NextPointLocal);
+
+		DrawDebugLine(World, CurrentPointGlobal, NextPointGlobal, FColor::Magenta);
 	}
 }

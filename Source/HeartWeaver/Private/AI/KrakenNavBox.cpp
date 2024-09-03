@@ -619,8 +619,8 @@ void AKrakenNavBox::HandleAvoidanceRadius()
 
 	for (const FVector LocalVoxel : LocalGridMap)
 	{
-		FString LocalVoxelString = LocalVoxel.ToString();
-		UE_LOG(LogTemp, Warning, TEXT("LocalVoxelString: %s"), *LocalVoxelString);
+		// FString LocalVoxelString = LocalVoxel.ToString();
+		// UE_LOG(LogTemp, Warning, TEXT("LocalVoxelString: %s"), *LocalVoxelString);
 
 
 		for (int i = 0; i < 4; i++)

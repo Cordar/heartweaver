@@ -21,8 +21,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
 	EEnemyState InitialState;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
-	UAIPerceptionComponent* AIPerception;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
+	// UAIPerceptionComponent* AIPerception;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
 	UBehaviorTree* BehaviorTree;
@@ -46,10 +46,10 @@ protected:
 	void HandlePathMovement(float DeltaSeconds);
 
 	UFUNCTION()
-	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
+	void OnPerceptActor(AActor* Actor);
 
 	UFUNCTION()
-	void OnPerceptionForgotten(AActor* Actor);
+	void OnUnperceptActor(AActor* Actor);
 
 private:
 	UFUNCTION()
