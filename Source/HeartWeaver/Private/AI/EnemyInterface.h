@@ -28,4 +28,10 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
 	float GetPatrolWaitTime();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
+	float GetChaseSpeed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
+	float GetPatrolSpeed();
 };
