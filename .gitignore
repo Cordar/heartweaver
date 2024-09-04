@@ -31,3 +31,6 @@ DerivedDataCache/*
 .vsconfig
 .vscode/
 .idea/
+
+# Files 
+*_BuiltData*
