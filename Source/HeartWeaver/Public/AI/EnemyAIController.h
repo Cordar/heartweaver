@@ -18,8 +18,6 @@ class HEARTWEAVER_API AEnemyAIController : public AAIController
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
-	EEnemyState InitialState;
 
 	// UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
 	// UAIPerceptionComponent* AIPerception;
