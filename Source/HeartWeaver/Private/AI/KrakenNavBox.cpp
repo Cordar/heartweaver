@@ -218,12 +218,56 @@ FVector AKrakenNavBox::GetClosestPointInNavMesh(FVector Point)
 	return SelectedVoxel;
 }
 
-TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint)
+TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, bool Simplify)
 {
 	FVector InitialPoint = GetClosestPointInNavMesh(StartPoint);
 	FVector FinalPoint = GetClosestPointInNavMesh(EndPoint);
 
-	return KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap);
+	TArray<FVector> Path = KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap);
+
+	if (Simplify)
+	{
+		TArray<FVector> FinalPath;
+		FinalPath.Reserve(Path.Num());
+		
+		// Borramos todos los puntos que se encuentren dentro de los vóxeles y no tengan ningún hueco al lado
+		for (int i = 1; i < Path.Num() - 1; i++)
+		{
+			TArray<FVector> Directions = {
+				FVector(GridDistance, 0, 0),
+				FVector(-GridDistance, 0, 0),
+				FVector(0, GridDistance, 0),
+				FVector(0, -GridDistance, 0),
+			};
+			bool DeletePathPoint = true;
+
+			for (const FVector& Direction : Directions)
+			{
+				FVector NeighborPosition = Path[i] + Direction;
+
+				if (!GridMap.Contains(NeighborPosition))
+				{
+					DeletePathPoint = false;
+					break;
+				}
+			}
+
+			if (DeletePathPoint)
+			{
+				Path.RemoveAt(i);;
+				i--;
+			} else
+			{
+				// FinalPath.Add(Path[i]);
+			}
+		}
+
+		// De los puntos que quedan, limpiamos aquellos que nos proporcionen poca información (por lo general, esquinas mal puestas)
+
+		// return FinalPath;
+	}
+
+	return Path;
 }
 
 FVector AKrakenNavBox::GetRandomPointInNavMesh()

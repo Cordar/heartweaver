@@ -24,7 +24,7 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	float AgentHeight;
-	
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	float AvoidanceRadius;
 
@@ -64,13 +64,13 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bDrawLocalDebug = false;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bGenerateRandomPath = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	bool bGenerateDebug = false;
-	
+
 public:
 	// Sets default values for this actor's properties
 	AKrakenNavBox();
@@ -97,7 +97,7 @@ public:
 	FVector GetClosestPointInNavMesh(FVector Point);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint);
+	TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint, bool Simplify = true);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FVector GetRandomPointInNavMesh();
