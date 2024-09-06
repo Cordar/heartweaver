@@ -41,7 +41,7 @@ void AEnemyAIController::BeginPlay()
 		ControlledCharacter->SetActorLocation(
 			GetCharacterLocationToNavMeshPoint(
 				NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation())));
-		Debug_GenerateRandomPath();
+		// Debug_GenerateRandomPath();
 	}
 
 	// AI Perception
@@ -52,7 +52,7 @@ void AEnemyAIController::BeginPlay()
 		// AIPerception->OnActorUnperceivedDelegate.AddDynamic(this, &AEnemyAIController::OnUnperceptActor);
 	}
 
-	SetState(InitialState);
+	// SetState(InitialState);
 }
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
