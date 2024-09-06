@@ -15,10 +15,10 @@ public:
 	KrakenPathfinding();
 	~KrakenPathfinding();
 
-	static TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint, float GridDistance, TSet<FVector> *GridMap);
+	static TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint, float GridDistance, TSet<FVector> *GridMap, TSet<FVector>* BlockedGridMap = nullptr);
 	static TArray<FVector> ReconstructPath(FNode* EndNode);
 
-	static TArray<FVector> GetNeighbors(FVector CurrentPosition, float GridDistance, TSet<FVector>* GridMap);
+	static TArray<FVector> GetNeighbors(FVector CurrentPosition, float GridDistance, TSet<FVector>* GridMap, TSet<FVector>* BlockedGridMap);
 
 	static void ReverseArray(TArray<FVector>& Array);
 };

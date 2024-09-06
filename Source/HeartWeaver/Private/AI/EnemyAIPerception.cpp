@@ -3,6 +3,7 @@
 
 #include "AI/EnemyAIPerception.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
@@ -20,6 +21,12 @@ void UEnemyAIPerception::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CapsuleComponent = Cast<UCapsuleComponent>(GetOwner()->GetComponentByClass(UCapsuleComponent::StaticClass()));
+
+	if (CapsuleComponent)
+	{
+		HalfHeight = CapsuleComponent->GetScaledCapsuleHalfHeight() / 2;
+	}
 	// ...
 }
 
@@ -27,7 +34,14 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 {
 	FVector TargetGlobalPosition = TargetActor->GetActorLocation();
 	FVector TargetLocalPosition = GetOwner()->GetTransform().InverseTransformPosition(TargetGlobalPosition);
-	TargetLocalPosition.Z = 0;
+	// TargetLocalPosition.Z = 0;
+
+
+	if (TargetLocalPosition.Z > (EyesPosition.Z + HalfHeight) || TargetLocalPosition.Z < (EyesPosition.Z - HalfHeight))
+	{
+		// Está encima nuestra, no le vemos.
+		return false;
+	}
 
 	FVector LocalDirection = TargetLocalPosition;
 	LocalDirection.Normalize();
@@ -52,14 +66,14 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 		FHitResult OutHit;
 
 		FCollisionQueryParams CollisionParams;
-		CollisionParams.AddIgnoredActor(GetOwner()); 
+		CollisionParams.AddIgnoredActor(GetOwner());
 
 		bool bIsHit = GetWorld()->LineTraceSingleByChannel(
 			OutHit,
 			Start,
 			End,
 			ECC_Visibility,
-			CollisionParams 
+			CollisionParams
 		);
 		if (bIsHit)
 		{
@@ -68,7 +82,7 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 	return false;

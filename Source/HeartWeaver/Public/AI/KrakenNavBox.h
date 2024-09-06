@@ -39,6 +39,9 @@ class HEARTWEAVER_API AKrakenNavBox : public AActor
 	UPROPERTY()
 	TSet<FVector> GridMap;
 
+	UPROPERTY()
+	TSet<FVector> BlockedGridMap;
+
 	// UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (AllowPrivateAccess), Category= "Grid")
 	TSet<FVector> TestGridMap;
 
@@ -107,6 +110,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsInWorldEditor();
+
+	TSet<FVector>* GetGridMap() { return &GridMap; };
+	TSet<FVector>* GetBlockedGridMap() { return &BlockedGridMap; };
+
+
+	float GetGridDistance() const { return GridDistance; }
 
 private:
 	/*

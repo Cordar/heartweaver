@@ -208,11 +208,14 @@ FVector AKrakenNavBox::GetClosestPointInNavMesh(FVector Point)
 	FVector SelectedVoxel = FVector(0.0f, 0.0f, 0.0f);
 	for (FVector Voxel : GridMap)
 	{
-		float Distance = FVector::Dist(Voxel, Point);
-		if (Distance < MinDistance)
+		if (!BlockedGridMap.Contains(Voxel))
 		{
-			MinDistance = Distance;
-			SelectedVoxel = Voxel;
+			float Distance = FVector::Dist(Voxel, Point);
+			if (Distance < MinDistance)
+			{
+				MinDistance = Distance;
+				SelectedVoxel = Voxel;
+			}
 		}
 	}
 	return SelectedVoxel;
@@ -223,22 +226,53 @@ TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, boo
 	FVector InitialPoint = GetClosestPointInNavMesh(StartPoint);
 	FVector FinalPoint = GetClosestPointInNavMesh(EndPoint);
 
-	TArray<FVector> Path = KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap);
+	TArray<FVector> Path =
+		KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap, &BlockedGridMap);
 
 	if (Simplify)
 	{
+		FVector UpVector = GetActorUpVector();
+
 		TArray<FVector> FinalPath;
 		FinalPath.Reserve(Path.Num());
-		
+
+		// Esto es una cutrada enorme. TODO: A futuro, cambiar la matriz de vóxeles con valores donde se pueda acceder mejor los valores tanto globales como locales (Con un buen hash) 
+		TArray<FVector> ZDirections = {
+			FVector(GridDistance, 0, 0),
+			FVector(-GridDistance, 0, 0),
+			FVector(0, GridDistance, 0),
+			FVector(0, -GridDistance, 0),
+		};
+		TArray<FVector> YDirections = {
+			FVector(GridDistance, 0, 0),
+			FVector(-GridDistance, 0, 0),
+			FVector(0, 0, GridDistance),
+			FVector(0, 0, -GridDistance),
+		};
+		TArray<FVector> XDirections = {
+			FVector(0, GridDistance, 0),
+			FVector(0, -GridDistance, 0),
+			FVector(0, 0, GridDistance),
+			FVector(0, 0, -GridDistance),
+		};
+
+		TArray<FVector> Directions;
+		if (FMath::Abs(UpVector.X) >= 0.7f)
+		{
+			Directions = XDirections;
+		}
+		else if (FMath::Abs(UpVector.Y) >= 0.7f)
+		{
+			Directions = YDirections;
+		}
+		else
+		{
+			Directions = ZDirections;
+		}
+
 		// Borramos todos los puntos que se encuentren dentro de los vóxeles y no tengan ningún hueco al lado
 		for (int i = 1; i < Path.Num() - 1; i++)
 		{
-			TArray<FVector> Directions = {
-				FVector(GridDistance, 0, 0),
-				FVector(-GridDistance, 0, 0),
-				FVector(0, GridDistance, 0),
-				FVector(0, -GridDistance, 0),
-			};
 			bool DeletePathPoint = true;
 
 			for (const FVector& Direction : Directions)
@@ -256,7 +290,8 @@ TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, boo
 			{
 				Path.RemoveAt(i);;
 				i--;
-			} else
+			}
+			else
 			{
 				// FinalPath.Add(Path[i]);
 			}
@@ -349,24 +384,29 @@ void AKrakenNavBox::HandleStaticMeshesCollision()
 			// UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ComponentName);
 
 			UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(StaticMeshComponents[C]);
-			if (UStaticMesh* Mesh = MeshComponent->GetStaticMesh())
-			{
-				if (UBodySetup* Body = Mesh->GetBodySetup())
-				{
-					TArray<FKBoxElem> BoxElems = Body->AggGeom.BoxElems;
-					TArray<FKSphereElem> SphereElems = Body->AggGeom.SphereElems;
-					// UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
-					for (int B = 0; B < BoxElems.Num(); B++)
-					{
-						FVector BoxLocalHalfExtent = FVector(BoxElems[B].X / 2.0f, BoxElems[B].Y / 2.0f,
-						                                     BoxElems[B].Z / 2.0f);
-						FVector BoxCenter = BoxElems[B].Center;
-						GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, MeshComponent->GetComponentTransform());
-					}
+			ECollisionEnabled::Type CollisionType = MeshComponent->GetCollisionEnabled();
 
-					for (int S = 0; S < SphereElems.Num(); S++)
+			if (MeshComponent->IsCollisionEnabled() && CollisionType != ECollisionEnabled::NoCollision)
+			{
+				if (UStaticMesh* Mesh = MeshComponent->GetStaticMesh())
+				{
+					if (UBodySetup* Body = Mesh->GetBodySetup())
 					{
-						// GenerateSphereCollision(SphereElems[S], MeshComponent->GetComponentTransform());
+						TArray<FKBoxElem> BoxElems = Body->AggGeom.BoxElems;
+						TArray<FKSphereElem> SphereElems = Body->AggGeom.SphereElems;
+						// UE_LOG(LogTemp, Warning, TEXT("Box Elems Length: %i"), BoxElems.Num());
+						for (int B = 0; B < BoxElems.Num(); B++)
+						{
+							FVector BoxLocalHalfExtent = FVector(BoxElems[B].X / 2.0f, BoxElems[B].Y / 2.0f,
+							                                     BoxElems[B].Z / 2.0f);
+							FVector BoxCenter = BoxElems[B].Center;
+							GenerateBoxCollision(BoxCenter, BoxLocalHalfExtent, MeshComponent->GetComponentTransform());
+						}
+
+						for (int S = 0; S < SphereElems.Num(); S++)
+						{
+							// GenerateSphereCollision(SphereElems[S], MeshComponent->GetComponentTransform());
+						}
 					}
 				}
 			}
