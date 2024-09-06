@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "EnemyAIPerception.generated.h"
 
+class UCapsuleComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorPerceivedDelegate, AActor*, Actor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorUnperceivedDelegate, AActor*, Actor);
 
@@ -14,6 +15,11 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	UCapsuleComponent* CapsuleComponent;
+
+	float HalfHeight = 0.0f;
 
 public:
 	// Sets default values for this component's properties
