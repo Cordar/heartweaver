@@ -41,7 +41,10 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 	{
 		FVector HighestPoint = IEnemyTargetInterface::Execute_GetHighestPoint(TargetActor);
 		FVector LowestPoint = IEnemyTargetInterface::Execute_GetLowestPoint(TargetActor);
-
+		
+		// DrawDebugSphere(GetWorld(), HighestPoint, 10.0f, 4, FColor::Green );
+		// DrawDebugSphere(GetWorld(), LowestPoint, 10.0f, 4, FColor::Green );
+		
 		FVector HighestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(HighestPoint);
 		FVector LowestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(LowestPoint);
 
@@ -66,9 +69,11 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 	FVector LocalDirection = TargetLocalPosition;
 	LocalDirection.Normalize();
 
+	FVector LocalDirectionRotated = UKismetMathLibrary::RotateAngleAxis(LocalDirection, -EyeSightAngleOffset, GetOwner()->GetActorUpVector());
+
 	// 0.0174533f -> Conversión de grados a PI radianes
 
-	float DotProduct = FVector(1.0f, 0.0f, 0.0f).Dot(LocalDirection);
+	float DotProduct = FVector(1.0f, 0.0f, 0.0f).Dot(LocalDirectionRotated);
 
 	if (DotProduct > FMath::Sin((90 - (EyeSightAngle / 2.0f)) * 0.0174533f))
 	{
@@ -123,7 +128,7 @@ void UEnemyAIPerception::UpdateConeVisualization()
 	};	
 
 	FVector RayStart = Owner->GetActorLocation();
-	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(), EyeSightAngle / -2.0f, Owner->GetActorUpVector());
+	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(), (EyeSightAngle / -2.0f) + EyeSightAngleOffset, Owner->GetActorUpVector());
 	for (int i = 0; i < EyeSightPointPrecision; i++)
 	{
 		FVector Vector = UKismetMathLibrary::RotateAngleAxis(InitialDirection, (EyeSightAngle / EyeSightPointPrecision) * i, Owner->GetActorUpVector());

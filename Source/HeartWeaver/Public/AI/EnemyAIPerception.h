@@ -40,23 +40,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI Perception")
 	TArray<AActor*> PerceivedActors;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	TArray<TSubclassOf<AActor>> ActorFilter;
 
 	// Posición LOCAL de los ojos
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	FVector EyesPosition;
 
+	// Offset del ángulo donde empieza la detección
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
+	float EyeSightAngleOffset = 0.0f;
+
 	// Ángulo de visión en GRADOS
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	float EyeSightAngle = 50.0f;
 
 	// Radio de visión
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	float EyeSightRadius = 500.0f;
 
 	// Radio de visión
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	float EyeSightPointPrecision = 20.0f;
 
 	void DebugLines(float Duration = 0.0f);
