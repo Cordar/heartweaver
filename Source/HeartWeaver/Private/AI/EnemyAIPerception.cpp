@@ -15,7 +15,7 @@ UEnemyAIPerception::UEnemyAIPerception()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-//	UpdateConeVisualization();
+	//	UpdateConeVisualization();
 }
 
 // Called when the game starts
@@ -36,11 +36,16 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 {
 	FVector TargetGlobalPosition = TargetActor->GetActorLocation();
 	FVector TargetLocalPosition = GetOwner()->GetTransform().InverseTransformPosition(TargetGlobalPosition);
-	
+
+	TArray<FVector> CheckPoints;
+
 	if (TargetActor->Implements<UEnemyTargetInterface>())
 	{
 		FVector HighestPoint = IEnemyTargetInterface::Execute_GetHighestPoint(TargetActor);
 		FVector LowestPoint = IEnemyTargetInterface::Execute_GetLowestPoint(TargetActor);
+
+		DrawDebugSphere(GetWorld(), HighestPoint, 10.0f, 4, FColor::Green);
+		DrawDebugSphere(GetWorld(), LowestPoint, 10.0f, 4, FColor::Green);
 
 		FVector HighestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(HighestPoint);
 		FVector LowestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(LowestPoint);
@@ -52,6 +57,10 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 			// Esta fuera de nuestro rango de altura
 			return false;
 		}
+
+		CheckPoints.Add(HighestPoint);
+		CheckPoints.Add(TargetGlobalPosition);
+		CheckPoints.Add(LowestPoint);
 	}
 	else
 	{
@@ -61,49 +70,61 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 			// Está encima nuestra, no le vemos.
 			return false;
 		}
+
+		CheckPoints.Add(TargetGlobalPosition);
 	}
 
-	FVector LocalDirection = TargetLocalPosition;
-	LocalDirection.Normalize();
-
-	// 0.0174533f -> Conversión de grados a PI radianes
-
-	float DotProduct = FVector(1.0f, 0.0f, 0.0f).Dot(LocalDirection);
-
-	if (DotProduct > FMath::Sin((90 - (EyeSightAngle / 2.0f)) * 0.0174533f))
+	for (int i = 0; i < CheckPoints.Num(); i++)
 	{
-		FVector EyesGlobalPosition = GetOwner()->GetTransform().TransformPosition(EyesPosition);
+		TargetGlobalPosition = CheckPoints[i];
+		TargetLocalPosition = GetOwner()->GetTransform().InverseTransformPosition(TargetGlobalPosition);
 
-		FVector GlobalDirection = TargetGlobalPosition - EyesGlobalPosition;
-		GlobalDirection.Normalize();
+		FVector LocalDirection = TargetLocalPosition;
+		LocalDirection.Normalize();
 
-		float GlobalDistance = FVector::Dist(EyesGlobalPosition, TargetGlobalPosition);
+		FVector LocalDirectionRotated = UKismetMathLibrary::RotateAngleAxis(LocalDirection, -EyeSightAngleOffset,
+		                                                                    GetOwner()->GetActorUpVector());
 
-		FVector Start = EyesGlobalPosition;
-		FVector ForwardVector = GlobalDirection;
-		FVector End = Start + (ForwardVector * GlobalDistance);
+		// 0.0174533f -> Conversión de grados a PI radianes
 
-		FHitResult OutHit;
+		float DotProduct = FVector(1.0f, 0.0f, 0.0f).Dot(LocalDirectionRotated);
 
-		FCollisionQueryParams CollisionParams;
-		CollisionParams.AddIgnoredActor(GetOwner());
-
-		bool bIsHit = GetWorld()->LineTraceSingleByChannel(
-			OutHit,
-			Start,
-			End,
-			ECC_Visibility,
-			CollisionParams
-		);
-		if (bIsHit)
+		if (DotProduct > FMath::Sin((90 - (EyeSightAngle / 2.0f)) * 0.0174533f))
 		{
-			if (OutHit.GetActor() != TargetActor)
-			{
-				return false;
-			}
-		}
+			FVector EyesGlobalPosition = GetOwner()->GetTransform().TransformPosition(EyesPosition);
 
-		return true;
+			FVector GlobalDirection = TargetGlobalPosition - EyesGlobalPosition;
+			GlobalDirection.Normalize();
+
+			float GlobalDistance = FVector::Dist(EyesGlobalPosition, TargetGlobalPosition);
+
+			FVector Start = EyesGlobalPosition;
+			FVector ForwardVector = GlobalDirection;
+			FVector End = Start + (ForwardVector * GlobalDistance);
+
+			FHitResult OutHit;
+
+			FCollisionQueryParams CollisionParams;
+			CollisionParams.AddIgnoredActor(GetOwner());
+
+			bool bIsHit = GetWorld()->LineTraceSingleByChannel(
+				OutHit,
+				Start,
+				End,
+				ECC_Visibility,
+				CollisionParams
+			);
+			if (bIsHit)
+			{
+				if (OutHit.GetActor() != TargetActor)
+				{
+					// return false;
+					continue;
+				}
+			}
+
+			return true;
+		}
 	}
 	return false;
 }
@@ -120,22 +141,28 @@ void UEnemyAIPerception::UpdateConeVisualization()
 
 	TArray<FVector2D> Points = {
 		FVector2D()
-	};	
+	};
 
-	FVector RayStart = Owner->GetActorLocation();
-	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(), EyeSightAngle / -2.0f, Owner->GetActorUpVector());
+	FVector RayStart = OwnerTransform.TransformPosition(EyesPosition);
+	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(),
+	                                                               (EyeSightAngle / -2.0f) + EyeSightAngleOffset,
+	                                                               Owner->GetActorUpVector());
 	for (int i = 0; i < EyeSightPointPrecision; i++)
 	{
-		FVector Vector = UKismetMathLibrary::RotateAngleAxis(InitialDirection, (EyeSightAngle / EyeSightPointPrecision) * i, Owner->GetActorUpVector());
-		FVector FinalLocation = Owner->GetActorLocation() + Vector * EyeSightRadius;
+		FVector Vector = UKismetMathLibrary::RotateAngleAxis(InitialDirection,
+		                                                     (EyeSightAngle / EyeSightPointPrecision) * i,
+		                                                     Owner->GetActorUpVector());
+		FVector FinalLocation = RayStart + Vector * EyeSightRadius;
 
 		FHitResult HitResult;
-		bool Hit = UKismetSystemLibrary::LineTraceSingle(World,RayStart, FinalLocation, TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::None, HitResult, true);
+		bool Hit = UKismetSystemLibrary::LineTraceSingle(World, RayStart, FinalLocation, TraceTypeQuery1, false,
+		                                                 ActorsToIgnore, EDrawDebugTrace::None, HitResult, true);
 		if (Hit)
 		{
 			FVector Point = OwnerTransform.InverseTransformPosition(HitResult.ImpactPoint);
 			Points.Add(FVector2D(Point.X, Point.Y));
-		}else
+		}
+		else
 		{
 			FVector Point = OwnerTransform.InverseTransformPosition(FinalLocation);
 			Points.Add(FVector2D(Point.X, Point.Y));
@@ -144,7 +171,6 @@ void UEnemyAIPerception::UpdateConeVisualization()
 
 	OnSighMeshUpdated.Broadcast(Points);
 	// UpdateDynamicMesh(Points);
-	
 }
 
 
@@ -156,10 +182,10 @@ void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	CheckPerception(DeltaTime);
 	UpdateConeVisualization();
-	
-// #if UE_BUILD_DEVELOPMENT || WITH_EDITOR
-// 	DebugLines();
-// #endif
+
+	// #if UE_BUILD_DEVELOPMENT || WITH_EDITOR
+	// 	DebugLines();
+	// #endif
 }
 
 void UEnemyAIPerception::CheckPerception(float DeltaTime)

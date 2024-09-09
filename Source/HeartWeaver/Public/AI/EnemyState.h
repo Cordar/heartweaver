@@ -10,6 +10,7 @@ enum class EEnemyState : uint8
 	// IDLE UMETA(DisplayName = "Idle"),
 	WAITING UMETA(DisplayName = "Waiting"),
 	PATROLLING UMETA(DisplayName = "Patrolling"),
+	STATIC_PATROLLING UMETA(DisplayName = "Static Patrolling"),
 	MOVING_TO_TARGET UMETA(DisplayName = "Moving To Target"),
 	MOVING_TO_LOCATION UMETA(DisplayName = "Moving To Location")
 };
