@@ -10,6 +10,9 @@ class UCapsuleComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorPerceivedDelegate, AActor*, Actor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorUnperceivedDelegate, AActor*, Actor);
 
+// UPROPERTY(BlueprintAssignable, Category = "Components|Activation")
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSighMeshUpdated, const TArray<FVector2D>&, Points);
+
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
@@ -24,6 +27,9 @@ class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UEnemyAIPerception();
+
+	UPROPERTY(BlueprintAssignable, Category = "Components|SighMesh")
+	FSighMeshUpdated OnSighMeshUpdated;
 
 	UPROPERTY(BlueprintAssignable)
 	FActorPerceivedDelegate OnActorPerceivedDelegate;
@@ -49,6 +55,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
 	float EyeSightRadius = 500.0f;
 
+	// Radio de visión
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	float EyeSightPointPrecision = 20.0f;
+
 	void DebugLines(float Duration = 0.0f);
 
 protected:
@@ -56,6 +66,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	bool CheckIsInSight(AActor* TargetActor);
+
+	void UpdateConeVisualization();
 
 public:
 	// Called every frame
@@ -67,5 +79,6 @@ public:
 
 	virtual void OnComponentCreated() override;
 
-
+	// UFUNCTION(BlueprintImplementableEvent)
+	// void UpdateDynamicMesh(const TArray<FVector2D>& Points);
 };

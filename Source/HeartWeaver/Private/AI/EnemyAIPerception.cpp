@@ -5,6 +5,7 @@
 
 #include "EnemyTargetInterface.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
@@ -14,7 +15,7 @@ UEnemyAIPerception::UEnemyAIPerception()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+//	UpdateConeVisualization();
 }
 
 // Called when the game starts
@@ -107,6 +108,45 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 	return false;
 }
 
+void UEnemyAIPerception::UpdateConeVisualization()
+{
+	AActor* Owner = GetOwner();
+	FTransform OwnerTransform = Owner->GetTransform();
+	UWorld* World = GetWorld();
+
+	TArray ActorsToIgnore = {
+		Owner,
+	};
+
+	TArray<FVector2D> Points = {
+		FVector2D()
+	};	
+
+	FVector RayStart = Owner->GetActorLocation();
+	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(), EyeSightAngle / -2.0f, Owner->GetActorUpVector());
+	for (int i = 0; i < EyeSightPointPrecision; i++)
+	{
+		FVector Vector = UKismetMathLibrary::RotateAngleAxis(InitialDirection, (EyeSightAngle / EyeSightPointPrecision) * i, Owner->GetActorUpVector());
+		FVector FinalLocation = Owner->GetActorLocation() + Vector * EyeSightRadius;
+
+		FHitResult HitResult;
+		bool Hit = UKismetSystemLibrary::LineTraceSingle(World,RayStart, FinalLocation, TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::None, HitResult, true);
+		if (Hit)
+		{
+			FVector Point = OwnerTransform.InverseTransformPosition(HitResult.ImpactPoint);
+			Points.Add(FVector2D(Point.X, Point.Y));
+		}else
+		{
+			FVector Point = OwnerTransform.InverseTransformPosition(FinalLocation);
+			Points.Add(FVector2D(Point.X, Point.Y));
+		}
+	}
+
+	OnSighMeshUpdated.Broadcast(Points);
+	// UpdateDynamicMesh(Points);
+	
+}
+
 
 // Called every frame
 void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -115,10 +155,11 @@ void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	CheckPerception(DeltaTime);
-
-#if UE_BUILD_DEVELOPMENT || WITH_EDITOR
-	DebugLines();
-#endif
+	UpdateConeVisualization();
+	
+// #if UE_BUILD_DEVELOPMENT || WITH_EDITOR
+// 	DebugLines();
+// #endif
 }
 
 void UEnemyAIPerception::CheckPerception(float DeltaTime)
