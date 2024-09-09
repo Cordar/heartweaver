@@ -119,7 +119,7 @@ EEnemyState AEnemyAIController::GetState()
 
 void AEnemyAIController::CreatePathToTarget()
 {
-	if (Blackboard)
+	if (Blackboard && NavMeshBox)
 	{
 		if (AActor* Target = Cast<AActor>(Blackboard.Get()->GetValueAsObject("Target")))
 		{
@@ -137,7 +137,7 @@ void AEnemyAIController::CreatePathToTarget()
 
 void AEnemyAIController::CreatePathToLocationTarget()
 {
-	if (Blackboard)
+	if (Blackboard && NavMeshBox)
 	{
 		FVector LocationTarget = Blackboard.Get()->GetValueAsVector("LocationTarget");
 		if (LocationTarget.Length() != 0.0f)

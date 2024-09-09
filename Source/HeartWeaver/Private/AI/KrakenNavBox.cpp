@@ -279,7 +279,7 @@ TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, boo
 			{
 				FVector NeighborPosition = Path[i] + Direction;
 
-				if (!GridMap.Contains(NeighborPosition))
+				if (!GridMap.Contains(NeighborPosition) || BlockedGridMap.Contains(NeighborPosition))
 				{
 					DeletePathPoint = false;
 					break;

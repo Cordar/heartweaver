@@ -3,6 +3,7 @@
 
 #include "AI/EnemyAIPerception.h"
 
+#include "EnemyTargetInterface.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -34,13 +35,31 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 {
 	FVector TargetGlobalPosition = TargetActor->GetActorLocation();
 	FVector TargetLocalPosition = GetOwner()->GetTransform().InverseTransformPosition(TargetGlobalPosition);
-	// TargetLocalPosition.Z = 0;
-
-
-	if (TargetLocalPosition.Z > (EyesPosition.Z + HalfHeight) || TargetLocalPosition.Z < (EyesPosition.Z - HalfHeight))
+	
+	if (TargetActor->Implements<UEnemyTargetInterface>())
 	{
-		// Está encima nuestra, no le vemos.
-		return false;
+		FVector HighestPoint = IEnemyTargetInterface::Execute_GetHighestPoint(TargetActor);
+		FVector LowestPoint = IEnemyTargetInterface::Execute_GetLowestPoint(TargetActor);
+
+		FVector HighestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(HighestPoint);
+		FVector LowestLocalPoint = GetOwner()->GetTransform().InverseTransformPosition(LowestPoint);
+
+		// UE_LOG(LogTemp, Warning, TEXT("DETECTAMOS INTERFAZ"));
+		if ((HighestLocalPoint.Z > EyesPosition.Z + HalfHeight && LowestLocalPoint.Z > EyesPosition.Z + HalfHeight) ||
+			(HighestLocalPoint.Z < EyesPosition.Z - HalfHeight && LowestLocalPoint.Z < EyesPosition.Z - HalfHeight))
+		{
+			// Esta fuera de nuestro rango de altura
+			return false;
+		}
+	}
+	else
+	{
+		if (TargetLocalPosition.Z > (EyesPosition.Z + HalfHeight) || TargetLocalPosition.Z < (EyesPosition.Z -
+			HalfHeight))
+		{
+			// Está encima nuestra, no le vemos.
+			return false;
+		}
 	}
 
 	FVector LocalDirection = TargetLocalPosition;
