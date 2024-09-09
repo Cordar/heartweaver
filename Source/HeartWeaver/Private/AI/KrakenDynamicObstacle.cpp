@@ -152,9 +152,9 @@ void UKrakenDynamicObstacle::UpdateBoxCollision()
 			}
 		}
 
-
-		DrawDebugBox(GetWorld(), GetComponentLocation(), BoxCollision->GetScaledBoxExtent(),GetComponentRotation().Quaternion(),
-		             FColor::Green, false, 0.5f, 0, 2.0f);
+		// Descomentar para dibujar la caja donde se bloquea el caminoa
+		// DrawDebugBox(GetWorld(), GetComponentLocation(), BoxCollision->GetScaledBoxExtent(),GetComponentRotation().Quaternion(),
+		//              FColor::Green, false, 0.5f, 0, 2.0f);
 	}
 }
 
