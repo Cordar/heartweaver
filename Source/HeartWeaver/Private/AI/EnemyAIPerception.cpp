@@ -18,6 +18,11 @@ UEnemyAIPerception::UEnemyAIPerception()
 	//	UpdateConeVisualization();
 }
 
+void UEnemyAIPerception::SetEyeSighActive(bool State)
+{
+	bEyeSighActive = State;
+}
+
 // Called when the game starts
 void UEnemyAIPerception::BeginPlay()
 {
@@ -180,7 +185,11 @@ void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	CheckPerception(DeltaTime);
+	if (bEyeSighActive)
+	{
+		CheckPerception(DeltaTime);
+	}
+
 	UpdateConeVisualization();
 
 	// #if UE_BUILD_DEVELOPMENT || WITH_EDITOR
