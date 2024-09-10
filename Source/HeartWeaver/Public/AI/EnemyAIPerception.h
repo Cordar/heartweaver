@@ -23,10 +23,15 @@ class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 	UCapsuleComponent* CapsuleComponent;
 
 	float HalfHeight = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess))
+	bool bEyeSighActive = true;
 
 public:
 	// Sets default values for this component's properties
 	UEnemyAIPerception();
+
+	UFUNCTION(BlueprintCallable)
+	void SetEyeSighActive(bool State);
 
 	UPROPERTY(BlueprintAssignable, Category = "Components|SighMesh")
 	FSighMeshUpdated OnSighMeshUpdated;
