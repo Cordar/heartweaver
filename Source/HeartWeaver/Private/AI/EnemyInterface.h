@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StaticPatrolData.h"
+#include "AI/EnemyAIPerception.h"
 #include "UObject/Interface.h"
 #include "EnemyInterface.generated.h"
 
@@ -25,6 +27,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
 	TArray<AActor*> GetPatrolPoints();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
+	TArray<FStaticPatrolData> GetStaticPatrolData();
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
 	float GetPatrolWaitTime();
@@ -34,4 +39,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
 	float GetPatrolSpeed();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
+	UEnemyAIPerception* GetAIPerception();
 };

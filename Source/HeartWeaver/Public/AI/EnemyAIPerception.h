@@ -10,6 +10,9 @@ class UCapsuleComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorPerceivedDelegate, AActor*, Actor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorUnperceivedDelegate, AActor*, Actor);
 
+// UPROPERTY(BlueprintAssignable, Category = "Components|Activation")
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSighMeshUpdated, const TArray<FVector2D>&, Points);
+
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
@@ -20,10 +23,18 @@ class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 	UCapsuleComponent* CapsuleComponent;
 
 	float HalfHeight = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess))
+	bool bEyeSighActive = true;
 
 public:
 	// Sets default values for this component's properties
 	UEnemyAIPerception();
+
+	UFUNCTION(BlueprintCallable)
+	void SetEyeSighActive(bool State);
+
+	UPROPERTY(BlueprintAssignable, Category = "Components|SighMesh")
+	FSighMeshUpdated OnSighMeshUpdated;
 
 	UPROPERTY(BlueprintAssignable)
 	FActorPerceivedDelegate OnActorPerceivedDelegate;
@@ -34,20 +45,28 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI Perception")
 	TArray<AActor*> PerceivedActors;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	TArray<TSubclassOf<AActor>> ActorFilter;
 
 	// Posición LOCAL de los ojos
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	FVector EyesPosition;
 
+	// Offset del ángulo donde empieza la detección
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
+	float EyeSightAngleOffset = 0.0f;
+
 	// Ángulo de visión en GRADOS
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	float EyeSightAngle = 50.0f;
 
 	// Radio de visión
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI Perception")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
 	float EyeSightRadius = 500.0f;
+
+	// Radio de visión
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI Perception")
+	float EyeSightPointPrecision = 20.0f;
 
 	void DebugLines(float Duration = 0.0f);
 
@@ -56,6 +75,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	bool CheckIsInSight(AActor* TargetActor);
+
+	void UpdateConeVisualization();
 
 public:
 	// Called every frame
@@ -67,5 +88,6 @@ public:
 
 	virtual void OnComponentCreated() override;
 
-
+	// UFUNCTION(BlueprintImplementableEvent)
+	// void UpdateDynamicMesh(const TArray<FVector2D>& Points);
 };
