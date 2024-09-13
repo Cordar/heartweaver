@@ -25,6 +25,7 @@ struct FKrakenGameplayTags
 	FGameplayTag InputTag_Climb;
 	FGameplayTag Tag_Gameplay_AbilityInputBlocked;
 	FGameplayTag Tag_Gameplay_MovementStopped;
+	FGameplayTag Tag_Gameplay_MovementMust;
 
 protected:
 
