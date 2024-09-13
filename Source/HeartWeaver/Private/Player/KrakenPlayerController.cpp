@@ -162,6 +162,22 @@ void AKrakenPlayerController::Move(const FInputActionValue& Value)
 	}
 }
 
+void AKrakenPlayerController::MoveStarted()
+{
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->MoveStarted();
+	}
+}
+
+void AKrakenPlayerController::MoveEnded()
+{
+	if (ControlledCharacter)
+	{
+		ControlledCharacter->MoveEnded();
+	}
+}
+
 void AKrakenPlayerController::Jump()
 {
 	if (ControlledCharacter)
@@ -222,6 +238,8 @@ void AKrakenPlayerController::SetupInputComponent()
 		UKrakenInputComponent* KrakenInputComponent = CastChecked<UKrakenInputComponent>(InputComponent);
 
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &AKrakenPlayerController::Move, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Started, this, &AKrakenPlayerController::MoveStarted, /*bLogIfNotFound=*/ false);
+		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Completed, this, &AKrakenPlayerController::MoveEnded, /*bLogIfNotFound=*/ false);
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Crouch, ETriggerEvent::Triggered, this, &AKrakenPlayerController::ToggleCrouch,
 		                                       /*bLogIfNotFound=*/ false);
 		KrakenInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Climb, ETriggerEvent::Started, this, &AKrakenPlayerController::OnClimbActionStarted,

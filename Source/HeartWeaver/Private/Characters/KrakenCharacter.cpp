@@ -4,8 +4,10 @@
 #include "Characters/KrakenCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
 #include "InputActionValue.h"
 #include "AbilitySystem/KrakenAbilitySystemComponent.h"
+#include "AbilitySystem/KrakenGameplayTags.h"
 #include "Camera/CameraActor.h"
 #include "Characters/KrakenCharacterMovementComponent.h"
 #include "Characters/KrakenPushComponent.h"
@@ -72,6 +74,15 @@ bool AKrakenCharacter::CanJumpInternal_Implementation() const
 void AKrakenCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		const FKrakenGameplayTags& GameplayTags = FKrakenGameplayTags::Get();
+		if (ASC->HasMatchingGameplayTag(GameplayTags.Tag_Gameplay_MovementMust) && !bIsMoveInputActive)
+		{
+			MoveRandomly();
+		}
+	}
 }
 
 void AKrakenCharacter::InitAbilityActorInfo()
@@ -110,6 +121,22 @@ void AKrakenCharacter::Move(const FInputActionValue& Value)
 	{
 		HandleGroundMovementInput(Value);
 	}
+}
+
+void AKrakenCharacter::MoveStarted()
+{
+	bIsMoveInputActive = true;
+	ObtainRandomDirection();
+}
+
+void AKrakenCharacter::MoveEnded()
+{
+	bIsMoveInputActive = false;
+}
+
+void AKrakenCharacter::MoveRandomly()
+{
+	Move(RandomDirection);
 }
 
 void AKrakenCharacter::SetInteractableActor(AKrakenInteractableActor* InteractableActor)
@@ -185,6 +212,14 @@ void AKrakenCharacter::SaveLastSafeLocation()
 		LastSafeLocation = SafeLocation;
 		SafeLocation = GetActorLocation();
 	}
+}
+
+void AKrakenCharacter::ObtainRandomDirection()
+{
+	const float MoveVectorX = UKismetMathLibrary::RandomIntegerInRange(-1, 1);
+	const float MoveVectorY = UKismetMathLibrary::RandomIntegerInRange(-1, 1);
+
+	RandomDirection = FVector2D(MoveVectorX, MoveVectorY);
 }
 
 void AKrakenCharacter::PossessedBy(AController* NewController)

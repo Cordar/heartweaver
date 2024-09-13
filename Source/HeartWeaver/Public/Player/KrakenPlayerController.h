@@ -59,6 +59,8 @@ private:
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	
 	void Move(const FInputActionValue& Value);
+	void MoveStarted();
+	void MoveEnded();
 	void Jump();
 	void StopJumping();
 	void ToggleCrouch();

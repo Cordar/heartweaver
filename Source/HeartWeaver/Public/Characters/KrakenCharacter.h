@@ -30,6 +30,10 @@ public:
 	virtual void OnRep_PlayerState() override;
 	void ToggleCrouch();
 	void Move(const FInputActionValue& Value);
+	void MoveStarted();
+	void MoveEnded();
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void MoveRandomly();
 	
 	FORCEINLINE class UKrakenCharacterMovementComponent* GetKrakenCharacterMovementComponent() const { return KrakenCharacterMovementComponent; }
 
@@ -81,7 +85,11 @@ private:
 
 	void SaveLastSafeLocation();
 
+	void ObtainRandomDirection();
+	FVector2D RandomDirection;
+
 	bool bIsLayingOnFloor = true;
+	bool bIsMoveInputActive = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Pushable")
 	TObjectPtr<UKrakenPushComponent> KrakenPushComponent;
