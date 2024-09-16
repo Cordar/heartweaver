@@ -45,7 +45,9 @@ void UKrakenDynamicObstacle::OnRegister()
 		BoxCollision = NewObject<UBoxComponent>(MyOwner, NAME_None, RF_Transactional | RF_TextExportTransient);
 		BoxCollision->SetBoxExtent(FVector(100.0f, 100.0f, 100.0f), false);
 		BoxCollision->SetupAttachment(this);
+#if WITH_EDITORONLY_DATA
 		BoxCollision->SetIsVisualizationComponent(true);
+#endif
 		BoxCollision->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
 		BoxCollision->bHiddenInGame = true;
 		BoxCollision->CastShadow = false;
@@ -172,6 +174,7 @@ bool UKrakenDynamicObstacle::IsPointInsideBox(const FVector& Point) const
 		FMath::Abs(LocalPoint.Z) <= BoxExtent.Z;
 }
 
+#if WITH_EDITORONLY_DATA
 void UKrakenDynamicObstacle::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
 {
 	UKrakenDynamicObstacle* This = CastChecked<UKrakenDynamicObstacle>(InThis);
@@ -179,3 +182,4 @@ void UKrakenDynamicObstacle::AddReferencedObjects(UObject* InThis, FReferenceCol
 
 	Super::AddReferencedObjects(InThis, Collector);
 }
+#endif
