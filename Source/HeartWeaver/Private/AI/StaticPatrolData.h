@@ -9,11 +9,11 @@ struct FStaticPatrolData
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	float WaitTime;
+	float WaitTime = 0.0f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	float AngleOffset;
+	float AngleOffset = 0.0f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	float TransitionTime;
+	float TransitionTime = 0.0f;
 };
