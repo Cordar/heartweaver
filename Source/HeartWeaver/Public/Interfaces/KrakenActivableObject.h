@@ -27,4 +27,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
 	void Deactivate();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Activable")
+	bool CanBeActivatedBetweenWalls();
 };
