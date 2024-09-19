@@ -29,6 +29,7 @@ void UKrakenPushComponent::BeginPush(AKrakenPushableActor* PushableObject)
 	if (CurrentPushableObject == nullptr)
 	{
 		CurrentPushableObject = PushableObject;
+		InitialZLocation = Character->GetActorLocation().Z;
 		Character->AttachToActor(Cast<AActor>(CurrentPushableObject), FAttachmentTransformRules::KeepWorldTransform);
 		Character->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = false;
 		UActorComponent::SetComponentTickEnabled(true);
@@ -76,6 +77,13 @@ void UKrakenPushComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 	if (!CurrentPushableObject)
 	{
+		return;
+	}
+	
+	if (FMath::Abs(CurrentPushableObject->GetActorLocation().Z - InitialZLocation) >= 100 
+		|| FMath::Abs(Character->GetActorLocation().Z - InitialZLocation) >= 100)
+	{
+		OnPushShouldEnd.Broadcast();
 		return;
 	}
 
