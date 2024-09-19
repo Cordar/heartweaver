@@ -6,9 +6,10 @@
 #include "Components/ActorComponent.h"
 #include "KrakenPushComponent.generated.h"
 
-
 class AKrakenPushableActor;
 class AKrakenCharacter;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPushShouldEnd);
 
 UCLASS(BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class HEARTWEAVER_API UKrakenPushComponent : public UActorComponent
@@ -47,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pushable")
 	float PushSpeed = 100.0f;
 
+	UPROPERTY(BlueprintAssignable, Category = "Pushable")
+	FOnPushShouldEnd OnPushShouldEnd;
+
 protected:
 	virtual void BeginPlay() override;
 	void MoveCurrentPushableObject(float DeltaTime);
@@ -82,4 +86,6 @@ protected:
 
 private:
 	FVector GetDeltaLocation(float DeltaSecond, float InForwardMove, float InRightMove);
+
+	float InitialZLocation;
 };
