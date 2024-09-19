@@ -88,7 +88,7 @@ private:
 	void ObtainRandomDirection();
 	FVector2D RandomDirection;
 
-	bool bIsLayingOnFloor = true;
+	bool bIsLayingOnFloor = false;
 	bool bIsMoveInputActive = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"), Category = "Pushable")
