@@ -42,4 +42,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
 	UEnemyAIPerception* GetAIPerception();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy Interface")
+	bool GetEvadeObstacles();
 };

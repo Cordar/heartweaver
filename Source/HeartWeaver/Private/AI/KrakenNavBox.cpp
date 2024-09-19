@@ -221,15 +221,23 @@ FVector AKrakenNavBox::GetClosestPointInNavMesh(FVector Point)
 	return SelectedVoxel;
 }
 
-TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, bool Simplify)
+TArray<FVector> AKrakenNavBox::GetPath(FVector StartPoint, FVector EndPoint, bool bSimplify, bool bEvadeObstacles)
 {
 	FVector InitialPoint = GetClosestPointInNavMesh(StartPoint);
 	FVector FinalPoint = GetClosestPointInNavMesh(EndPoint);
 
-	TArray<FVector> Path =
-		KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap, &BlockedGridMap);
+	TArray<FVector> Path;
 
-	if (Simplify)
+	if (bEvadeObstacles)
+	{
+		Path = KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap, &BlockedGridMap);
+	} else
+	{
+		TSet<FVector> Empty = TSet<FVector>();
+		Path = KrakenPathfinding::GetPath(InitialPoint, FinalPoint, GridDistance, &GridMap, &Empty);
+	}
+
+	if (bSimplify)
 	{
 		FVector UpVector = GetActorUpVector();
 

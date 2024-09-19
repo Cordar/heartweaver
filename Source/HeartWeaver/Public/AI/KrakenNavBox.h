@@ -100,7 +100,7 @@ public:
 	FVector GetClosestPointInNavMesh(FVector Point);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint, bool Simplify = true);
+	TArray<FVector> GetPath(FVector StartPoint, FVector EndPoint, bool bSimplify = true, bool bEvadeObstacles = true);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FVector GetRandomPointInNavMesh();
