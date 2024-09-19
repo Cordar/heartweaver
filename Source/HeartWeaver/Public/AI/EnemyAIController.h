@@ -23,6 +23,9 @@ protected:
 	// UAIPerceptionComponent* AIPerception;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
+	bool bEvadeObstacles = true;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess), Category = "AI")
 	UBehaviorTree* BehaviorTree;
 
 	UPROPERTY()
@@ -61,7 +64,7 @@ public:
 	AEnemyAIController();
 
 	virtual void Tick(float DeltaSeconds) override;
-	
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "AI")
 	TArray<FVector> CurrentPath;
 

@@ -3,6 +3,7 @@
 
 #include "AI/EnemyAIController.h"
 
+#include "EnemyInterface.h"
 #include "AI/EnemyAIPerception.h"
 #include "AI/KrakenNavBox.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -58,6 +59,11 @@ void AEnemyAIController::BeginPlay()
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	if (InPawn->GetClass()->ImplementsInterface(UEnemyInterface::StaticClass()))
+	{
+		bEvadeObstacles = IEnemyInterface::Execute_GetEvadeObstacles(InPawn);
+	}
 
 	if (BehaviorTree)
 	{
@@ -125,7 +131,7 @@ void AEnemyAIController::CreatePathToTarget()
 		{
 			FVector InitialPoint = NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation());
 			FVector FinalPoint = NavMeshBox->GetClosestPointInNavMesh(Target->GetActorLocation());
-			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint);
+			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint, true, bEvadeObstacles);
 		}
 		else
 		{
@@ -144,7 +150,7 @@ void AEnemyAIController::CreatePathToLocationTarget()
 		{
 			FVector InitialPoint = NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation());
 			FVector FinalPoint = NavMeshBox->GetClosestPointInNavMesh(LocationTarget);
-			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint);
+			CurrentPath = NavMeshBox->GetPath(InitialPoint, FinalPoint, true, bEvadeObstacles);
 		}
 		else
 		{
