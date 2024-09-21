@@ -11,5 +11,6 @@ UKrakenSettingsLocal::UKrakenSettingsLocal()
 
 UKrakenSettingsLocal* UKrakenSettingsLocal::Get()
 {
-    return GEngine ? CastChecked<UKrakenSettingsLocal>(GEngine->GetGameUserSettings()) : nullptr;
+    return nullptr;
+    //return GEngine ? CastChecked<UKrakenSettingsLocal>(GEngine->GetGameUserSettings()) : nullptr;
 }
