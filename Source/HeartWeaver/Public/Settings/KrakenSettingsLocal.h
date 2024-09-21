@@ -17,5 +17,5 @@ class HEARTWEAVER_API UKrakenSettingsLocal : public UEnhancedInputUserSettings
 public:
 	UKrakenSettingsLocal();
 
-	static UKrakenSettingsLocal* Get();	
+	static UKrakenSettingsLocal* Get();
 };

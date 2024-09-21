@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ISpudObject.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/KrakenActivableObject.h"
 #include "KrakenConnectableActor.generated.h"
 
 UCLASS()
-class HEARTWEAVER_API AKrakenConnectableActor : public AActor, public IKrakenActivableObject
+class HEARTWEAVER_API AKrakenConnectableActor : public AActor, public IKrakenActivableObject, public ISpudObject
 {
 	GENERATED_BODY()
 	
@@ -18,4 +19,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	FGuid SpudGuid;
 };

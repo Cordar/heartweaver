@@ -28,7 +28,7 @@ public class HeartWeaver : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayAbilities", "GameplayTags", "AIModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayAbilities", "GameplayTags", "AIModule", "SPUD" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayTasks", "AnimGraphRuntime" });
 		
