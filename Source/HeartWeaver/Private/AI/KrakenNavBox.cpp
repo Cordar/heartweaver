@@ -14,7 +14,7 @@
 AKrakenNavBox::AKrakenNavBox()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	SetRootComponent(Root);
@@ -68,12 +68,6 @@ void AKrakenNavBox::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 void AKrakenNavBox::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-// Called every frame
-void AKrakenNavBox::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void AKrakenNavBox::GenerateGridInsideBox()
