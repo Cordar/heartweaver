@@ -53,8 +53,6 @@ protected:
 	void OnUnperceptActor(AActor* Actor);
 
 private:
-	UFUNCTION()
-	void Debug_GenerateRandomPath();
 
 	UFUNCTION()
 	void Debug_DebugPath();

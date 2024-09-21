@@ -26,6 +26,9 @@ class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess))
 	bool bEyeSighActive = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess))
+	bool bShowVisionCone = true;
+
 public:
 	// Sets default values for this component's properties
 	UEnemyAIPerception();

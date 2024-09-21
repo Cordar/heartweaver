@@ -12,7 +12,6 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Perception/AIPerceptionComponent.h"
 
 AEnemyAIController::AEnemyAIController()
 {
@@ -262,13 +261,6 @@ void AEnemyAIController::OnUnperceptActor(AActor* Actor)
 			SetState(EEnemyState::WAITING);
 		}
 	}
-}
-
-void AEnemyAIController::Debug_GenerateRandomPath()
-{
-	FVector InitialPoint = NavMeshBox->GetClosestPointInNavMesh(ControlledCharacter->GetActorLocation());
-	FVector RandPoint = NavMeshBox->GetRandomPointInNavMesh();
-	CurrentPath = NavMeshBox->GetPath(InitialPoint, RandPoint);
 }
 
 void AEnemyAIController::Debug_DebugPath()

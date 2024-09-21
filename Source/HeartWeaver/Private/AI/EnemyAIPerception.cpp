@@ -190,7 +190,10 @@ void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
 		CheckPerception(DeltaTime);
 	}
 
-	UpdateConeVisualization();
+	if (bShowVisionCone)
+	{
+		UpdateConeVisualization();
+	}
 
 	// #if UE_BUILD_DEVELOPMENT || WITH_EDITOR
 	// 	DebugLines();
@@ -199,6 +202,13 @@ void UEnemyAIPerception::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UEnemyAIPerception::CheckPerception(float DeltaTime)
 {
+	if (ActorFilter.Num() <= 0)
+	{
+		FString DebugText = TEXT("Actor Filter not setted in ") + GetOwner()->GetName();
+		UE_LOG(LogTemp, Error, TEXT("%s" ), *DebugText);
+		return;
+	}
+
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(GetOwner());
 
