@@ -32,6 +32,8 @@ void UKrakenPushComponent::BeginPush(AKrakenPushableActor* PushableObject)
 		InitialZLocation = Character->GetActorLocation().Z;
 		Character->AttachToActor(Cast<AActor>(CurrentPushableObject), FAttachmentTransformRules::KeepWorldTransform);
 		Character->GetKrakenCharacterMovementComponent()->bOrientRotationToMovement = false;
+		Character->GetKrakenCharacterMovementComponent()->UnCrouch();
+		Character->UnCrouch();
 		UActorComponent::SetComponentTickEnabled(true);
 	}
 }
