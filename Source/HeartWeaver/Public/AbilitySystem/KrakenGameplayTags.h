@@ -20,6 +20,7 @@ struct FKrakenGameplayTags
 	static FGameplayTag FindTagByString(FString TagString, bool bMatchPartialString = false);
 
 	FGameplayTag InputTag_Move;
+	FGameplayTag InputTag_AimMarkWithJoystick;
 	FGameplayTag InputTag_Jump;
 	FGameplayTag InputTag_Crouch;
 	FGameplayTag InputTag_Climb;
