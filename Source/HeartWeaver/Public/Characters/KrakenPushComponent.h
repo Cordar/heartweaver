@@ -59,6 +59,7 @@ protected:
 	bool IsCharacterCollidingBackwards() const;
 	void StopMovement();
 	bool MakeLineTraceToSide(const bool CheckRight = false) const;
+	bool IsUpDistanceFree(const FVector& DeltaLocation) const;
 
 	UPROPERTY(EditAnywhere, Category = "Pushable")
 	TObjectPtr<AKrakenPushableActor> CurrentPushableObject;
@@ -68,6 +69,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pushable")
 	float PushRange = 120.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pushable")
+	float AllowedUpDistance = 100.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Pushable")
 	float CurrentActorZRotation = 0.0f;
