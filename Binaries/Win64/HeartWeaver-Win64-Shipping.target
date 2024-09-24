@@ -3463,15 +3463,7 @@
 			"Type": "UFS"
 		},
 		{
-			"Path": "$(ProjectDir)/Plugins/AutoNodeArranger/AutoNodeArranger.uplugin",
-			"Type": "UFS"
-		},
-		{
 			"Path": "$(ProjectDir)/Plugins/DarkerNodes/DarkerNodes.uplugin",
-			"Type": "UFS"
-		},
-		{
-			"Path": "$(ProjectDir)/Plugins/ElectronicNodes/ElectronicNodes.uplugin",
 			"Type": "UFS"
 		},
 		{
@@ -3529,7 +3521,6 @@
 		"AudioCapture",
 		"AudioSynesthesia",
 		"AudioWidgets",
-		"AutoNodeArranger",
 		"AutomationUtils",
 		"AvfMedia",
 		"BackChannel",
@@ -3567,7 +3558,6 @@
 		"DumpGPUServices",
 		"EditorDebugTools",
 		"EditorScriptingUtilities",
-		"ElectronicNodes",
 		"EngineAssetDefinitions",
 		"EnhancedInput",
 		"EnvironmentQueryEditor",

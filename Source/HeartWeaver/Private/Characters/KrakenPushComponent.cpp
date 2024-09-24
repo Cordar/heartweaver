@@ -112,7 +112,7 @@ void UKrakenPushComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 bool UKrakenPushComponent::IsCharacterCollidingBackwards() const
 {
-	return MakeCapsuleTrace(Character->GetCapsuleComponent()->GetScaledCapsuleRadius(), Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+	return MakeCapsuleTrace(Character->GetCapsuleComponent()->GetScaledCapsuleRadius(), Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() / 2);
 }
 
 void UKrakenPushComponent::StopMovement()
@@ -139,6 +139,23 @@ bool UKrakenPushComponent::MakeLineTraceToSide(const bool CheckRight) const
 	return FoundHit;
 }
 
+bool UKrakenPushComponent::IsUpDistanceFree(const FVector& DeltaLocation) const
+{
+	FHitResult HitResult;
+	const bool FoundHit = UKismetSystemLibrary::LineTraceSingle(
+		CurrentPushableObject,
+		CurrentPushableObject->GetActorLocation() + FVector(0.f, 0.f, AllowedUpDistance),
+		CurrentPushableObject->GetActorLocation() + FVector(0.f, 0.f, AllowedUpDistance) + DeltaLocation,
+		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility),
+		false,
+		TArray<AActor*>(),
+		EDrawDebugTrace::None,
+		HitResult,
+		true
+	);
+	return !FoundHit;
+}
+
 void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 {
 	FVector DeltaLocation = FVector::ZeroVector;
@@ -148,12 +165,13 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 	PushVelocity = FVector::ZeroVector;
 
 	bool IsCollidingBackwards = true, IsCharacterCollidingLeft = true, IsCharacterCollidingRight = true;
+	FHitResult HitResult;
 	if (FinalRotation >= 0.0f and FinalRotation < 80.0f)
 	{
 		DeltaLocation = GetDeltaLocation(DeltaTime, ForwardMove, RightMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true, &HitResult);
 			IsCollidingBackwards = IsCharacterCollidingBackwards();
 			IsCharacterCollidingLeft = MakeLineTraceToSide();
 			IsCharacterCollidingRight = MakeLineTraceToSide(true);
@@ -167,7 +185,7 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		DeltaLocation = GetDeltaLocation(DeltaTime, RightMove, -ForwardMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true, &HitResult);
 			IsCollidingBackwards = IsCharacterCollidingBackwards();
 			IsCharacterCollidingLeft = MakeLineTraceToSide();
 			IsCharacterCollidingRight = MakeLineTraceToSide(true);
@@ -180,7 +198,7 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		DeltaLocation = GetDeltaLocation(DeltaTime, -ForwardMove, -RightMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true, &HitResult);
 			IsCollidingBackwards = IsCharacterCollidingBackwards();
 			IsCharacterCollidingLeft = MakeLineTraceToSide();
 			IsCharacterCollidingRight = MakeLineTraceToSide(true);
@@ -194,13 +212,21 @@ void UKrakenPushComponent::MoveCurrentPushableObject(float DeltaTime)
 		DeltaLocation = GetDeltaLocation(DeltaTime, -RightMove, ForwardMove);
 		if (DeltaLocation != FVector::ZeroVector)
 		{
-			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true);
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation, true, &HitResult);
 			IsCollidingBackwards = IsCharacterCollidingBackwards();
 			IsCharacterCollidingLeft = MakeLineTraceToSide();
 			IsCharacterCollidingRight = MakeLineTraceToSide(true);
 			CanMoveLeft = !IsCollidingBackwards;
 			CanMoveDown = !IsCharacterCollidingLeft;
 			CanMoveUp = !IsCharacterCollidingRight;
+		}
+	}
+
+	if (DeltaLocation != FVector::ZeroVector && HitResult.bBlockingHit)
+	{
+		if (IsUpDistanceFree(DeltaLocation))
+		{
+			CurrentPushableObject->AddActorWorldOffset(DeltaLocation + FVector(0.f, 0.f, AllowedUpDistance), true);
 		}
 	}
 
