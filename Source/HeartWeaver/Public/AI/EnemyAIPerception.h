@@ -29,6 +29,10 @@ class HEARTWEAVER_API UEnemyAIPerception : public UActorComponent
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess))
 	bool bShowVisionCone = true;
 
+	// Array Cacheado
+	TArray<FVector2D> Points;
+	TArray<AActor*> ActorsToIgnore = {};
+
 public:
 	// Sets default values for this component's properties
 	UEnemyAIPerception();
