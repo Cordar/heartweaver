@@ -209,9 +209,6 @@ void UEnemyAIPerception::CheckPerception(float DeltaTime)
 		return;
 	}
 
-	TArray<AActor*> ActorsToIgnore;
-	ActorsToIgnore.Add(GetOwner());
-
 	TArray<AActor*> OutActors;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectQueryParams;
 

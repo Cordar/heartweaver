@@ -43,6 +43,7 @@ FGameplayTag FKrakenGameplayTags::FindTagByString(FString TagString, bool bMatch
 void FKrakenGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 {
 	AddTag(InputTag_Move, "InputTag.Move", "Move input.");
+	AddTag(InputTag_AimMarkWithJoystick, "InputTag.AimMarkWithJoystick", "Aim input.");
 	AddTag(InputTag_Jump, "InputTag.Jump", "Jump input.");
 	AddTag(InputTag_Crouch, "InputTag.Crouch", "Crouch input.");
 	AddTag(InputTag_Climb, "InputTag.Climb", "Climb input.");
