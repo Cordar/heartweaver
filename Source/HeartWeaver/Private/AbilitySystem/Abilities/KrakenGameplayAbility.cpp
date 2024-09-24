@@ -7,5 +7,8 @@
 
 AKrakenCharacter* UKrakenGameplayAbility::GetKrakenCharacterFromActorInfo() const
 {
-	return CastChecked<AKrakenCharacter>(GetActorInfo().AvatarActor.Get());
+	AActor* AvatarActor = GetActorInfo().AvatarActor.Get();
+
+	if (AKrakenCharacter* KrakenCharacter = Cast<AKrakenCharacter>(AvatarActor)) return KrakenCharacter;
+	return nullptr;
 }
