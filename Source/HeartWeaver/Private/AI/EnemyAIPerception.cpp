@@ -28,6 +28,10 @@ void UEnemyAIPerception::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ActorsToIgnore = {
+		GetOwner(),
+	};
+
 	CapsuleComponent = Cast<UCapsuleComponent>(GetOwner()->GetComponentByClass(UCapsuleComponent::StaticClass()));
 
 	if (CapsuleComponent)
@@ -119,6 +123,7 @@ bool UEnemyAIPerception::CheckIsInSight(AActor* TargetActor)
 				ECC_Visibility,
 				CollisionParams
 			);
+			
 			if (bIsHit)
 			{
 				if (OutHit.GetActor() != TargetActor)
@@ -140,13 +145,8 @@ void UEnemyAIPerception::UpdateConeVisualization()
 	FTransform OwnerTransform = Owner->GetTransform();
 	UWorld* World = GetWorld();
 
-	TArray ActorsToIgnore = {
-		Owner,
-	};
-
-	TArray<FVector2D> Points = {
-		FVector2D()
-	};
+	Points.Empty();
+	Points.Add(FVector2D());
 
 	FVector RayStart = OwnerTransform.TransformPosition(EyesPosition);
 	FVector InitialDirection = UKismetMathLibrary::RotateAngleAxis(Owner->GetActorForwardVector(),
