@@ -34,3 +34,12 @@ DerivedDataCache/*
 
 # Files 
 *_BuiltData*
+
+# Shipping build files
+Binaries/Win64/D3D12/*
+Binaries/Win64/HeartWeaver-Win64-Shipping.lib
+Binaries/Win64/HeartWeaver-Win64-Shipping.target
+Binaries/Win64/OpenImageDenoise.dll
+Binaries/Win64/tbb.dll
+Binaries/Win64/tbb12.dll
+Binaries/Win64/tbbmalloc.dll
