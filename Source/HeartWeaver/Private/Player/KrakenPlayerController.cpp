@@ -170,15 +170,17 @@ void AKrakenPlayerController::AimMarkWithJoystick(const FInputActionValue& Value
 {
 	if (ControlledCharacter)
 	{
-		bShowMouseCursor = false;
-		
-		FVector2D CenterPosition;
-		UGameplayStatics::ProjectWorldToScreen(this, ControlledCharacter->GetActorLocation(), CenterPosition);
+		// bShowMouseCursor = false;
+		//
+		// FVector2D CenterPosition;
+		// UGameplayStatics::ProjectWorldToScreen(this, ControlledCharacter->GetActorLocation(), CenterPosition);
 
 		FVector2D Input = Value.Get<FVector2D>();
 		Input.Normalize();
-		Input *= 60.0f;
-		SetMouseLocation(CenterPosition.X + Input.X, CenterPosition.Y + Input.Y);
+
+		AimMarkWithJoystickEvent.Broadcast(Input);
+		// Input *= 60.0f;
+		// SetMouseLocation(CenterPosition.X + Input.X, CenterPosition.Y + Input.Y);
 		
 	}
 }

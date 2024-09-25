@@ -14,6 +14,8 @@ class UKrakenInputConfig;
 class AKrakenCharacter;
 struct FInputActionValue;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAimMarkWithJoystick, FVector2D, Value);
+
 /**
  * 
  */
@@ -32,6 +34,9 @@ public:
 	// Converts a rotation from gravity relative space to world space.
 	UFUNCTION(BlueprintPure)
 	static FRotator GetGravityWorldRotation(const FRotator& Rotation, const FVector& GravityDirection);
+
+	UPROPERTY(BlueprintAssignable)
+	FAimMarkWithJoystick AimMarkWithJoystickEvent;
 	
 protected:
 	virtual void BeginPlay() override;
