@@ -1,0 +1,8 @@
+{
+	"BuildId": "33043543",
+	"Modules": 
+	{
+		"StevesUEHelpers": "UnrealEditor-StevesUEHelpers.dll",
+		"StevesUEHelpersEd": "UnrealEditor-StevesUEHelpersEd.dll"
+	}
+}
