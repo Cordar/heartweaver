@@ -3864,6 +3864,26 @@
 		{
 			"Path": "$(ProjectDir)/Plugins/SUDS/Binaries/Win64/UnrealEditor.modules",
 			"Type": "RequiredResource"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/Binaries/Win64/UnrealEditor-StevesUEHelpers.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/Binaries/Win64/UnrealEditor-StevesUEHelpers.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/Binaries/Win64/UnrealEditor-StevesUEHelpersEd.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/Binaries/Win64/UnrealEditor-StevesUEHelpersEd.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
 		}
 	],
 	"RuntimeDependencies": [
@@ -26962,6 +26982,10 @@
 		{
 			"Path": "$(ProjectDir)/Plugins/SUDS/SUDS.uplugin",
 			"Type": "UFS"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/StevesUEHelpers/StevesUEHelpers.uplugin",
+			"Type": "UFS"
 		}
 	],
 	"BuildPlugins": [
@@ -27126,6 +27150,7 @@
 		"SkeletalReduction",
 		"SoundFields",
 		"SpeedTreeImporter",
+		"StevesUEHelpers",
 		"StructUtils",
 		"SubversionSourceControl",
 		"Synthesis",
