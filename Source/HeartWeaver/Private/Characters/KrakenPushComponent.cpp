@@ -145,7 +145,7 @@ bool UKrakenPushComponent::IsUpDistanceFree(const FVector& DeltaLocation) const
 	const bool FoundHit = UKismetSystemLibrary::LineTraceSingle(
 		CurrentPushableObject,
 		CurrentPushableObject->GetActorLocation() + FVector(0.f, 0.f, AllowedUpDistance),
-		CurrentPushableObject->GetActorLocation() + FVector(0.f, 0.f, AllowedUpDistance) + (DeltaLocation * RaytraceDistanceMultiplier),
+		CurrentPushableObject->GetActorLocation() + FVector(0.f, 0.f, AllowedUpDistance) + DeltaLocation,
 		UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility),
 		false,
 		TArray<AActor*>(),
