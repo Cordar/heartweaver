@@ -73,6 +73,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pushable")
 	float AllowedUpDistance = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pushable")
+	float RaytraceDistanceMultiplier = 300.0f;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Pushable")
 	float CurrentActorZRotation = 0.0f;
 
