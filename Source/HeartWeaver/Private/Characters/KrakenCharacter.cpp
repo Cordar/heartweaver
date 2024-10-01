@@ -39,6 +39,31 @@ void AKrakenCharacter::SetEmotionState(const EEmotionState NewEmotionState)
 	EmotionState = NewEmotionState;
 }
 
+void AKrakenCharacter::Respawn()
+{
+	if (LastSavedFloor)
+	{
+		GetKrakenCharacterMovementComponent()->Velocity = FVector();
+
+		FVector GlobalLocation = LastSavedFloor->GetTransform().TransformPosition(LastSavedRelativeLocation);
+		
+		SetActorLocation(GlobalLocation, false);
+
+		GetKrakenCharacterMovementComponent()->FindFloor(GetKrakenCharacterMovementComponent()->UpdatedComponent->GetComponentLocation(),
+							 GetKrakenCharacterMovementComponent()->CurrentFloor, false);
+		GetKrakenCharacterMovementComponent()->AdjustFloorHeight();
+		GetKrakenCharacterMovementComponent()->SetBaseFromFloor(GetKrakenCharacterMovementComponent()->CurrentFloor);
+
+		// Esperamos un fotograma para asegurarnos de que el jugador no tenga velocidad y así no salga volando con colisiones raras
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			GetKrakenCharacterMovementComponent()->Velocity = FVector();
+		}, 0.0001f, false);
+
+	}
+}
+
 void AKrakenCharacter::BeginPlay()
 {
 	Super::BeginPlay();
