@@ -3746,6 +3746,26 @@
 			"Type": "RequiredResource"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/Binaries/Win64/UnrealEditor-DynamicSplineCamera.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/Binaries/Win64/UnrealEditor-DynamicSplineCamera.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/Binaries/Win64/UnrealEditor-DynamicSplineCameraEditor.dll",
+			"Type": "DynamicLibrary"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/Binaries/Win64/UnrealEditor-DynamicSplineCameraEditor.pdb",
+			"Type": "SymbolFile"
+		},
+		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/Binaries/Win64/UnrealEditor.modules",
+			"Type": "RequiredResource"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/FMODStudioNiagara/Binaries/Win64/UnrealEditor-FMODStudioNiagara.dll",
 			"Type": "DynamicLibrary"
 		},
@@ -26952,6 +26972,10 @@
 			"Type": "UFS"
 		},
 		{
+			"Path": "$(ProjectDir)/Plugins/DynamicSplineCamera/DynamicSplineCamera.uplugin",
+			"Type": "UFS"
+		},
+		{
 			"Path": "$(ProjectDir)/Plugins/FMODStudioNiagara/FMODStudioNiagara.uplugin",
 			"Type": "UFS"
 		},
@@ -27047,6 +27071,7 @@
 		"Dataflow",
 		"DatasmithContent",
 		"DumpGPUServices",
+		"DynamicSplineCamera",
 		"EditorDebugTools",
 		"EditorScriptingUtilities",
 		"EngineAssetDefinitions",
