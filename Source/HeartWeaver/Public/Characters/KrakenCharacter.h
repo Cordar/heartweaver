@@ -22,7 +22,16 @@ class HEARTWEAVER_API AKrakenCharacter : public AKrakenCharacterBase
 {
 	GENERATED_BODY()
 
+	
+
 public:
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Respawn")
+	AActor* LastSavedFloor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Respawn")
+	FVector LastSavedRelativeLocation;
+	
 	AKrakenCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void Tick(float DeltaTime) override;
 	
@@ -54,6 +63,9 @@ public:
 	EEmotionState GetEmotionState() const { return EmotionState; }
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	void SetEmotionState(const EEmotionState NewEmotionState);
+
+	UFUNCTION(BlueprintCallable)
+	void Respawn();
 
 
 protected:
