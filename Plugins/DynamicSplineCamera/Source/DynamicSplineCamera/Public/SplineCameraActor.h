@@ -27,7 +27,6 @@ class DYNAMICSPLINECAMERA_API ASplineCameraActor : public ACameraActor
 	int CurrentCameraIndex = 0;
 
 public:
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera")
 	float LookAtReferenceWeight = 0.2f;
 
@@ -36,13 +35,14 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera")
 	bool bForceFollowOnSpline = false;
-	
+
 private:
-
 	void SetCameraPosition(float DeltaSeconds);
-	
-public:
 
+public:
 	virtual void Tick(float DeltaSeconds) override;
-	
+
+	void SetActiveSpline(ACameraSpline* Spline);
+
+	void SetCameraIndex(int NewIndex) { CurrentCameraIndex = NewIndex; }
 };

@@ -8,13 +8,17 @@ class SSlider;
 struct FReferencePoint;
 class ACameraSpline;
 class ACameraSplinePointReference;
+class ASplineCameraActor;
+class ASplineCameraTriggerBox;
 
 UENUM(BlueprintType)
-enum ESplneCameraWidgetTickState : uint8
+enum ESplineCameraWidgetTickState : uint8
 {
 	None,
 	CreatingReferencePoint,
-	CreatingSplineCamera
+	CreatingCameraSpline,
+	CreatingSplineCameraActor,
+	CreatingSplineCameraTriggerBox
 };
 
 /**
@@ -33,18 +37,24 @@ class DYNAMICSPLINECAMERAEDITOR_API SSplineCameraWidget : public SCompoundWidget
 
 	bool bHasPressedOverrideCamera = false;
 
-	ESplneCameraWidgetTickState CurrentTickState = ESplneCameraWidgetTickState::None;
+	ESplineCameraWidgetTickState CurrentTickState = ESplineCameraWidgetTickState::None;
 
 	void AddDelegates();
 	void CreateReferencePointArrayFromSplineCamera(ACameraSpline* SplineCamera,
 	                                               TArray<TSharedPtr<FReferencePoint>>& OutArray);
 	UBlueprint* PointReferenceBP;
 	UBlueprint* CameraSplineBP;
+	UBlueprint* SplineCameraActorBP;
+	UBlueprint* SplineCameraTriggerBoxBP;
+
 
 #pragma region Widgets
 
 	TSharedPtr<SButton> CreateCameraSplineButton;
 	TSharedPtr<SButton> CreateReferencePointButton;
+	TSharedPtr<SButton> CreateSplineCameraActorButton;
+	TSharedPtr<SButton> CreateSplineCameraTriggerBoxButton;
+
 
 	TSharedPtr<STextBlock> SelectedSplineCameraText;
 	TSharedPtr<STextBlock> SelectedReferencePointActorText;
@@ -70,6 +80,12 @@ class DYNAMICSPLINECAMERAEDITOR_API SSplineCameraWidget : public SCompoundWidget
 	ACameraSpline* CreatedCameraSpline;
 	void CreateCameraSpline();
 
+	ASplineCameraActor* CreatedSplineCameraActor;
+	void CreateSplineCameraActor();
+
+	ASplineCameraTriggerBox* CreatedSplineCameraTriggerBox;
+	void CreateSplineCameraTriggerBox();
+
 	void OnActorSelected(const TArray<UObject*>& SelectedActors, bool value);
 	void OnActorDeleted(AActor* DeletedActor);
 	void OnActorPropertyChanged(UObject* Object, struct FPropertyChangedEvent& PropertyChangedEvent);
@@ -81,6 +97,12 @@ class DYNAMICSPLINECAMERAEDITOR_API SSplineCameraWidget : public SCompoundWidget
 
 	void OnCreateCameraSplinePressed();
 	void OnCreateCameraSplineReleased();
+
+	void OnCreateSplineCameraActorPressed();
+	void OnCreateSplineCameraActorReleased();
+
+	void OnCreateSplineCameraTriggerBoxPressed();
+	void OnCreateSplineCameraTriggerBoxReleased();
 	
 	FReply OnOverrideSplineReferenceCamera();
 
@@ -110,9 +132,13 @@ public:
 
 	void OnSpawnTab();
 	void Reset();
+	
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 	void TickCreateCameraSpline();
 	void TickCreateReferencePoint();
+	void TickCreateSplineCameraActor();
+	void TickCreateSplineCameraTriggerBox();
+
 
 	static bool RaycastViewport(FHitResult& Hit);
 

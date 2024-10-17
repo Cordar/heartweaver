@@ -142,6 +142,10 @@ void ASplineCameraActor::SetCameraPosition(float DeltaSeconds)
 					ActiveCameraSpline->SplinePoints[SelectedIndex].CameraRotation,
 					ActiveCameraSpline->SplinePoints[SelectedIndex + 1].CameraRotation, Ratio);
 
+				FRotator LookAtReferenceRotation = UKismetMathLibrary::FindLookAtRotation(
+					GetActorLocation(), SplineReference->GetActorLocation());
+				FinalCameraRotation = FMath::Lerp(FinalCameraRotation, LookAtReferenceRotation, LookAtReferenceWeight);
+
 				SetActorLocation(FinalCameraPosition);
 				SetActorRotation(FinalCameraRotation);
 
@@ -153,19 +157,19 @@ void ASplineCameraActor::SetCameraPosition(float DeltaSeconds)
 
 				// bForceFollowOnSpline = false;
 
-				UE_LOG(LogTemp, Warning, TEXT("=================================================="));
+				// UE_LOG(LogTemp, Warning, TEXT("=================================================="));
 
 				float DistanceToNextPoint = FVector::Dist(GetActorLocation(),
 				                                          ActiveCameraSpline->SplinePoints[CurrentCameraIndex].
 				                                          CameraPosition);
 				TotalDistance = TotalDistance + DistanceToNextPoint;
-				UE_LOG(LogTemp, Warning, TEXT("TotalDistance 1: %f"), TotalDistance);
+				// UE_LOG(LogTemp, Warning, TEXT("TotalDistance 1: %f"), TotalDistance);
 				for (int i = SplineCameraIndex + 1; i < CurrentCameraIndex; i++)
 				{
 					DistanceToNextPoint = FVector::Dist(ActiveCameraSpline->SplinePoints[i].CameraPosition,
 					                                    ActiveCameraSpline->SplinePoints[i + 1].CameraPosition);
 					TotalDistance = TotalDistance + DistanceToNextPoint;
-					UE_LOG(LogTemp, Warning, TEXT("TotalDistance 2: %f"), TotalDistance);
+					// UE_LOG(LogTemp, Warning, TEXT("TotalDistance 2: %f"), TotalDistance);
 				}
 
 				float ClosestPointToReferenceDistance = ActiveCameraSpline->GetDistanceFromCurrentSplinePoint(
@@ -186,7 +190,7 @@ void ASplineCameraActor::SetCameraPosition(float DeltaSeconds)
 
 				TotalDistance = TotalDistance + CameraDistance;
 
-				UE_LOG(LogTemp, Warning, TEXT("TotalDistance 3: %f"), TotalDistance);
+				// UE_LOG(LogTemp, Warning, TEXT("TotalDistance 3: %f"), TotalDistance);
 				// UE_LOG(LogTemp, Warning, TEXT("Distance to Spline Point: %f"), DistanceToSplinePointIndex);
 
 				// Según el valor de interpolación sacado por la velocidad de la cámara, obtenemos la distancia que debemos recorrer en la spline
@@ -253,6 +257,10 @@ void ASplineCameraActor::SetCameraPosition(float DeltaSeconds)
 					ActiveCameraSpline->SplinePoints[SelectedIndex].CameraRotation,
 					ActiveCameraSpline->SplinePoints[SelectedIndex + 1].CameraRotation, Ratio);
 
+				FRotator LookAtReferenceRotation = UKismetMathLibrary::FindLookAtRotation(
+					GetActorLocation(), SplineReference->GetActorLocation());
+				FinalCameraRotation = FMath::Lerp(FinalCameraRotation, LookAtReferenceRotation, LookAtReferenceWeight);
+
 				SetActorLocation(FinalCameraPosition);
 				SetActorRotation(FinalCameraRotation);
 
@@ -271,4 +279,11 @@ void ASplineCameraActor::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	SetCameraPosition(DeltaSeconds);
+}
+
+void ASplineCameraActor::SetActiveSpline(ACameraSpline* Spline)
+{
+	ActiveCameraSpline = Spline;
+	ActiveCameraSpline->UpdateIndexFromNewReference(SplineReference->GetActorLocation());
+	SetCameraIndex(ActiveCameraSpline->GetCurrentCameraIndex());
 }

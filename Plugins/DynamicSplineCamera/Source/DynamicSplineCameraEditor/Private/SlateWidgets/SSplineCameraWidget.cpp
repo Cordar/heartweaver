@@ -9,6 +9,8 @@
 #include "LevelEditor.h"
 #include "SEditorViewport.h"
 #include "Selection.h"
+#include "SplineCameraActor.h"
+#include "SplineCameraTriggerBox.h"
 #include "WorldPersistentFolders.h"
 #include "DebugUtils/DynamicSplineCameraDebugUtils.h"
 #include "Subsystems/EditorActorSubsystem.h"
@@ -47,6 +49,26 @@ void SSplineCameraWidget::Construct(const FArguments& InArgs)
 		}
 	}
 
+	if (!SplineCameraActorBP)
+	{
+		SplineCameraActorBP = Cast<UBlueprint>(
+			FSoftObjectPath(TEXT("/DynamicSplineCamera/Blueprints/SplineCameraActor")).TryLoad());
+		if (SplineCameraActorBP)
+		{
+			DynamicSplineCameraDebugUtils::Print(TEXT("Carga completa de Spline camera actor"), FColor::Cyan);
+		}
+	}
+
+	if (!SplineCameraTriggerBoxBP)
+	{
+		SplineCameraTriggerBoxBP = Cast<UBlueprint>(
+			FSoftObjectPath(TEXT("/DynamicSplineCamera/Blueprints/SplineCameraTriggerBox")).TryLoad());
+		if (SplineCameraTriggerBoxBP)
+		{
+			DynamicSplineCameraDebugUtils::Print(TEXT("Carga completa de Spline Camera Trigger Box"), FColor::Yellow);
+		}
+	}
+
 	FSlateFontInfo TitleTextFont = GetEmboseedTextFont();
 	TitleTextFont.Size = 30;
 
@@ -79,6 +101,17 @@ void SSplineCameraWidget::Construct(const FArguments& InArgs)
 		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateReferencePointPressed),
 		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateReferencePointReleased));
 
+	CreateSplineCameraActorButton = ConstructButtonBlock(
+		TEXT("Spawn Spline Camera Actor"),
+		nullptr,
+		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateSplineCameraActorPressed),
+		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateSplineCameraActorReleased));
+
+	CreateSplineCameraTriggerBoxButton = ConstructButtonBlock(
+		TEXT("Spawn Trigger Box"),
+		nullptr,
+		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateSplineCameraTriggerBoxPressed),
+		FSimpleDelegate::CreateRaw(this, &SSplineCameraWidget::OnCreateSplineCameraTriggerBoxReleased));
 
 	ChildSlot
 	[
@@ -144,6 +177,18 @@ void SSplineCameraWidget::Construct(const FArguments& InArgs)
 					SelectedSplineCameraReferencePointList.ToSharedRef()
 				]
 			]
+
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(TEXT("Preview Slider")))
+				.Font(BodyTextFont)
+				.Justification(ETextJustify::Type::Center)
+				.ColorAndOpacity(FColor::White)
+				.AutoWrapText(true)
+			]
+
 			+ SVerticalBox::Slot()
 			[
 				SNew(SHorizontalBox)
@@ -158,7 +203,18 @@ void SSplineCameraWidget::Construct(const FArguments& InArgs)
 				[
 					CameraPreviewSlider.ToSharedRef()
 				]
+			]
 
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				CreateSplineCameraActorButton.ToSharedRef()
+			]
+
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			[
+				CreateSplineCameraTriggerBoxButton.ToSharedRef()
 			]
 
 		]
@@ -251,11 +307,17 @@ void SSplineCameraWidget::Tick(const FGeometry& AllottedGeometry, const double I
 	{
 	case None:
 		break;
-	case CreatingSplineCamera:
+	case CreatingCameraSpline:
 		TickCreateCameraSpline();
 		break;
 	case CreatingReferencePoint:
 		TickCreateReferencePoint();
+		break;
+	case CreatingSplineCameraActor:
+		TickCreateSplineCameraActor();
+		break;
+	case CreatingSplineCameraTriggerBox:
+		TickCreateSplineCameraTriggerBox();
 		break;
 	default: ;
 	}
@@ -299,6 +361,46 @@ void SSplineCameraWidget::TickCreateReferencePoint()
 		{
 			// Lo creamos
 			CreateReferencePointActor();
+		}
+	}
+
+	GEditor->RedrawAllViewports();
+}
+
+void SSplineCameraWidget::TickCreateSplineCameraActor()
+{
+	FHitResult Hit;
+	if (RaycastViewport(Hit))
+	{
+		if (CreatedSplineCameraActor)
+		{
+			// Lo desplazamos
+			CreatedSplineCameraActor->SetActorLocation(Hit.Location + Hit.Normal * 10.0f);
+		}
+		else
+		{
+			// Lo creamos
+			CreateSplineCameraActor();
+		}
+	}
+
+	GEditor->RedrawAllViewports();
+}
+
+void SSplineCameraWidget::TickCreateSplineCameraTriggerBox()
+{
+	FHitResult Hit;
+	if (RaycastViewport(Hit))
+	{
+		if (CreatedSplineCameraTriggerBox)
+		{
+			// Lo desplazamos
+			CreatedSplineCameraTriggerBox->SetActorLocation(Hit.Location + Hit.Normal * 100.0f);
+		}
+		else
+		{
+			// Lo creamos
+			CreateSplineCameraTriggerBox();
 		}
 	}
 
@@ -395,6 +497,50 @@ void SSplineCameraWidget::CreateCameraSpline()
 	{
 		DynamicSplineCameraDebugUtils::Print(
 			TEXT("Error al intentar spawnear el CameraSpline"), FColor::Red);
+	}
+}
+
+void SSplineCameraWidget::CreateSplineCameraActor()
+{
+	if (AActor* SpawnedActor = EditorActorSubsystem->SpawnActorFromObject(
+		SplineCameraActorBP, FVector(0.0f, 0.0f, 0.0f)))
+	{
+		if (ASplineCameraActor* SplineCameraActor = Cast<ASplineCameraActor>(SpawnedActor))
+		{
+			CreatedSplineCameraActor = SplineCameraActor;
+		}
+		else
+		{
+			DynamicSplineCameraDebugUtils::Print(
+				TEXT("Error al intentar hacer casting al SplineCameraActor"), FColor::Red);
+		}
+	}
+	else
+	{
+		DynamicSplineCameraDebugUtils::Print(
+			TEXT("Error al intentar spawnear el SplineCameraActor"), FColor::Red);
+	}
+}
+
+void SSplineCameraWidget::CreateSplineCameraTriggerBox()
+{
+	if (AActor* SpawnedActor = EditorActorSubsystem->SpawnActorFromObject(
+		SplineCameraTriggerBoxBP, FVector(0.0f, 0.0f, 0.0f)))
+	{
+		if (ASplineCameraTriggerBox* SplineCameraTriggerBox = Cast<ASplineCameraTriggerBox>(SpawnedActor))
+		{
+			CreatedSplineCameraTriggerBox = SplineCameraTriggerBox;
+		}
+		else
+		{
+			DynamicSplineCameraDebugUtils::Print(
+				TEXT("Error al intentar hacer casting al SplineCameraTriggerBox"), FColor::Red);
+		}
+	}
+	else
+	{
+		DynamicSplineCameraDebugUtils::Print(
+			TEXT("Error al intentar spawnear el SplineCameraTriggerBox"), FColor::Red);
 	}
 }
 
@@ -502,12 +648,12 @@ void SSplineCameraWidget::OnActorPropertyChanged(UObject* Object, FPropertyChang
 
 void SSplineCameraWidget::OnCreateReferencePointPressed()
 {
-	CurrentTickState = ESplneCameraWidgetTickState::CreatingReferencePoint;
+	CurrentTickState = ESplineCameraWidgetTickState::CreatingReferencePoint;
 }
 
 void SSplineCameraWidget::OnCreateReferencePointReleased()
 {
-	CurrentTickState = ESplneCameraWidgetTickState::None;
+	CurrentTickState = ESplineCameraWidgetTickState::None;
 
 	if (CreatedReferencePointActor)
 	{
@@ -556,12 +702,12 @@ void SSplineCameraWidget::OnCreateReferencePointReleased()
 
 void SSplineCameraWidget::OnCreateCameraSplinePressed()
 {
-	CurrentTickState = ESplneCameraWidgetTickState::CreatingSplineCamera;
+	CurrentTickState = ESplineCameraWidgetTickState::CreatingCameraSpline;
 }
 
 void SSplineCameraWidget::OnCreateCameraSplineReleased()
 {
-	CurrentTickState = ESplneCameraWidgetTickState::None;
+	CurrentTickState = ESplineCameraWidgetTickState::None;
 
 	if (CreatedCameraSpline)
 	{
@@ -577,6 +723,63 @@ void SSplineCameraWidget::OnCreateCameraSplineReleased()
 		EditorActorSubsystem->SetActorSelectionState(CreatedCameraSpline, true);
 
 		CreatedCameraSpline = nullptr;
+	}
+}
+
+void SSplineCameraWidget::OnCreateSplineCameraActorPressed()
+{
+	CurrentTickState = CreatingSplineCameraActor;
+}
+
+void SSplineCameraWidget::OnCreateSplineCameraActorReleased()
+{
+	CurrentTickState = ESplineCameraWidgetTickState::None;
+
+	if (CreatedSplineCameraActor)
+	{
+		FHitResult Hit;
+		if (!RaycastViewport(Hit))
+		{
+			CreatedSplineCameraActor->Destroy();
+			CreatedSplineCameraActor = nullptr;
+			return;
+		}
+
+		EditorActorSubsystem->SelectNothing();
+		EditorActorSubsystem->SetActorSelectionState(CreatedSplineCameraActor, true);
+
+		CreatedSplineCameraActor = nullptr;
+	}
+}
+
+void SSplineCameraWidget::OnCreateSplineCameraTriggerBoxPressed()
+{
+	CurrentTickState = CreatingSplineCameraTriggerBox;
+}
+
+void SSplineCameraWidget::OnCreateSplineCameraTriggerBoxReleased()
+{
+	CurrentTickState = None;
+
+	if (CreatedSplineCameraTriggerBox)
+	{
+		FHitResult Hit;
+		if (!RaycastViewport(Hit))
+		{
+			CreatedSplineCameraTriggerBox->Destroy();
+			CreatedSplineCameraTriggerBox = nullptr;
+			return;
+		}
+
+		if (SelectedCameraSpline)
+		{
+			CreatedSplineCameraTriggerBox->CameraSpline = SelectedCameraSpline;
+		}
+
+		EditorActorSubsystem->SelectNothing();
+		EditorActorSubsystem->SetActorSelectionState(CreatedSplineCameraTriggerBox, true);
+
+		CreatedSplineCameraTriggerBox = nullptr;
 	}
 }
 

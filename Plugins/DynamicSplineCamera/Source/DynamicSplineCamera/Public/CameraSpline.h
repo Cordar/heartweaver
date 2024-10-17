@@ -185,6 +185,8 @@ public:
 	void UpdateReferencePointsData();
 	int GetCurrentCameraIndex() const { return CameraSplineIndex; }
 
+	void UpdateIndexFromNewReference(FVector Position);
+
 #if WITH_EDITOR
 	void ReestructurateArrayFromDuplicatedReferencePointActor(ACameraSplinePointReference* DuplicatedPoint);
 #endif

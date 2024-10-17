@@ -122,6 +122,51 @@ void ACameraSpline::UpdateReferencePointsData()
 }
 
 #if WITH_EDITOR
+void ACameraSpline::UpdateIndexFromNewReference(FVector Position)
+{
+	float ClosestDistance = 9999999999999.0f;
+	int SelectedIndex = 0;
+	bool bIsInsideTheSpline = false;
+	for (int i = 0; i < SplinePoints.Num() - 1; i++)
+	{
+		FVector DirRef0ToPoint = Position - SplinePoints[i].Position;
+		DirRef0ToPoint.Normalize();
+
+		FVector DirRef1ToPoint = Position - SplinePoints[i + 1].Position;
+		DirRef1ToPoint.Normalize();
+
+		double Dot0 = FVector::DotProduct(SplinePoints[i].DirectionFwrd, DirRef0ToPoint);
+		double Dot1 = FVector::DotProduct(-SplinePoints[i + 1].DirectionFwrd, DirRef1ToPoint);
+
+		if (Dot0 > 0 && Dot1 > 0)
+		{
+			// Pertenecemos a este plano
+
+			float Distance = FVector::Dist(
+				FMath::ClosestPointOnSegment(Position, SplinePoints[i].Position, SplinePoints[i + 1].Position),
+				Position);
+			if (Distance < ClosestDistance)
+			{
+				ClosestDistance = Distance;
+				SelectedIndex = i;
+				bIsInsideTheSpline = true;
+			}
+		}
+	}
+
+	if (!bIsInsideTheSpline)
+	{
+		// Comprobamos por si acaso, si está mas cerca el punto de inicio o el punto final en caso de no formar parte de la spline
+		float DistanceFirst = FVector::Dist(Position, SplinePoints[0].Position);
+		float DistanceLast = FVector::Dist(Position, SplinePoints[SplinePoints.Num() - 1].Position);
+
+		if (DistanceFirst > DistanceLast)
+			SelectedIndex = SplinePoints.Num() - 2;
+	}
+
+	CameraSplineIndex = SelectedIndex;
+}
+
 void ACameraSpline::ReestructurateArrayFromDuplicatedReferencePointActor(ACameraSplinePointReference* DuplicatedPoint)
 {
 	if (GIsPlayInEditorWorld)
@@ -358,8 +403,8 @@ void ACameraSpline::SetCameraIndexAtPosition(const FVector& Position)
 	FVector DirRef1ToPoint = Position - SplinePoints[CameraSplineIndex + 1].Position;
 	DirRef1ToPoint.Normalize();
 
-	double Dot0 = FVector::DotProduct( SplinePoints[CameraSplineIndex].DirectionFwrd, DirRef0ToPoint);
-	double Dot1 = FVector::DotProduct( -SplinePoints[CameraSplineIndex + 1].DirectionFwrd, DirRef1ToPoint);
+	double Dot0 = FVector::DotProduct(SplinePoints[CameraSplineIndex].DirectionFwrd, DirRef0ToPoint);
+	double Dot1 = FVector::DotProduct(-SplinePoints[CameraSplineIndex + 1].DirectionFwrd, DirRef1ToPoint);
 
 	if (Dot0 < 0.00f)
 	{
