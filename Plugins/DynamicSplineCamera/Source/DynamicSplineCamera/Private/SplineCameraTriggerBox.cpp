@@ -60,7 +60,7 @@ void ASplineCameraTriggerBox::OnComponentBeginOverlap(UPrimitiveComponent* Overl
                                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                                                       bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OverlapFilter.Contains(OtherActor->StaticClass()))
+	if (OverlapFilter.Contains(OtherActor->GetClass()))
 	{
 		// Nos lo guardamos y comprobamos el momento en el que esté el centro dentro
 		ReferenceActor = OtherActor;
