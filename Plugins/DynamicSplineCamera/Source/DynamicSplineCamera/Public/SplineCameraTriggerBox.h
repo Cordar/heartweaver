@@ -6,6 +6,7 @@
 #include "Engine/TriggerBox.h"
 #include "SplineCameraTriggerBox.generated.h"
 
+class UBoxComponent;
 class ACameraSpline;
 /**
  * 
@@ -17,6 +18,9 @@ class DYNAMICSPLINECAMERA_API ASplineCameraTriggerBox : public ATriggerBox
 
 	ASplineCameraTriggerBox();
 
+	UPROPERTY()
+	UBoxComponent* BoxComponent;
+
 	bool bCheckForReferencePosition = false;
 
 public:
@@ -25,7 +29,10 @@ public:
 	ACameraSpline* CameraSpline;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Spline Camera")
-	TArray<UClass*> OverlapFilter; 
+	TArray<UClass*> OverlapFilter;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Spline Camera")
+	bool bActivateOnlyIfActorCenterIsInsideBox = true;
 
 protected:
 

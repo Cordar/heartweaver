@@ -16,6 +16,8 @@ ASplineCameraTriggerBox::ASplineCameraTriggerBox()
 void ASplineCameraTriggerBox::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	BoxComponent = Cast<UBoxComponent>(GetCollisionComponent());
 
 	GetCollisionComponent()->OnComponentBeginOverlap.
 	                         AddDynamic(this, &ASplineCameraTriggerBox::OnComponentBeginOverlap);
@@ -30,13 +32,9 @@ void ASplineCameraTriggerBox::Tick(float DeltaSeconds)
 
 	if (bCheckForReferencePosition && ReferenceActor)
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("Tick 1"));
-		if (IsPointInsideBox(ReferenceActor->GetActorLocation()))
+		if (IsPointInsideBox(ReferenceActor->GetActorLocation()) || !bActivateOnlyIfActorCenterIsInsideBox)
 		{
-			// UE_LOG(LogTemp, Warning, TEXT("Tick 2"));
-
 			// Activamos la cámara
-
 			UWorld* World = GetWorld();
 
 			if (World)
@@ -46,7 +44,6 @@ void ASplineCameraTriggerBox::Tick(float DeltaSeconds)
 					AActor* Actor = *It;
 					if (ASplineCameraActor* CameraActor = Cast<ASplineCameraActor>(Actor))
 					{
-						// UE_LOG(LogTemp, Warning, TEXT("Tick 4"));
 						CameraActor->SetActiveSpline(CameraSpline);
 						break;
 					}
@@ -63,12 +60,10 @@ void ASplineCameraTriggerBox::OnComponentBeginOverlap(UPrimitiveComponent* Overl
                                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                                                       bool bFromSweep, const FHitResult& SweepResult)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("Begin overlap 1"));
 	if (OverlapFilter.Contains(OtherActor->StaticClass()))
 	{
 		// Nos lo guardamos y comprobamos el momento en el que esté el centro dentro
 		ReferenceActor = OtherActor;
-		// UE_LOG(LogTemp, Warning, TEXT("Begin overlap 2"));
 
 		bCheckForReferencePosition = true;
 		SetActorTickEnabled(true);
@@ -82,12 +77,12 @@ void ASplineCameraTriggerBox::OnComponentEndOverlap(UPrimitiveComponent* Overlap
 	{
 		ReferenceActor = nullptr;
 		bCheckForReferencePosition = false;
+		SetActorTickEnabled(false);
 	}
 }
 
 bool ASplineCameraTriggerBox::IsPointInsideBox(const FVector& Point) const
 {
-	UBoxComponent* BoxComponent = Cast<UBoxComponent>(GetCollisionComponent());
 	if (BoxComponent)
 	{
 		FVector LocalPoint = BoxComponent->GetComponentTransform().InverseTransformPosition(Point);
