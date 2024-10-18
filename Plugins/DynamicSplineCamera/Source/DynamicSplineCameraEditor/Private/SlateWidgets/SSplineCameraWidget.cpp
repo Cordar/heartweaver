@@ -588,31 +588,64 @@ void SSplineCameraWidget::OnActorSelected(const TArray<UObject*>& SelectedActors
 
 void SSplineCameraWidget::OnActorDeleted(AActor* DeletedActor)
 {
-	if (DeletedActor == SelectedCameraSpline)
+	if (DeletedActor->IsA(ACameraSpline::StaticClass()))
 	{
-		if (SelectedCameraSpline->ReferencePoints.Num() > 0)
+		if (ACameraSpline* DeletedCameraSpline = Cast<ACameraSpline>(DeletedActor))
 		{
-			EAppReturnType::Type confirmedResult = DynamicSplineCameraDebugUtils::ShowMsgDialog(
-				EAppMsgType::YesNo, TEXT("Delete also reference points?"));
-			if (confirmedResult == EAppReturnType::Yes)
+			if (DeletedCameraSpline->ReferencePoints.Num() > 0)
 			{
-				for (int i = 0; i < SelectedCameraSpline->ReferencePoints.Num(); i++)
+				EAppReturnType::Type confirmedResult = DynamicSplineCameraDebugUtils::ShowMsgDialog(
+					EAppMsgType::YesNo, TEXT("Delete also reference points?"));
+				if (confirmedResult == EAppReturnType::Yes)
 				{
-					if (SelectedCameraSpline->ReferencePoints[i].PositionActor && !SelectedCameraSpline->ReferencePoints
-						[i].PositionActor->IsActorBeingDestroyed())
+					// Maybe change this back to for loop so we don't rearrange array after deletion
+					for (int i = 0; i < DeletedCameraSpline->ReferencePoints.Num(); i++)
 					{
-						SelectedCameraSpline->ReferencePoints[i].PositionActor->Destroy();
+						if (DeletedCameraSpline->ReferencePoints[i].PositionActor && !DeletedCameraSpline->
+							ReferencePoints[i].PositionActor->IsActorBeingDestroyed())
+						{
+							DeletedCameraSpline->ReferencePoints[i].PositionActor->Destroy();
+
+							// When we delete a Reference point, the reference point autoremoves itself from the array
+							i--;
+						}
 					}
 				}
 			}
-		}
 
-		SelectedCameraSpline = nullptr;
-		SelectedReferencePointActor = nullptr;
-		RefreshWidgetData();
+			if (DeletedCameraSpline == SelectedCameraSpline)
+			{
+				SelectedCameraSpline = nullptr;
+				SelectedReferencePointActor = nullptr;
+			}
+			RefreshWidgetData();
+		}
 	}
 	else if (DeletedActor->IsA(ACameraSplinePointReference::StaticClass()))
 	{
+		if (ACameraSplinePointReference* PointReference = Cast<ACameraSplinePointReference>(DeletedActor))
+		{
+			if (PointReference->CameraSpline == SelectedCameraSpline && SelectedCameraSpline->ReferencePoints.Num() > 0)
+			{
+				int SelectedIndex = -1;
+				for (int i = PointReference->ReferenceIndex - 1; i >= 0; i--)
+				{
+					if (i < SelectedCameraSpline->ReferencePoints.Num() && SelectedCameraSpline->ReferencePoints[i].
+						PositionActor
+						&& !SelectedCameraSpline->ReferencePoints[i].PositionActor->IsActorBeingDestroyed())
+					{
+						SelectedIndex = i;
+						break;
+					}
+				}
+				if (SelectedIndex >= 0)
+				{
+					EditorActorSubsystem->SelectNothing();
+					EditorActorSubsystem->SetActorSelectionState(
+						SelectedCameraSpline->ReferencePoints[SelectedIndex].PositionActor, true);
+				}
+			}
+		}
 		RefreshWidgetData();
 	}
 }
@@ -694,7 +727,6 @@ void SSplineCameraWidget::OnCreateReferencePointReleased()
 
 		EditorActorSubsystem->SelectNothing();
 		EditorActorSubsystem->SetActorSelectionState(CreatedReferencePointActor, true);
-
 
 		CreatedReferencePointActor = nullptr;
 	}
@@ -876,6 +908,7 @@ void SSplineCameraWidget::OnPreviewSliderValueChanged(float value)
 
 void SSplineCameraWidget::RefreshWidgetData()
 {
+	// DynamicSplineCameraDebugUtils::Print(TEXT("RefreshWidgetData"), FColor::Orange);
 	if (SelectedCameraSpline && SelectedCameraSpline->IsValidLowLevelFast() && !SelectedCameraSpline->
 		IsActorBeingDestroyed())
 	{

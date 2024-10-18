@@ -298,11 +298,11 @@ void ACameraSpline::UpdateReferencePoints()
 
 void ACameraSpline::CreateSplinePoints(int Subdivision)
 {
+	SplinePoints.Empty();
 	if (ReferencePoints.Num() < 2) return;
 
 	float tIncrement = 1.0f / Subdivision;
 
-	SplinePoints.Empty();
 	SplinePoints.Reserve(ReferencePoints.Num() * Subdivision + 2);
 
 	// Metemos el primer punto
