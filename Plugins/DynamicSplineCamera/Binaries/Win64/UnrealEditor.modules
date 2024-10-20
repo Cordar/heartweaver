@@ -1,0 +1,8 @@
+{
+	"BuildId": "33043543",
+	"Modules": 
+	{
+		"DynamicSplineCamera": "UnrealEditor-DynamicSplineCamera.dll",
+		"DynamicSplineCameraEditor": "UnrealEditor-DynamicSplineCameraEditor.dll"
+	}
+}

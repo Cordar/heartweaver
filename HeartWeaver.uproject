@@ -76,6 +76,10 @@
 		{
 			"Name": "StudioTelemetry",
 			"Enabled": false
+		},
+		{
+			"Name": "DynamicSplineCamera",
+			"Enabled": true
 		}
 	]
 }
