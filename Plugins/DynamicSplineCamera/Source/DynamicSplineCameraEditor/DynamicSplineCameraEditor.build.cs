@@ -8,6 +8,7 @@ public class DynamicSplineCameraEditor : ModuleRules
 		
 		PublicIncludePaths.AddRange(
 			new string[] {
+				System.IO.Path.GetFullPath(Target.RelativeEnginePath) +	"/Source/Editor/Blutility/Private"
 				// ... add public include paths required here ...
 			}
 		);
@@ -23,7 +24,7 @@ public class DynamicSplineCameraEditor : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", "Blutility",
 				// ... add other public dependencies that you statically link with here ...
 			}
 		);
@@ -41,7 +42,12 @@ public class DynamicSplineCameraEditor : ModuleRules
 				"Projects", 
 				"DynamicSplineCamera", 
 				"PlacementMode",
-				"InputCore"
+				"InputCore",
+				"Projects", 
+				"UMG",
+				"UMGEditor",
+				"ToolMenus",
+				"EditorScriptingUtilities"
 				// ... add private dependencies that you statically link with here ...	
 			}
 		);

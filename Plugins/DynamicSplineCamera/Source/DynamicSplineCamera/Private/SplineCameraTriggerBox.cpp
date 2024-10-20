@@ -37,6 +37,12 @@ void ASplineCameraTriggerBox::Tick(float DeltaSeconds)
 			// Activamos la cámara
 			UWorld* World = GetWorld();
 
+			if (CachedCameraActor)
+			{
+				CachedCameraActor->SetActiveSpline(CameraSpline);
+				return;
+			}
+
 			if (World)
 			{
 				for (TActorIterator<AActor> It(World, ASplineCameraActor::StaticClass()); It; ++It)
@@ -44,14 +50,15 @@ void ASplineCameraTriggerBox::Tick(float DeltaSeconds)
 					AActor* Actor = *It;
 					if (ASplineCameraActor* CameraActor = Cast<ASplineCameraActor>(Actor))
 					{
-						CameraActor->SetActiveSpline(CameraSpline);
+						CachedCameraActor = CameraActor;
+						CachedCameraActor->SetActiveSpline(CameraSpline);
 						break;
 					}
 				}
 			}
 
-			bCheckForReferencePosition = false;
-			SetActorTickEnabled(false);
+			// bCheckForReferencePosition = false;
+			// SetActorTickEnabled(false);
 		}
 	}
 }
@@ -78,6 +85,7 @@ void ASplineCameraTriggerBox::OnComponentEndOverlap(UPrimitiveComponent* Overlap
 		ReferenceActor = nullptr;
 		bCheckForReferencePosition = false;
 		SetActorTickEnabled(false);
+		CachedCameraActor = nullptr;
 	}
 }
 

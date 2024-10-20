@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Widgets/SCompoundWidget.h"
+#include "Widgets/SplineCameraWidget.h"
 
 class SSlider;
 struct FReferencePoint;
@@ -10,16 +11,16 @@ class ACameraSpline;
 class ACameraSplinePointReference;
 class ASplineCameraActor;
 class ASplineCameraTriggerBox;
-
-UENUM(BlueprintType)
-enum ESplineCameraWidgetTickState : uint8
-{
-	None,
-	CreatingReferencePoint,
-	CreatingCameraSpline,
-	CreatingSplineCameraActor,
-	CreatingSplineCameraTriggerBox
-};
+//
+// UENUM(BlueprintType)
+// enum ESplineCameraWidgetTickState : uint8
+// {
+// 	None,
+// 	CreatingReferencePoint,
+// 	CreatingCameraSpline,
+// 	CreatingSplineCameraActor,
+// 	CreatingSplineCameraTriggerBox
+// };
 
 /**
  * 

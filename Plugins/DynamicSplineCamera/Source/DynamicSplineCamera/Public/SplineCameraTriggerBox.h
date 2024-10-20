@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class ACameraSpline;
+class ASplineCameraActor;
 /**
  * 
  */
@@ -21,17 +22,20 @@ class DYNAMICSPLINECAMERA_API ASplineCameraTriggerBox : public ATriggerBox
 	UPROPERTY()
 	UBoxComponent* BoxComponent;
 
+	UPROPERTY()
+	ASplineCameraActor* CachedCameraActor;
+
 	bool bCheckForReferencePosition = false;
 
 public:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Spline Camera")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
 	ACameraSpline* CameraSpline;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Spline Camera")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
 	TArray<UClass*> OverlapFilter;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Spline Camera")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
 	bool bActivateOnlyIfActorCenterIsInsideBox = true;
 
 protected:

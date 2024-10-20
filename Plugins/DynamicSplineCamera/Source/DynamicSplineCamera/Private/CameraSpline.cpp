@@ -3,6 +3,7 @@
 #include "CameraSpline.h"
 
 #include "CameraSplinePointReference.h"
+#include "Components/BillboardComponent.h"
 #include "Components/LineBatchComponent.h"
 
 // Sets default values
@@ -14,11 +15,15 @@ ACameraSpline::ACameraSpline()
 	// Root->SetupAttachment(GetRootComponent());
 	SetRootComponent(Root);
 
-	ReferencePointLineBatchComponent = CreateDefaultSubobject<ULineBatchComponent>(TEXT("Reference Point Line Batch"));
-	ReferencePointLineBatchComponent->SetupAttachment(GetRootComponent());
+	LineBatchComponent = CreateDefaultSubobject<ULineBatchComponent>(TEXT("Camera Line Batch"));
+	LineBatchComponent->SetupAttachment(GetRootComponent());
 
-	CameraLineBatchComponent = CreateDefaultSubobject<ULineBatchComponent>(TEXT("Camera Line Batch"));
-	CameraLineBatchComponent->SetupAttachment(GetRootComponent());
+#if WITH_EDITORONLY_DATA
+
+	BillboardComponent = CreateDefaultSubobject<UBillboardComponent>(TEXT("Billboard"));
+	BillboardComponent->SetupAttachment(GetRootComponent());
+
+#endif
 }
 
 #if WITH_EDITOR
@@ -121,7 +126,6 @@ void ACameraSpline::UpdateReferencePointsData()
 	DrawDebugLines();
 }
 
-#if WITH_EDITOR
 void ACameraSpline::UpdateIndexFromNewReference(FVector Position)
 {
 	float ClosestDistance = 9999999999999.0f;
@@ -166,6 +170,8 @@ void ACameraSpline::UpdateIndexFromNewReference(FVector Position)
 
 	CameraSplineIndex = SelectedIndex;
 }
+
+#if WITH_EDITOR
 
 void ACameraSpline::ReestructurateArrayFromDuplicatedReferencePointActor(ACameraSplinePointReference* DuplicatedPoint)
 {
@@ -236,48 +242,39 @@ void ACameraSpline::ReestructurateArrayFromDuplicatedReferencePointActor(ACamera
 void ACameraSpline::DrawDebugLines()
 {
 	FlushPersistentDebugLines(GetWorld());
-	ReferencePointLineBatchComponent->Flush();
-	CameraLineBatchComponent->Flush();
+	LineBatchComponent->Flush();
 
 	for (int i = 0; i < SplinePoints.Num() - 1; i++)
 	{
-		// FColor RandColor = FColor::MakeRandomColor();
-		// DrawDebugSphere(GetWorld(), SplinePoints[i].Position, 1.0f, 3, FColor::Yellow, true);
-		// DrawDebugSphere(GetWorld(), SplinePoints[i].CameraPosition, 3.0f, 3, FColor::Green, true);
-		// if (i < SplinePoints.Num() - 1)
+		if (bDrawReferencePointsLine)
 		{
-			ReferencePointLineBatchComponent->DrawLine(SplinePoints[i].Position,
-			                                           SplinePoints[i + 1].Position,
-			                                           FLinearColor::Yellow,
-			                                           0, 1, 999999999.9f);
+			LineBatchComponent->DrawLine(SplinePoints[i].Position,
+			                             SplinePoints[i + 1].Position,
+			                             FLinearColor::Yellow,
+			                             0, 1.5f, 999999999.9f);
+		}
 
-			ReferencePointLineBatchComponent->DrawLine(SplinePoints[i].CameraPosition,
-			                                           SplinePoints[i + 1].CameraPosition,
-			                                           FLinearColor::Green,
-			                                           0, 1, 999999999.9f);
-			// DrawDebugLine(GetWorld(), SplinePoints[i].Position, SplinePoints[i + 1].Position, RandColor, true);
-			// DrawDebugLine(GetWorld(), SplinePoints[i].CameraPosition, SplinePoints[i + 1].CameraPosition, RandColor, true);
+		if (bDrawCameraLine)
+		{
+			LineBatchComponent->DrawLine(SplinePoints[i].CameraPosition,
+			                             SplinePoints[i + 1].CameraPosition,
+			                             FLinearColor::Green,
+			                             0, 1.5f, 999999999.9f);
 		}
 	}
 
-	/*if (ReferencePoints.Num() > 1)
+	if (bDrawCameraLook)
 	{
-		for (int i = 0; i < ReferencePoints.Num() - 1; i++)
+		for (int i = 0; i < ReferencePoints.Num(); i++)
 		{
-			if (ReferencePoints[i].PositionActor && ReferencePoints[i + 1].PositionActor)
-			{
-				ReferencePointLineBatchComponent->DrawLine(ReferencePoints[i].PositionActor->GetActorLocation(),
-				                                           ReferencePoints[i + 1].PositionActor->GetActorLocation(),
-				                                           FLinearColor::Yellow,
-				                                           0, 1, 999999999.9f);
-
-				CameraLineBatchComponent->DrawLine(ReferencePoints[i].CameraPosition,
-				                                   ReferencePoints[i + 1].CameraPosition,
-				                                   FLinearColor::Green,
-				                                   0, 1, 999999999.9f);
-			}
+			LineBatchComponent->DrawLine(ReferencePoints[i].CameraPosition,
+			                             ReferencePoints[i].CameraPosition + (ReferencePoints[i].CameraRotation.Vector()
+				                             *
+				                             70.0f),
+			                             FLinearColor::Blue,
+			                             0, 1, 999999999.9f);
 		}
-	}*/
+	}
 }
 
 void ACameraSpline::UpdateReferencePoints()

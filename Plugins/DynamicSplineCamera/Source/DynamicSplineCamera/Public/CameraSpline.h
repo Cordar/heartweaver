@@ -17,7 +17,7 @@
 
 class ACameraSplinePointReference;
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Blueprintable, Category = "Camera Spline")
 struct FReferencePoint
 {
 	GENERATED_USTRUCT_BODY()
@@ -54,7 +54,7 @@ struct FReferencePoint
 	FRotator CameraRotation = FRotator();
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Blueprintable, Category = "Camera Spline")
 struct FDynamicSplinePoint
 {
 	GENERATED_USTRUCT_BODY()
@@ -125,18 +125,16 @@ public:
 	// Sets default values for this actor's properties
 	ACameraSpline();
 
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera Spline")
-	// UPROPERTY()
-	// AActor* Reference;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	bool bDrawReferencePointsLine = true;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	bool bDrawCameraLine = true;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	bool bDrawCameraLook = false;
 
-	// UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera Spline")
-	// ACameraActor* Camera;
-
-	// UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera Spline")
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = "Dynamic Spline Camera")
 	TArray<FReferencePoint> ReferencePoints;
 
-	// UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera Spline")
 	UPROPERTY()
 	TArray<FDynamicSplinePoint> SplinePoints;
 
@@ -144,10 +142,15 @@ public:
 	USceneComponent* Root;
 
 	UPROPERTY()
-	ULineBatchComponent* ReferencePointLineBatchComponent;
+	ULineBatchComponent* LineBatchComponent;
 
-	UPROPERTY()
-	ULineBatchComponent* CameraLineBatchComponent;
+#if WITH_EDITORONLY_DATA
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Dynamic Spline Camera")
+	UBillboardComponent* BillboardComponent;
+	
+#endif
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -178,15 +181,15 @@ public:
 
 	FVector GetClosestPointBetweenSplinePoints(FVector Position, int PointIndex);
 	float GetDistanceFromCurrentSplinePoint(const FVector& Position);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Dynamic Spline Camera")
 	void DrawDebugLines();
 
 	void UpdateReferencePointsData();
 	int GetCurrentCameraIndex() const { return CameraSplineIndex; }
 
-	void UpdateIndexFromNewReference(FVector Position);
 
+	void UpdateIndexFromNewReference(FVector Position);
 #if WITH_EDITOR
 	void ReestructurateArrayFromDuplicatedReferencePointActor(ACameraSplinePointReference* DuplicatedPoint);
 #endif

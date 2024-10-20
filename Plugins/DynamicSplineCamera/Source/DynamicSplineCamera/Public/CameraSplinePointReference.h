@@ -13,11 +13,11 @@ class DYNAMICSPLINECAMERA_API ACameraSplinePointReference : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
 	USceneComponent* Root;
 	
 #if WITH_EDITORONLY_DATA
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
 	UBillboardComponent* Billboard;
 #endif
 public:	
@@ -28,7 +28,7 @@ public:
 	UPROPERTY()
 	ACameraSpline* CameraSpline;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = "Dynamic Spline Camera")
 	int ReferenceIndex = -1;
 protected:
 

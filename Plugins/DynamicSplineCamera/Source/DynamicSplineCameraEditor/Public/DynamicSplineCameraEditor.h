@@ -27,9 +27,12 @@ private:
 	TSharedRef<SDockTab> OnSpawnSplineCameraTab(const FSpawnTabArgs& SpawnTabArgs);
 	bool CanSpawnSplineCameraTab(const FSpawnTabArgs& SpawnTabArgs);
 
-
 	void OnSplineCameraTabClosed(TSharedRef<SDockTab> TabToClose);
 
+	// Codigo nuevo UMG --->
+	void RegisterSplineCameraWidgetUMG();
+	void RegisterSplineCameraWidgetObject();
+	void OpenSplineCameraWidget();
 	
 	TSharedPtr<FSlateStyleSet> StyleSet;
 };
