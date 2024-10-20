@@ -269,14 +269,14 @@ void USplineCameraWidget::CreateReferencePointActor()
 		}
 		else
 		{
-			DynamicSplineCameraDebugUtils::Print(
-				TEXT("Error al intentar hacer casting al punto de referencia"), FColor::Red);
+			// DynamicSplineCameraDebugUtils::Print(
+			// 	TEXT("Error al intentar hacer casting al punto de referencia"), FColor::Red);
 		}
 	}
 	else
 	{
-		DynamicSplineCameraDebugUtils::Print(
-			TEXT("Error al intentar spawnear el punto de referencia"), FColor::Red);
+		// DynamicSplineCameraDebugUtils::Print(
+		// 	TEXT("Error al intentar spawnear el punto de referencia"), FColor::Red);
 	}
 }
 
@@ -290,14 +290,14 @@ void USplineCameraWidget::CreateCameraSpline()
 		}
 		else
 		{
-			DynamicSplineCameraDebugUtils::Print(
-				TEXT("Error al intentar hacer casting al CameraSpline"), FColor::Red);
+			// DynamicSplineCameraDebugUtils::Print(
+			// 	TEXT("Error al intentar hacer casting al CameraSpline"), FColor::Red);
 		}
 	}
 	else
 	{
-		DynamicSplineCameraDebugUtils::Print(
-			TEXT("Error al intentar spawnear el CameraSpline"), FColor::Red);
+		// DynamicSplineCameraDebugUtils::Print(
+		// 	TEXT("Error al intentar spawnear el CameraSpline"), FColor::Red);
 	}
 }
 
@@ -312,14 +312,14 @@ void USplineCameraWidget::CreateSplineCameraActor()
 		}
 		else
 		{
-			DynamicSplineCameraDebugUtils::Print(
-				TEXT("Error al intentar hacer casting al SplineCameraActor"), FColor::Red);
+			// DynamicSplineCameraDebugUtils::Print(
+			// 	TEXT("Error al intentar hacer casting al SplineCameraActor"), FColor::Red);
 		}
 	}
 	else
 	{
-		DynamicSplineCameraDebugUtils::Print(
-			TEXT("Error al intentar spawnear el SplineCameraActor"), FColor::Red);
+		// DynamicSplineCameraDebugUtils::Print(
+		// 	TEXT("Error al intentar spawnear el SplineCameraActor"), FColor::Red);
 	}
 }
 
@@ -334,14 +334,14 @@ void USplineCameraWidget::CreateSplineCameraTriggerBox()
 		}
 		else
 		{
-			DynamicSplineCameraDebugUtils::Print(
-				TEXT("Error al intentar hacer casting al SplineCameraTriggerBox"), FColor::Red);
+			// DynamicSplineCameraDebugUtils::Print(
+			// 	TEXT("Error al intentar hacer casting al SplineCameraTriggerBox"), FColor::Red);
 		}
 	}
 	else
 	{
-		DynamicSplineCameraDebugUtils::Print(
-			TEXT("Error al intentar spawnear el SplineCameraTriggerBox"), FColor::Red);
+		// DynamicSplineCameraDebugUtils::Print(
+		// 	TEXT("Error al intentar spawnear el SplineCameraTriggerBox"), FColor::Red);
 	}
 }
 

@@ -316,8 +316,8 @@ void ACameraSpline::CreateSplinePoints(int Subdivision)
 		FVector Dir1 = Point - PreviousPoint;
 		FVector Dir2 = Point - NextPoint;
 
-		FVector NewPrevPoint = Point - Dir1 * (CurveAmmount * 1.0f);
-		FVector NewNextPoint = Point - Dir2 * (CurveAmmount * 1.0f);
+		FVector NewPrevPoint = Point - Dir1 * (CurveAmmount * 1.0f * 0.5f);
+		FVector NewNextPoint = Point - Dir2 * (CurveAmmount * 1.0f * 0.5f);
 
 		for (int a = 0; a < Subdivision; a++)
 		{
@@ -326,8 +326,7 @@ void ACameraSpline::CreateSplinePoints(int Subdivision)
 
 			if (t <= 0.5f)
 			{
-				float LerpValue = FMath::Lerp(1 - CurveAmmount, 1.0f, (t * 2.0f))
-					/*(CurveAmmount) + (1 - CurveAmmount) * (t * 2.0f)*/;
+				float LerpValue = FMath::Lerp(1 - CurveAmmount  * 0.5f, 1.0f, (t * 2.0f));
 				FVector CamPosition = FMath::Lerp(ReferencePoints[i - 1].CameraPosition,
 				                                  ReferencePoints[i].CameraPosition, LerpValue);
 				FRotator CamRotation = FMath::Lerp(ReferencePoints[i - 1].CameraRotation,
@@ -338,8 +337,7 @@ void ACameraSpline::CreateSplinePoints(int Subdivision)
 			}
 			else
 			{
-				float LerpValue = FMath::Lerp(0, CurveAmmount, (t - 0.5f) * 2.0f)
-					/*(CurveAmmount) + (1 - CurveAmmount) * (t * 2.0f)*/;
+				float LerpValue = FMath::Lerp(0, CurveAmmount * 0.5f, (t - 0.5f) * 2.0f);
 				FVector CamPosition = FMath::Lerp(ReferencePoints[i].CameraPosition,
 				                                  ReferencePoints[i + 1].CameraPosition, LerpValue);
 				FRotator CamRotation = FMath::Lerp(ReferencePoints[i].CameraRotation,

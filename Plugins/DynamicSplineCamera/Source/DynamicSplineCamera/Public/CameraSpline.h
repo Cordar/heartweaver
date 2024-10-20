@@ -112,10 +112,10 @@ class DYNAMICSPLINECAMERA_API ACameraSpline : public AActor
 
 	int CameraSplineIndex = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera", meta = (ToolTip = "Ammount of curvature in the spline point, recommended left at default"), meta = (ClampMax = 1.0f, ClampMin = 0.00f))
 	float CurveAmmount = 0.2f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category = "Dynamic Spline Camera", meta = (ToolTip = "Ammount of subdivions on the curve, recommended left at default"), meta = (ClampMax = 30, ClampMin = 2))
 	int CurveSubdivision = 10;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
@@ -125,11 +125,11 @@ public:
 	// Sets default values for this actor's properties
 	ACameraSpline();
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera Debug")
 	bool bDrawReferencePointsLine = true;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera Debug")
 	bool bDrawCameraLine = true;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dynamic Spline Camera Debug")
 	bool bDrawCameraLook = false;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Dynamic Spline Camera")

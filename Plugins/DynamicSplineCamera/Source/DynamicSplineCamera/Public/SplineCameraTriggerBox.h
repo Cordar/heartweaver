@@ -29,13 +29,13 @@ class DYNAMICSPLINECAMERA_API ASplineCameraTriggerBox : public ATriggerBox
 
 public:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box", meta = (ToolTip = "Spline that will get activated when an actor contained in OverlapFilter enter the box"))
 	ACameraSpline* CameraSpline;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box", meta = (ToolTip = "Whenever an actor begins overlap with the box, it will check if it's contained within this filter"))
 	TArray<UClass*> OverlapFilter;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera Trigger Box", meta = (ToolTip = "If true, the spline will only activate when the actor center is inside the box; On begin overlap otherwise"))
 	bool bActivateOnlyIfActorCenterIsInsideBox = true;
 
 protected:

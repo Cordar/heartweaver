@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SlateWidgets/SSplineCameraWidget.h"
-
 DECLARE_LOG_CATEGORY_EXTERN(DynamicSplineCameraEditor, All, All);
 
 class FDynamicSplineCameraEditor : public IModuleInterface
@@ -16,20 +14,9 @@ class FDynamicSplineCameraEditor : public IModuleInterface
 
 private:
 
-	TSharedPtr<class ACameraSpline> SelectedCameraSpline;
-	TSharedRef<class SSplineCameraWidget> CreatedWidget = SNew(SSplineCameraWidget);
-
-	void RegisterEditorIntoCategory();
-	
 	void RegisterSplineCameraTab();
 	TSharedPtr<SDockTab> ConstructedDockTab;
 
-	TSharedRef<SDockTab> OnSpawnSplineCameraTab(const FSpawnTabArgs& SpawnTabArgs);
-	bool CanSpawnSplineCameraTab(const FSpawnTabArgs& SpawnTabArgs);
-
-	void OnSplineCameraTabClosed(TSharedRef<SDockTab> TabToClose);
-
-	// Codigo nuevo UMG --->
 	void RegisterSplineCameraWidgetUMG();
 	void RegisterSplineCameraWidgetObject();
 	void OpenSplineCameraWidget();
