@@ -171,13 +171,14 @@ protected:
 #pragma endregion
 
 	void SetCameraIndexAtPosition(const FVector& Position);
+	void SetCameraIndexAtClosestPointToPosition(const FVector& Position);
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// UFUNCTION(BlueprintCallable)
-	void GetCameraTransformAtPosition(const FVector& Point, FVector& CameraLocation, FRotator& CameraRotation);
+	void SetCameraTransformAtPosition(const FVector& Point, FVector& CameraLocation, FRotator& CameraRotation, bool bUseClosestLineToReference);
 
 	FVector GetClosestPointBetweenSplinePoints(FVector Position, int PointIndex);
 	float GetDistanceFromCurrentSplinePoint(const FVector& Position);

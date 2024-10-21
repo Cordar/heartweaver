@@ -17,8 +17,9 @@ void ASplineCameraActor::SetCameraPosition(float DeltaSeconds)
 	{
 		FVector CameraPosition;
 		FRotator CameraRotation;
-		ActiveCameraSpline->GetCameraTransformAtPosition(SplineReference->GetActorLocation(), CameraPosition,
-		                                                 CameraRotation);
+		ActiveCameraSpline->SetCameraTransformAtPosition(SplineReference->GetActorLocation(), CameraPosition,
+		                                                 CameraRotation, bUseClosestLineToReference);
+		
 		int SplineCameraIndex = ActiveCameraSpline->GetCurrentCameraIndex();
 		float CameraSpeedLerpValue = FMath::Clamp(DeltaSeconds * CameraSpeed, 0.0f, 1.0f);
 

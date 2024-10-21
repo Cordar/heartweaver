@@ -33,6 +33,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera", meta = (ToolTip = "Camera Speed"), meta=(ClampMin = 0.0f))
 	float CameraSpeed = 10.0f;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera", meta = (ToolTip = "If true, the camera will be set at the closest position to the spline"))
+	bool bUseClosestLineToReference = false;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Dynamic Spline Camera", meta = (ToolTip = "If true, the camera will be force to follow the spline and won't be able to interpolate position out of the spline"))
 	bool bForceFollowOnSpline = false;
 

@@ -75,10 +75,17 @@ void ACameraSpline::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ACameraSpline::GetCameraTransformAtPosition(const FVector& Point, FVector& CameraLocation,
-                                                 FRotator& CameraRotation)
+void ACameraSpline::SetCameraTransformAtPosition(const FVector& Point, FVector& CameraLocation,
+                                                 FRotator& CameraRotation, bool bUseClosestLineToReference)
 {
-	SetCameraIndexAtPosition(Point);
+	if (bUseClosestLineToReference)
+	{
+		SetCameraIndexAtClosestPointToPosition(Point);
+	}
+	else
+	{
+		SetCameraIndexAtPosition(Point);
+	}
 
 	const FVector Pos = GetClosestPointBetweenSplinePoints(Point, CameraSplineIndex);
 
@@ -326,7 +333,7 @@ void ACameraSpline::CreateSplinePoints(int Subdivision)
 
 			if (t <= 0.5f)
 			{
-				float LerpValue = FMath::Lerp(1 - CurveAmmount  * 0.5f, 1.0f, (t * 2.0f));
+				float LerpValue = FMath::Lerp(1 - CurveAmmount * 0.5f, 1.0f, (t * 2.0f));
 				FVector CamPosition = FMath::Lerp(ReferencePoints[i - 1].CameraPosition,
 				                                  ReferencePoints[i].CameraPosition, LerpValue);
 				FRotator CamRotation = FMath::Lerp(ReferencePoints[i - 1].CameraRotation,
@@ -428,46 +435,52 @@ void ACameraSpline::SetCameraIndexAtPosition(const FVector& Position)
 			// No podemos hacer nada más, este es el punto
 		}
 	}
-	else
+}
+
+void ACameraSpline::SetCameraIndexAtClosestPointToPosition(const FVector& Position)
+{
+	// Pasos:
+	// 1- Iteramos por todos los puntos de referencia y detectamos el trayecto que esté más cerca del jugador
+	// 2- Teniendo el trayecto, iteramos no por los puntos de referencia sino por los de la spline formada
+	// 3- El punto más cercano al trayecto determinará nuestro índice
+
+	float ClosestDistance = INFINITY;
+	int SelectedReferenceIndex = 0;
+	for (int i = 0; i < ReferencePoints.Num() - 1; i++)
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("ESTAMOS el plano correspondiente"));
+		FVector Pos0 = ReferencePoints[i].PositionActor->GetActorLocation();
+		FVector Pos1 = ReferencePoints[i + 1].PositionActor->GetActorLocation();
+
+		FVector ClosestPoint = FMath::ClosestPointOnSegment(Position, Pos0, Pos1);
+		float Distance = FVector::Dist(ClosestPoint, Position);
+		if (Distance < ClosestDistance)
+		{
+			ClosestDistance = Distance;
+			SelectedReferenceIndex = i;
+		}
 	}
 
-	// if (FVector::DotProduct(SplinePoints[CameraIndex].DirectionFwrd, RefPoint0) < 0 || FVector::DotProduct(
-	// 	SplinePoints[CameraIndex + 1].DirectionBckrd, RefPoint1) < 0)
-	// if (FVector::DotProduct(SplinePoints[CameraIndex].DirectionFwrd, DirRef0ToPoint) < 0 || FVector::DotProduct(SplinePoints[CameraIndex + 1].DirectionBckrd, DirRef1ToPoint) < 0)
-	// {
-	// 	UE_LOG(LogTemp, Warning, TEXT("No estamos en el plano correspondiente"));
-	// 	// Estamos fuera de los planos, hacemos cambio
-	// 	if (FVector::Distance(SplinePoints[CameraIndex].Position, Position) < FVector::Distance(
-	// 		SplinePoints[CameraIndex + 1].Position, Position))
-	// 	{
-	// 		// Decrementamos
-	// 		if (CameraIndex > 0)
-	// 		{
-	// 			CameraIndex--;
-	// 			SetCameraIndexAtPosition(Position);
-	// 		}
-	// 		else
-	// 		{
-	// 			// No podemos hacer nada más, este es el punto
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		if (CameraIndex < SplinePoints.Num() - 2)
-	// 		{
-	// 			CameraIndex++;
-	// 			SetCameraIndexAtPosition(Position);
-	// 		}
-	// 		else
-	// 		{
-	// 			// No podemos hacer nada más, este es el punto
-	// 		}
-	// 	}
-	// }
-	// else
-	// {
-	// 	UE_LOG(LogTemp, Warning, TEXT("ESTAMOS el plano correspondiente"));
-	// }
+	int InitialSplinePointIndex = SelectedReferenceIndex == 0
+		                              ? 0
+		                              : ((CurveSubdivision / 2) + ((SelectedReferenceIndex - 1) * CurveSubdivision));
+	int MaxSplinePointIndex = FMath::Min(SplinePoints.Num() - 1, InitialSplinePointIndex + CurveSubdivision);
+
+
+	ClosestDistance = INFINITY;
+	SelectedReferenceIndex = 0;
+	for (int i = InitialSplinePointIndex; i < MaxSplinePointIndex; i++)
+	{
+		FVector Pos0 = SplinePoints[i].Position;
+		FVector Pos1 = SplinePoints[i + 1].Position;
+
+		FVector ClosestPoint = FMath::ClosestPointOnSegment(Position, Pos0, Pos1);
+		float Distance = FVector::Dist(ClosestPoint, Position);
+		if (Distance < ClosestDistance)
+		{
+			ClosestDistance = Distance;
+			SelectedReferenceIndex = i;
+		}
+	}
+
+	CameraSplineIndex = SelectedReferenceIndex;
 }
